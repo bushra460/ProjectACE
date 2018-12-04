@@ -12,6 +12,22 @@ namespace ACE
         public MainPage()
         {
             InitializeComponent();
+
+            var onboarded = false;
+
+            if (onboarded == false){
+                onboarded = true;
+
+            }
+        }
+        public void SearchBttn(object sender, EventArgs args)
+        {
+            Navigation.PushAsync(new SearchPage());
+        }
+        public void ScanBttn(object sender, EventArgs args)
+        {
+
         }
     }
 }
+

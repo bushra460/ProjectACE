@@ -532,11 +532,13 @@
         "lib/MonoAndroid10/Design/Xamarin.Forms.Core.Design.dll",
         "lib/MonoAndroid10/Design/Xamarin.Forms.Xaml.Design.dll",
         "lib/MonoAndroid10/FormsViewGroup.dll",
+        "lib/MonoAndroid10/FormsViewGroup.dll.mdb",
         "lib/MonoAndroid10/FormsViewGroup.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Core.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Core.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Core.xml",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll",
+        "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll.mdb",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Xaml.dll",
@@ -660,11 +662,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/rileygriffith/Projects/ACE/ACE.iOS/ACE.iOS.csproj",
+      "projectUniqueName": "/Users/rileygriffith/Projects/ProjectACE/ACE.iOS/ACE.iOS.csproj",
       "projectName": "ACE.iOS",
-      "projectPath": "/Users/rileygriffith/Projects/ACE/ACE.iOS/ACE.iOS.csproj",
+      "projectPath": "/Users/rileygriffith/Projects/ProjectACE/ACE.iOS/ACE.iOS.csproj",
       "packagesPath": "/Users/rileygriffith/.nuget/packages/",
-      "outputPath": "/Users/rileygriffith/Projects/ACE/ACE.iOS/obj",
+      "outputPath": "/Users/rileygriffith/Projects/ProjectACE/ACE.iOS/obj",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/rileygriffith/.config/NuGet/NuGet.Config"

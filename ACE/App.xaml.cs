@@ -11,7 +11,11 @@ namespace ACE
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage())
+            {
+                BarTextColor = Color.White,
+                BarBackgroundColor = Color.FromHex("#081E41")
+            };
         }
 
         protected override void OnStart()
