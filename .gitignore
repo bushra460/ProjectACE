@@ -2,3 +2,7 @@
 ACE\.Android/obj/
 
 \.vs/
+
+ACE\.iOS/bin/
+
+ACE\.iOS/obj/

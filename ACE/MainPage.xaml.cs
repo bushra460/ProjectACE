@@ -17,7 +17,7 @@ namespace ACE
 
             if (onboarded == false){
                 onboarded = true;
-
+                Navigation.PushAsync(new Language());
             }
         }
         public void SearchBttn(object sender, EventArgs args)
