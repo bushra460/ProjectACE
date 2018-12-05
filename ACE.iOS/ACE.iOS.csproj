@@ -157,6 +157,7 @@
     <BundleResource Include="Resources\Screen Shot 2018-11-29 at 10.08.59 AM.png" />
     <BundleResource Include="Resources\Fonts\Lato regular.ttf" />
     <BundleResource Include="Resources\Fonts\Oxygen regular.ttf" />
+    <BundleResource Include="Resources\background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\ACE\ACE.projitems" Label="Shared" />
