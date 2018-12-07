@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#081E41"
+    android:background="@color/CBSA_Blue"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,14 +10,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:translationY="-85dp"
         android:text="@string/English"
-        android:width="300dp"/>
+        android:width="350dp"
+        android:height="100dp"
+        android:background="@color/CBSA_Blue"
+        android:textColor="@android:color/white"/>
     <Button
         android:id="@+id/frenchBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="75dp"
         android:layout_below="@id/englishBttn"
         android:layout_centerInParent="true"
-        android:text="@string/French" />
+        android:translationY="-85dp"
+        android:text="@string/French"
+        android:width="350dp"
+        android:height="100dp"
+        android:background="@color/CBSA_Blue"
+        android:textColor="@android:color/white"
+        />
 </RelativeLayout>
