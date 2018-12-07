@@ -7,6 +7,8 @@
     <!--Buttons-->
     <string name="English">English</string>
     <string name="French">Français</string>
+    <string name="PrivacyBttn">Privacy Policy</string>
+    <string name="Avis">Avis</string>
     <string name="Accept">Accept</string>
     <string name="Decline">Decline</string>
     <string name="GetStarted">Get Started</string>
