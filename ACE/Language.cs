@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -21,20 +22,31 @@ namespace ACE
             base.OnCreate(savedInstanceState);
             Window.RequestFeature(WindowFeatures.NoTitle);
             SetContentView(Resource.Layout.Language);
+
+            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string filename = System.IO.Path.Combine(path, "localstorage.txt");
             // Create your application here
 
 
             Button englishButton = FindViewById<Button>(Resource.Id.englishBttn);
             englishButton.Click += (sender, e) =>
             {
+                using (var streamWriter = new StreamWriter(filename, true))
+                {
+                    streamWriter.WriteLine(true);
+                }
                 var intentMain = new Intent(this, typeof(MainActivity));
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
                 StartActivity(intentMain);
             };
 
             Button frenchButton = FindViewById<Button>(Resource.Id.frenchBttn);
-            englishButton.Click += (sender, e) =>
+            frenchButton.Click += (sender, e) =>
             {
+                using (var streamWriter = new StreamWriter(filename, true))
+                {
+                    streamWriter.WriteLine(true);
+                }
                 var intentMain = new Intent(this, typeof(MainActivity));
                 //SET LANGUAGE TO FRENCH
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
@@ -42,7 +54,7 @@ namespace ACE
             };
 
             Button privacyPolicyEN = FindViewById<Button>(Resource.Id.privacyBttn);
-            englishButton.Click += (sender, e) =>
+            privacyPolicyEN.Click += (sender, e) =>
             {
                 var intentEN = new Intent(this, typeof(PrivacyPolicyEN));
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
@@ -50,7 +62,7 @@ namespace ACE
             };
 
             Button privacyPolicyFR = FindViewById<Button>(Resource.Id.avisBttn);
-            englishButton.Click += (sender, e) =>
+            privacyPolicyFR.Click += (sender, e) =>
             {
                 var intentFR = new Intent(this, typeof(PrivacyPolicyFR));
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);

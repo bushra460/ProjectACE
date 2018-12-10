@@ -21,6 +21,22 @@ namespace ACE
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PrivacyPolicyEN);
             // Create your application here
+            ActionBar.Title = "Privacy Policy";
+            ActionBar.SetHomeButtonEnabled(true);
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    Finish();
+                    return true;
+
+                default:
+                    return base.OnOptionsItemSelected(item);
+            }
         }
     }
 }

@@ -4,7 +4,8 @@
     android:background="#081E41"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -18,16 +19,27 @@
         android:id="@+id/SearchBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@id/title"
-        android:layout_marginTop="40dp"
+        android:layout_centerInParent="true"
+        android:translationY="200dp"
         android:text="@string/Search"
-        android:onClick="SearchBttn"/>
+        android:width="350dp"
+        android:height="55dp"
+        android:background="@android:color/white"
+        android:textColor="@android:color/black"
+    />
     <Button
         android:id="@+id/ScanBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
         android:layout_below="@id/SearchBttn"
-        android:text="@string/Scan" />
+        android:layout_centerInParent="true"
+        android:translationY="200dp"
+        android:text="@string/Scan"
+        android:width="350dp"
+        android:height="55dp"
+        android:background="@android:color/white"
+        android:textColor="@android:color/black"
+    />
 </RelativeLayout>

@@ -13,14 +13,13 @@ using Android.Widget;
 
 namespace ACE
 {
-    [Activity(Label = "PrivacyPolicy")]
-    public class PrivacyPolicy : Activity
+    [Activity(Label = "Search")]
+    public class Search : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Window.RequestFeature(WindowFeatures.NoTitle);
-            SetContentView(Resource.Layout.PrivacyPolicy);
+
             // Create your application here
         }
     }

@@ -5,18 +5,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@android:style/Theme.DeviceDefault.Light"
     >
     <TextView
-        android:id="@+id/privacyTitle"
+        android:id="@+id/contentEN"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16pt"
-        android:textSize="24pt"
+        android:layout_height="970dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="10pt"
         android:textColor="@android:color/white"
-        android:text="@string/PrivacyPolicy"/>
-        
+        android:text="@string/PrivacyPolicyContent"
+        />
     <ImageView
         android:src="@drawable/CanadaFooter"
         android:layout_width="fill_parent"

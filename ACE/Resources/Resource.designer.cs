@@ -79,20 +79,17 @@ namespace ACE
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070006
-			public const int ScanBttn = 2131165190;
-			
-			// aapt resource value: 0x7f070005
-			public const int SearchBttn = 2131165189;
-			
 			// aapt resource value: 0x7f070007
-			public const int acceptBttn = 2131165191;
+			public const int ScanBttn = 2131165191;
+			
+			// aapt resource value: 0x7f070006
+			public const int SearchBttn = 2131165190;
 			
 			// aapt resource value: 0x7f070003
 			public const int avisBttn = 2131165187;
 			
 			// aapt resource value: 0x7f070008
-			public const int declineBttn = 2131165192;
+			public const int contentEN = 2131165192;
 			
 			// aapt resource value: 0x7f070000
 			public const int englishBttn = 2131165184;
@@ -100,17 +97,14 @@ namespace ACE
 			// aapt resource value: 0x7f070002
 			public const int frenchBttn = 2131165186;
 			
-			// aapt resource value: 0x7f07000a
-			public const int imageView1 = 2131165194;
+			// aapt resource value: 0x7f070004
+			public const int imageView1 = 2131165188;
 			
 			// aapt resource value: 0x7f070001
 			public const int privacyBttn = 2131165185;
 			
-			// aapt resource value: 0x7f070009
-			public const int privacyTitle = 2131165193;
-			
-			// aapt resource value: 0x7f070004
-			public const int title = 2131165188;
+			// aapt resource value: 0x7f070005
+			public const int title = 2131165189;
 			
 			static Id()
 			{
@@ -132,13 +126,13 @@ namespace ACE
 			public const int Main = 2130968577;
 			
 			// aapt resource value: 0x7f040002
-			public const int PrivacyPolicy = 2130968578;
+			public const int PrivacyPolicyEN = 2130968578;
 			
 			// aapt resource value: 0x7f040003
-			public const int PrivacyPolicyEN = 2130968579;
+			public const int PrivacyPolicyFR = 2130968579;
 			
 			// aapt resource value: 0x7f040004
-			public const int PrivacyPolicyFR = 2130968580;
+			public const int Search = 2130968580;
 			
 			static Layout()
 			{
