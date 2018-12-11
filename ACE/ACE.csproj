@@ -70,6 +70,12 @@
     <AndroidResource Include="Resources\layout\PrivacyPolicyFR.axml" />
     <AndroidResource Include="Resources\drawable\CanadaFooter.png" />
     <AndroidResource Include="Resources\layout\Search.axml" />
+    <AndroidResource Include="Resources\drawable\settings.png" />
+    <AndroidResource Include="Resources\drawable\splash_background.xml" />
+    <AndroidResource Include="Resources\drawable\Splashscreen.png" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\drawable\SearchButton.png" />
+    <AndroidResource Include="Resources\drawable\ScanButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

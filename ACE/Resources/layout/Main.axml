@@ -6,40 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <ImageButton
+        android:src="@drawable/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/CBSA_Blue"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:maxWidth="35dp"
+        android:maxHeight="35dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+    />
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:textSize="34pt"
+        android:layout_marginTop="25dp"
+        android:textSize="42pt"
         android:textColor="@android:color/white"
         android:text="@string/app_name"/>
-    <Button
+    <ImageButton
         android:id="@+id/SearchBttn"
+        android:src="@drawable/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_centerInParent="true"
-        android:translationY="200dp"
+        android:translationY="135dp"
         android:text="@string/Search"
         android:width="350dp"
         android:height="55dp"
-        android:background="@android:color/white"
+        android:background="@color/CBSA_Blue"
         android:textColor="@android:color/black"
     />
-    <Button
+    <ImageButton
         android:id="@+id/ScanBttn"
+        android:src="@drawable/ScanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="45dp"
         android:layout_below="@id/SearchBttn"
         android:layout_centerInParent="true"
-        android:translationY="200dp"
+        android:translationY="135dp"
         android:text="@string/Scan"
         android:width="350dp"
         android:height="55dp"
-        android:background="@android:color/white"
+        android:background="@color/CBSA_Blue"
         android:textColor="@android:color/black"
     />
+    <ImageView
+        android:src="@drawable/CanadaFooter"
+        android:layout_width="fill_parent"
+        android:layout_height="50pt"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:id="@+id/imageView1" />
 </RelativeLayout>

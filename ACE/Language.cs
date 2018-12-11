@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +7,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -31,10 +31,14 @@ namespace ACE
             Button englishButton = FindViewById<Button>(Resource.Id.englishBttn);
             englishButton.Click += (sender, e) =>
             {
-                using (var streamWriter = new StreamWriter(filename, true))
-                {
-                    streamWriter.WriteLine(true);
-                }
+                Context mContext = ApplicationContext;
+                var onboarded = true;
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(mContext);
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutBoolean("onboardedBool", onboarded);
+                editor.Apply();        // applies changes asynchronously on newer APIs
+
+
                 var intentMain = new Intent(this, typeof(MainActivity));
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
                 StartActivity(intentMain);
@@ -43,10 +47,14 @@ namespace ACE
             Button frenchButton = FindViewById<Button>(Resource.Id.frenchBttn);
             frenchButton.Click += (sender, e) =>
             {
-                using (var streamWriter = new StreamWriter(filename, true))
-                {
-                    streamWriter.WriteLine(true);
-                }
+                Context mContext = ApplicationContext;
+                var onboarded = true;
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(mContext);
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutBoolean("onboardedBool", onboarded);
+                editor.Apply();        // applies changes asynchronously on newer APIs
+
+
                 var intentMain = new Intent(this, typeof(MainActivity));
                 //SET LANGUAGE TO FRENCH
                 //intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);

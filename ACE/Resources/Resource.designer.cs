@@ -66,6 +66,21 @@ namespace ACE
 			// aapt resource value: 0x7f020000
 			public const int CanadaFooter = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int ScanButton = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int SearchButton = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int settings = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int splash_background = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int Splashscreen = 2130837509;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -79,32 +94,41 @@ namespace ACE
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070007
-			public const int ScanBttn = 2131165191;
+			// aapt resource value: 0x7f080009
+			public const int MakeBttn = 2131230729;
 			
-			// aapt resource value: 0x7f070006
-			public const int SearchBttn = 2131165190;
+			// aapt resource value: 0x7f08000a
+			public const int ModelBttn = 2131230730;
 			
-			// aapt resource value: 0x7f070003
-			public const int avisBttn = 2131165187;
+			// aapt resource value: 0x7f080007
+			public const int ScanBttn = 2131230727;
 			
-			// aapt resource value: 0x7f070008
-			public const int contentEN = 2131165192;
+			// aapt resource value: 0x7f080006
+			public const int SearchBttn = 2131230726;
 			
-			// aapt resource value: 0x7f070000
-			public const int englishBttn = 2131165184;
+			// aapt resource value: 0x7f08000b
+			public const int YearBttn = 2131230731;
 			
-			// aapt resource value: 0x7f070002
-			public const int frenchBttn = 2131165186;
+			// aapt resource value: 0x7f080003
+			public const int avisBttn = 2131230723;
 			
-			// aapt resource value: 0x7f070004
-			public const int imageView1 = 2131165188;
+			// aapt resource value: 0x7f080008
+			public const int contentEN = 2131230728;
 			
-			// aapt resource value: 0x7f070001
-			public const int privacyBttn = 2131165185;
+			// aapt resource value: 0x7f080000
+			public const int englishBttn = 2131230720;
 			
-			// aapt resource value: 0x7f070005
-			public const int title = 2131165189;
+			// aapt resource value: 0x7f080002
+			public const int frenchBttn = 2131230722;
+			
+			// aapt resource value: 0x7f080004
+			public const int imageView1 = 2131230724;
+			
+			// aapt resource value: 0x7f080001
+			public const int privacyBttn = 2131230721;
+			
+			// aapt resource value: 0x7f080005
+			public const int title = 2131230725;
 			
 			static Id()
 			{
@@ -169,8 +193,8 @@ namespace ACE
 			// aapt resource value: 0x7f060005
 			public const int Avis = 2131099653;
 			
-			// aapt resource value: 0x7f06000d
-			public const int CarOnboarding = 2131099661;
+			// aapt resource value: 0x7f060010
+			public const int CarOnboarding = 2131099664;
 			
 			// aapt resource value: 0x7f060007
 			public const int Decline = 2131099655;
@@ -184,14 +208,20 @@ namespace ACE
 			// aapt resource value: 0x7f060008
 			public const int GetStarted = 2131099656;
 			
+			// aapt resource value: 0x7f06000b
+			public const int Make = 2131099659;
+			
+			// aapt resource value: 0x7f06000c
+			public const int Model = 2131099660;
+			
 			// aapt resource value: 0x7f060004
 			public const int PrivacyBttn = 2131099652;
 			
 			// aapt resource value: 0x7f060001
 			public const int PrivacyPolicy = 2131099649;
 			
-			// aapt resource value: 0x7f06000b
-			public const int PrivacyPolicyContent = 2131099659;
+			// aapt resource value: 0x7f06000e
+			public const int PrivacyPolicyContent = 2131099662;
 			
 			// aapt resource value: 0x7f060009
 			public const int Scan = 2131099657;
@@ -199,8 +229,11 @@ namespace ACE
 			// aapt resource value: 0x7f06000a
 			public const int Search = 2131099658;
 			
-			// aapt resource value: 0x7f06000c
-			public const int SearchOnboarding = 2131099660;
+			// aapt resource value: 0x7f06000f
+			public const int SearchOnboarding = 2131099663;
+			
+			// aapt resource value: 0x7f06000d
+			public const int Year = 2131099661;
 			
 			// aapt resource value: 0x7f060000
 			public const int app_name = 2131099648;
@@ -211,6 +244,22 @@ namespace ACE
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f070000
+			public const int MyTheme_Splash = 2131165184;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}
