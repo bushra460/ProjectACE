@@ -76,6 +76,10 @@
     <AndroidResource Include="Resources\values\styles.xml" />
     <AndroidResource Include="Resources\drawable\SearchButton.png" />
     <AndroidResource Include="Resources\drawable\ScanButton.png" />
+    <AndroidResource Include="Resources\drawable\AvisBttn.png" />
+    <AndroidResource Include="Resources\drawable\EnglishBttn.png" />
+    <AndroidResource Include="Resources\drawable\FrenchBttn.png" />
+    <AndroidResource Include="Resources\drawable\PrivacyBttn.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

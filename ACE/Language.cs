@@ -28,7 +28,7 @@ namespace ACE
             // Create your application here
 
 
-            Button englishButton = FindViewById<Button>(Resource.Id.englishBttn);
+            ImageButton englishButton = FindViewById<ImageButton>(Resource.Id.englishBttn);
             englishButton.Click += (sender, e) =>
             {
                 Context mContext = ApplicationContext;
@@ -44,7 +44,7 @@ namespace ACE
                 StartActivity(intentMain);
             };
 
-            Button frenchButton = FindViewById<Button>(Resource.Id.frenchBttn);
+            ImageButton frenchButton = FindViewById<ImageButton>(Resource.Id.frenchBttn);
             frenchButton.Click += (sender, e) =>
             {
                 Context mContext = ApplicationContext;
@@ -61,7 +61,7 @@ namespace ACE
                 StartActivity(intentMain);
             };
 
-            Button privacyPolicyEN = FindViewById<Button>(Resource.Id.privacyBttn);
+            ImageButton privacyPolicyEN = FindViewById<ImageButton>(Resource.Id.privacyBttn);
             privacyPolicyEN.Click += (sender, e) =>
             {
                 var intentEN = new Intent(this, typeof(PrivacyPolicyEN));
@@ -69,7 +69,7 @@ namespace ACE
                 StartActivity(intentEN);
             };
 
-            Button privacyPolicyFR = FindViewById<Button>(Resource.Id.avisBttn);
+            ImageButton privacyPolicyFR = FindViewById<ImageButton>(Resource.Id.avisBttn);
             privacyPolicyFR.Click += (sender, e) =>
             {
                 var intentFR = new Intent(this, typeof(PrivacyPolicyFR));

@@ -20,9 +20,9 @@ namespace ACE
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(mContext);
             ISharedPreferencesEditor editor = prefs.Edit();
 
-            if (prefs.GetBoolean("onboardedBool", false) == false)
+            if (prefs.GetBoolean("onboardedBool", true) == true)
             {
-                var onboarded = false;
+                var onboarded = true;
                 editor.PutBoolean("onboardedBool", onboarded);
                 editor.Apply();        // applies changes asynchronously on newer APIs
                 var intent = new Intent(this, typeof(Language));
