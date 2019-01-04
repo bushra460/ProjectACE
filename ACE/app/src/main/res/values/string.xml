@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--App titles-->
+    <string name="app_name">ACE</string>
+    <string name="PrivacyPolicy">Privacy Policy</string>
+
+    <!--Buttons-->
+    <string name="English">English</string>
+    <string name="French">Français</string>
+    <string name="PrivacyBttn">Privacy Policy</string>
+    <string name="Avis">Avis</string>
+    <string name="Accept">Accept</string>
+    <string name="Decline">Decline</string>
+    <string name="GetStarted">Get Started</string>
+    <string name="Scan">Scan</string>
+    <string name="Search">Search</string>
+    <string name="Make">Make</string>
+    <string name="Model">Model</string>
+    <string name="Year">Year</string>
+
+    <!--Content-->
+    <string name="PrivacyPolicyContent">Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway</string>
+    <string name="SearchOnboarding">Use the ACE app to look up hotspots other BSOs have identified</string>
+    <string name="CarOnboarding">Add Cars to the ACE database to help other BSOs search for contraband</string>
+
+</resources>

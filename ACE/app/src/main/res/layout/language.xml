@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/gradient"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+            android:id="@+id/English"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbttn"
+            android:text="@string/English"
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:textAllCaps="false"
+            android:textSize="21sp"/>
+    <Button
+            android:id="@+id/Privacy"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/English"
+            android:background="@drawable/roundedbttn"
+            android:text="@string/PrivacyBttn"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="45dp"
+            android:textAllCaps="false"
+            android:textSize="21sp"/>
+    <Button
+            android:id="@+id/French"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Privacy"
+            android:background="@drawable/roundedbttn"
+            android:text="@string/French"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="45dp"
+            android:textAllCaps="false"
+            android:textSize="21sp"/>
+    <Button
+            android:id="@+id/Avis"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/French"
+            android:background="@drawable/roundedbttn"
+            android:text="@string/Avis"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="45dp"
+            android:textAllCaps="false"
+            android:textSize="21sp"/>
+
+    <ImageView
+        android:src="@drawable/canadafooter"
+        android:layout_width="fill_parent"
+        android:layout_height="50pt"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:id="@+id/imageView1" />
+</RelativeLayout>

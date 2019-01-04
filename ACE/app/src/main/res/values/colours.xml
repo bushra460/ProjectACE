@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <item name="CBSA_Blue" type="color">#081E41</item>
+    <color name="colorPrimary">#084B82</color>
+    <color name="colorPrimaryDark">#022550</color>
+    <color name="colorAccent">#DECD01</color>
+</resources>
