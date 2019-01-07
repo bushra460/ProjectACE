@@ -23,4 +23,47 @@
     <string name="SearchOnboarding">Use the ACE app to look up hotspots other BSOs have identified</string>
     <string name="CarOnboarding">Add Cars to the ACE database to help other BSOs search for contraband</string>
 
+
+    <!--Makes-->
+    <string-array name="makes_array">
+        <item>Volkswagen</item>
+        <!--<item>Acura</item>-->
+        <!--<item>Aston Martin</item>-->
+        <!--<item>Audi</item>-->
+        <!--<item>Bently</item>-->
+        <!--<item>BMW</item>-->
+        <!--<item>Buick</item>-->
+        <!--<item>Cadillac</item>-->
+        <!--<item>Chevrolet</item>-->
+        <!--<item>Chrylser</item>-->
+        <!--<item>Dodge</item>-->
+        <!--<item>Eagle</item>-->
+        <!--<item>Ferrari</item>-->
+        <!--<item>Ford</item>-->
+        <!--<item>Golf</item>-->
+        <!--<item>Geo</item>-->
+        <!--<item>GMC</item>-->
+        <!--<item>Honda</item>-->
+        <!--<item>Hummer</item>-->
+        <!--<item>Hyundai</item>-->
+        <!--<item>Infiniti</item>-->
+        <!--<item>Isuzu</item>-->
+        <!--<item>Jaguar</item>-->
+        <!--<item>Jeep</item>-->
+    </string-array>
+
+    <string-array name="models_array">
+        <item>Golf</item>
+    </string-array>
+
+    <string-array name="years_array">
+        <item>2018</item>
+        <item>2017</item>
+        <item>2016</item>
+    </string-array>
+
+    <string-array name="trims_array">
+        <item>GS-Sky</item>
+    </string-array>
+
 </resources>

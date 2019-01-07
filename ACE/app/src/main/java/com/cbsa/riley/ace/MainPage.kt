@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.content.Context
 import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main.view.*
 
 class MainActivity : Activity() {
 
     //VARIABLES
-
+    val SHAREDPREFS = "com.cbsa.riley.ace"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,20 @@ class MainActivity : Activity() {
 
 
         //SET SHARED PREFERENCES FOR ONBOARDED BOOL
-        prefs = this.getSharedPreferences(SHAREDPREFS, 0)
-        var isOnboarded = prefs!!.getBoolean(ONBOARDED, false)
+
+        var sharedPreference =  getSharedPreferences("SHAREDPREFS",Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putBoolean("onboarded", false)
+        editor.commit()
+
+        var checkBool = sharedPreference.getBoolean("onboarded", false)
+        if (checkBool){
+            val intent = Intent(this, Language::class.java)
+            //intent.putExtra("keyIdentifier", value)
+            startActivity(intent)
+        } else {
+            println("not onboarded")
+        }
 
 
 
