@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-            android:id="@+id/English"
+            android:id="@+id/EnglishBttnE"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbttn"
@@ -18,10 +18,10 @@
             android:textAllCaps="false"
             android:textSize="21sp"/>
     <Button
-            android:id="@+id/Privacy"
+            android:id="@+id/PrivacyBttnENE"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/English"
+            android:layout_below="@id/EnglishBttnE"
             android:background="@drawable/roundedbttn"
             android:text="@string/PrivacyBttn"
             android:textColor="#fff"
@@ -33,7 +33,7 @@
             android:id="@+id/French"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Privacy"
+            android:layout_below="@id/PrivacyBttnENE"
             android:background="@drawable/roundedbttn"
             android:text="@string/French"
             android:textColor="#fff"
@@ -42,7 +42,7 @@
             android:textAllCaps="false"
             android:textSize="21sp"/>
     <Button
-            android:id="@+id/Avis"
+            android:id="@+id/PrivacyBttnFRE"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/French"

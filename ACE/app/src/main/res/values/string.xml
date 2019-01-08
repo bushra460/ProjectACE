@@ -3,6 +3,10 @@
     <!--App titles-->
     <string name="app_name">ACE</string>
     <string name="PrivacyPolicy">Privacy Policy</string>
+    <string name="Language">Language</string>
+    <string name="PrivacyPolicyEN">PrivacyPolicy</string>
+    <string name="PrivacyPolicyFR">Avis</string>
+    <string name="Settings">Settings</string>
 
     <!--Buttons-->
     <string name="English">English</string>

@@ -25,6 +25,28 @@
                   android:label="@string/Search"
                   android:theme="@style/Theme.AppCompat.Light.ActionBar">
         </activity>
+
+        <activity android:name=".LanguagePage"
+                  android:label="@string/Language"
+                  android:theme="@style/Theme.AppCompat.Light.ActionBar">
+        </activity>
+
+        <activity android:name=".PrivacyPolicyEN"
+                  android:label="@string/PrivacyPolicyEN"
+                  android:theme="@style/Theme.AppCompat.Light.ActionBar">
+        </activity>
+
+        <activity android:name=".PrivacyPolicyFR"
+                  android:label="@string/PrivacyPolicyFR"
+                  android:theme="@style/Theme.AppCompat.Light.ActionBar">
+        </activity>
+
+        <activity android:name=".SettingsPage"
+                  android:label="@string/Settings"
+                  android:theme="@style/Theme.AppCompat.Light.ActionBar">
+        </activity>
+
+
     </application>
 
 

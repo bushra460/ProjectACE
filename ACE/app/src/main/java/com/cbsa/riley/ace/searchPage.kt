@@ -1,7 +1,9 @@
 package com.cbsa.riley.ace
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,7 +14,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-
 
         val spinner: Spinner = findViewById(R.id.makeSpinner)
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -80,3 +81,4 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     }
 
 }
+
