@@ -23,7 +23,7 @@ class LanguagePage : Activity() {
         editor.commit()
 
 
-        //HANDLE SEARCH BUTTON CLICKS
+        //HANDLE ENGLISH BUTTON CLICKS
         val englishBttn = EnglishBttnE
         englishBttn.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -31,7 +31,7 @@ class LanguagePage : Activity() {
             startActivity(intent)
         }
 
-        //HANDLE SEARCH BUTTON CLICKS
+        //HANDLE PRIVACY BUTTON CLICKS
         val privacyBttnEN = PrivacyBttnENE
         privacyBttnEN.setOnClickListener {
             val intent = Intent(this, PrivacyPolicyEN::class.java)
@@ -39,7 +39,7 @@ class LanguagePage : Activity() {
             startActivity(intent)
         }
 
-        //HANDLE SEARCH BUTTON CLICKS
+        //HANDLE PRIVACY FRENCH BUTTON CLICKS
         val privacyBttnFR = PrivacyBttnFRE
         privacyBttnFR.setOnClickListener {
             val intent = Intent(this, PrivacyPolicyFR::class.java)

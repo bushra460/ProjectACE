@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <style name="MyTheme.Splash" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowBackground">@color/CBSA_Blue</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
@@ -12,7 +12,8 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#ffffff</item>
+    <style name="MyActionBar" parent="@style/Theme.AppCompat.Light.ActionBar">
+        <item name="android:background">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>

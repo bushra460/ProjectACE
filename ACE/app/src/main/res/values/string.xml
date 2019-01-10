@@ -21,6 +21,7 @@
     <string name="Make">Make</string>
     <string name="Model">Model</string>
     <string name="Year">Year</string>
+    <string name="Trim">Trim</string>
 
     <!--Content-->
     <string name="PrivacyPolicyContent">Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway</string>
@@ -30,44 +31,49 @@
 
     <!--Makes-->
     <string-array name="makes_array">
-        <item>Volkswagen</item>
-        <!--<item>Acura</item>-->
-        <!--<item>Aston Martin</item>-->
-        <!--<item>Audi</item>-->
-        <!--<item>Bently</item>-->
-        <!--<item>BMW</item>-->
-        <!--<item>Buick</item>-->
-        <!--<item>Cadillac</item>-->
-        <!--<item>Chevrolet</item>-->
-        <!--<item>Chrylser</item>-->
-        <!--<item>Dodge</item>-->
-        <!--<item>Eagle</item>-->
-        <!--<item>Ferrari</item>-->
-        <!--<item>Ford</item>-->
-        <!--<item>Golf</item>-->
-        <!--<item>Geo</item>-->
-        <!--<item>GMC</item>-->
-        <!--<item>Honda</item>-->
-        <!--<item>Hummer</item>-->
-        <!--<item>Hyundai</item>-->
-        <!--<item>Infiniti</item>-->
-        <!--<item>Isuzu</item>-->
-        <!--<item>Jaguar</item>-->
-        <!--<item>Jeep</item>-->
+        <item>Select One</item>
+        <item>Acura</item>
+        <item>Aston Martin</item>
+        <item>Audi</item>
+        <item>Bently</item>
+        <item>BMW</item>
+        <item>Buick</item>
+        <item>Cadillac</item>
+        <item>Chevrolet</item>
+        <item>Chrylser</item>
+        <item>Dodge</item>
+        <item>Eagle</item>
+        <item>Ferrari</item>
+        <item>Ford</item>
+        <item>Golf</item>
+        <item>Geo</item>
+        <item>GMC</item>
+        <item>Honda</item>
+        <item>Hummer</item>
+        <item>Hyundai</item>
+        <item>Infiniti</item>
+        <item>Isuzu</item>
+        <item>Jaguar</item>
+        <item>Jeep</item>
     </string-array>
 
     <string-array name="models_array">
+        <item>Select One</item>
         <item>Golf</item>
+        <item>Beetle</item>
     </string-array>
 
     <string-array name="years_array">
+        <item>Select One</item>
         <item>2018</item>
         <item>2017</item>
         <item>2016</item>
     </string-array>
 
     <string-array name="trims_array">
+        <item>--Not Sure--</item>
         <item>GS-Sky</item>
+        <item>GT</item>
     </string-array>
 
 </resources>

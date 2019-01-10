@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import kotlinx.android.synthetic.main.search.*
 
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
@@ -16,6 +17,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         setContentView(R.layout.search)
 
         val spinner: Spinner = findViewById(R.id.makeSpinner)
+        spinner.onItemSelectedListener = this
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -29,6 +31,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         }
 
         val modelSpinner: Spinner = findViewById(R.id.modelSpinner)
+        modelSpinner.onItemSelectedListener = this
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -42,6 +45,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         }
 
         val yearSpinner: Spinner = findViewById(R.id.yearSpinner)
+        yearSpinner.onItemSelectedListener = this
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -54,30 +58,73 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             yearSpinner.adapter = adapter
         }
 
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        var chosenMake = parent.getItemAtPosition(pos)
-
-        //UPDATE NEXT SPINNER
-        val modelSpinner: Spinner = findViewById(R.id.modelSpinner)
+        val trimSpinner: Spinner = findViewById(R.id.trimSpinner)
+        trimSpinner.onItemSelectedListener = this
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
-            R.array.models_array,
+            R.array.trims_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            modelSpinner.adapter = adapter
+            trimSpinner.adapter = adapter
         }
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+
+        val parentID = parent.id
+        val spinOption = parent.getItemAtPosition(pos)
+
+
+        if ( makeSpinner.selectedItem == spinOption && spinOption != "Select One"){
+            println("Spinner 1: " + spinOption)
+            modelSpinner.visibility = View.VISIBLE
+
+        } else if (modelSpinner.selectedItem == spinOption && spinOption != "Select One") {
+            println("Spinner 2: " + spinOption)
+            yearSpinner.visibility = View.VISIBLE
+
+        } else if (yearSpinner.selectedItem == spinOption && spinOption != "Select One") {
+            println("Spinner 3: " + spinOption)
+            trimSpinner.visibility = View.VISIBLE
+
+        } else if (trimSpinner.selectedItem == spinOption && spinOption != "Select One") {
+            println("Spinner 4: " + spinOption)
+
+        }
+
+        if(makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
+            searchBttnE.isEnabled = true
+        } else if (spinOption == "Select One"){
+            searchBttnE.isEnabled = false
+        }
+
+        //HANDLE ENGLISH BUTTON CLICKS
+
+        val searchBttn = searchBttnE
+        searchBttn.setOnClickListener {
+            var carName: String
+            if (trimSpinner.selectedItem.toString() != "--Not Sure--"){
+                carName = makeSpinner.id.toString() + modelSpinner.id.toString() + yearSpinner.id.toString() + trimSpinner.id.toString()
+            } else {
+                carName = makeSpinner.id.toString() + modelSpinner.id.toString() + yearSpinner.id.toString()
+            }
+            val intent = Intent(this, SearchResultsPage::class.java)
+            intent.putExtra("carName", carName)
+            startActivity(intent)
+        }
+
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback
+        println("onNothingSelected Function in searchPage.kt")
     }
 
 }
