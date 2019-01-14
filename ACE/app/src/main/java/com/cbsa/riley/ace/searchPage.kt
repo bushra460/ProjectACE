@@ -3,7 +3,6 @@ package com.cbsa.riley.ace
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -109,14 +108,26 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         val searchBttn = searchBttnE
         searchBttn.setOnClickListener {
-            var carName: String
+            var carMake: String
+            var carModel: String
+            var carYear: String
+            var carTrim: String = ""
             if (trimSpinner.selectedItem.toString() != "--Not Sure--"){
-                carName = makeSpinner.id.toString() + modelSpinner.id.toString() + yearSpinner.id.toString() + trimSpinner.id.toString()
+                carMake = makeSpinner.selectedItem.toString()
+                carModel = modelSpinner.selectedItem.toString()
+                carYear = yearSpinner.selectedItem.toString()
+                carTrim = trimSpinner.selectedItem.toString()
             } else {
-                carName = makeSpinner.id.toString() + modelSpinner.id.toString() + yearSpinner.id.toString()
+                carMake = makeSpinner.selectedItem.toString()
+                carModel = modelSpinner.selectedItem.toString()
+                carYear = yearSpinner.selectedItem.toString()
             }
             val intent = Intent(this, SearchResultsPage::class.java)
-            intent.putExtra("carName", carName)
+            intent.putExtra("carMake", carMake)
+            intent.putExtra("carModel", carModel)
+            intent.putExtra("carYear", carYear)
+            intent.putExtra("carTrim", carTrim)
+
             startActivity(intent)
         }
 
