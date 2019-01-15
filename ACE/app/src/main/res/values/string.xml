@@ -31,7 +31,6 @@
 
     <!--Makes-->
     <string-array name="makes_array">
-        <item>Select One</item>
         <item>Acura</item>
         <item>Aston Martin</item>
         <item>Audi</item>
@@ -58,13 +57,11 @@
     </string-array>
 
     <string-array name="models_array">
-        <item>Select One</item>
         <item>Golf</item>
         <item>Beetle</item>
     </string-array>
 
     <string-array name="years_array">
-        <item>Select One</item>
         <item>2018</item>
         <item>2017</item>
         <item>2016</item>

@@ -3,12 +3,17 @@ package com.cbsa.riley.ace
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import com.cbsa.riley.ace.R.id.linearLayoutM
 import kotlinx.android.synthetic.main.searchresults.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.net.URL
+
 
 class SearchResultsPage : AppCompatActivity() {
 
     val cars: ArrayList<Car> = ArrayList()
+    val url = "https://webapp-190113144846.azurewebsites.net/deltaace/v1/manufacturers"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +31,28 @@ class SearchResultsPage : AppCompatActivity() {
 
         recyclerView1.adapter = SearchAdapter(cars)
 
+        suspend fun workload(s:String) {
+            println(s)
 
-        var i = 0
-        println("Help" )
-        //var count:Int = cardView.childCount
-        println("Help" )
-        while (i < 2){
-            i++
-            println("Help" + i)
-            linearLayoutM
-      }
+            val toObj = JSONObject.quote(s)
+            println("toString $toObj")
+
+//            var jsonArray = JSONArray(s)
+//            for (jsonIndex in 0..(jsonArray.length() - 1)) {
+//                println("JSON: " + jsonArray.getJSONObject(jsonIndex).getString("manufacturerName"))
+//            }
+        }
+
+        val result = GlobalScope.launch {
+            val json = URL(url).readText()
+            workload(json)
+        }
 
 
 
     }
+
+
 
     // Adds animals to the empty animals ArrayList
     fun addAnimals() {
@@ -49,6 +62,5 @@ class SearchResultsPage : AppCompatActivity() {
         val carTrim:String = intent.getStringExtra("carTrim")
         cars.add(Car(carMake, carModel, carYear, carTrim))
         cars.add(Car("volkswagen", "golf", "1998", null))
-
     }
 }
