@@ -67,10 +67,4 @@
         <item>2016</item>
     </string-array>
 
-    <string-array name="trims_array">
-        <item>--Not Sure--</item>
-        <item>GS-Sky</item>
-        <item>GT</item>
-    </string-array>
-
 </resources>

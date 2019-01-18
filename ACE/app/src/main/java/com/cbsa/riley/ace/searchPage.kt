@@ -7,22 +7,81 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.serialization.ImplicitReflectionSerializer
+import java.net.URL
 
+val url = "https://webapp-190113144846.azurewebsites.net/deltaace/v1/manufacturers"
+var carArray: ArrayList<Car> = ArrayList()
+
+@UseExperimental(ImplicitReflectionSerializer::class)
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
 
+        //TAKE RESULT OF GET CALL AND PARSE THE DATA
+        fun workload(data:String) {
+            println(data)
+
+            var gson = Gson()
+            var manufacturerModel = gson.fromJson(data, ManufacturerModel::class.java)
+            val manufacturer1 = JsonParser().parse((gson.toJson(manufacturerModel))).asJsonObject
+            val manufacturer2 = manufacturer1.getAsJsonObject("_embedded")
+            val manufacturer3 = manufacturer2.getAsJsonArray("manufacturers")
+            var manufacturer4:JsonObject
+            var manufacturer5:String
+
+            println("data: $manufacturer1")
+
+
+            manufacturer3.forEach {
+
+                manufacturer4 = manufacturer3.asJsonObject
+                manufacturer5 = manufacturer4.get("manufacturerName").asString
+                carArray.add(Car(manufacturer5,null,null))
+                println(manufacturer5)
+            }
+
+//            var testJson = """{"manufacturers" : [{"manufacturerName":"Mazda"},{"modelName":"Mazda 3"},{"year":"2017"}]}"""
+//
+//            if (testData != null){
+//
+//            }
+        }
+
+        //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
+        val result = GlobalScope.launch {
+            val json = URL(url).readText()
+            workload(json)
+        }
+
+
+//        val spinner: Spinner = findViewById(R.id.makeSpinner)
+//        spinner.onItemSelectedListener = this
+//// Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter.createFromResource(
+//            this,
+//            makeArray.size,
+//            android.R.layout.simple_spinner_item
+//        ).also { adapter ->
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            // Apply the adapter to the spinner
+//            spinner.adapter = adapter
+
+
         val spinner: Spinner = findViewById(R.id.makeSpinner)
         spinner.onItemSelectedListener = this
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.makes_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
+
+
+        ArrayAdapter<Car>(applicationContext, android.R.layout.simple_spinner_dropdown_item, carArray).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
@@ -57,20 +116,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             yearSpinner.adapter = adapter
         }
 
-        val trimSpinner: Spinner = findViewById(R.id.trimSpinner)
-        trimSpinner.onItemSelectedListener = this
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.trims_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            trimSpinner.adapter = adapter
-        }
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
@@ -91,10 +136,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         } else if (yearSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 3: " + spinOption)
-            trimSpinner.visibility = View.VISIBLE
-
-        } else if (trimSpinner.selectedItem == spinOption && spinOption != "Select One") {
-            println("Spinner 4: " + spinOption)
 
         }
 
@@ -104,29 +145,21 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             searchBttnE.isEnabled = false
         }
 
-        //HANDLE ENGLISH BUTTON CLICKS
-
+        //HANDLE SEARCH BUTTON CLICKS
         val searchBttn = searchBttnE
         searchBttn.setOnClickListener {
             var carMake: String
             var carModel: String
             var carYear: String
-            var carTrim: String = ""
-            if (trimSpinner.selectedItem.toString() != "--Not Sure--"){
+
                 carMake = makeSpinner.selectedItem.toString()
                 carModel = modelSpinner.selectedItem.toString()
                 carYear = yearSpinner.selectedItem.toString()
-                carTrim = trimSpinner.selectedItem.toString()
-            } else {
-                carMake = makeSpinner.selectedItem.toString()
-                carModel = modelSpinner.selectedItem.toString()
-                carYear = yearSpinner.selectedItem.toString()
-            }
-            val intent = Intent(this, SearchResultsPage::class.java)
+
+            val intent = Intent(this, ImageViewPage::class.java)
             intent.putExtra("carMake", carMake)
             intent.putExtra("carModel", carModel)
             intent.putExtra("carYear", carYear)
-            intent.putExtra("carTrim", carTrim)
 
             startActivity(intent)
         }

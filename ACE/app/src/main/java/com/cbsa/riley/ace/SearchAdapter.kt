@@ -13,7 +13,6 @@ class SearchAdapter(val carList: ArrayList<Car>): RecyclerView.Adapter<SearchAda
         holder?.txtMake?.text = carList[position].make
         holder?.txtModel?.text = carList[position].model
         holder?.txtYear?.text = carList[position].year
-        holder?.txtTrim?.text = carList[position].trim
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
@@ -29,7 +28,6 @@ class SearchAdapter(val carList: ArrayList<Car>): RecyclerView.Adapter<SearchAda
         val txtMake = itemView.findViewById<TextView>(R.id.carMakeTVE)
         val txtModel = itemView.findViewById<TextView>(R.id.carModelTVE)
         val txtYear = itemView.findViewById<TextView>(R.id.carYearTVE)
-        val txtTrim = itemView.findViewById<TextView>(R.id.carTrimTVE)
     }
 
 }
