@@ -49,13 +49,13 @@
             android:textSize="21sp"
             />
     <Button
-            android:id="@+id/ScanBttn"
+            android:id="@+id/VoiceBttn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/SearchBttnE"
             android:layout_centerInParent="true"
             android:background="@drawable/roundedbttn"
-            android:text="@string/Scan"
+            android:text="@string/VoiceSearch"
             android:textColor="#fff"
             android:layout_centerHorizontal="true"
             android:width="350dp"

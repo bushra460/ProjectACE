@@ -52,6 +52,11 @@
                   android:theme="@style/MyTheme.Splash">
         </activity>
 
+        <activity android:name=".ImageViewPage"
+                  android:label="@string/CarDetail"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
 
     </application>
 
