@@ -1,23 +1,28 @@
 package com.cbsa.riley.ace
 
 import android.app.Activity
-import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Bundle
 import android.content.Context
-import com.cbsa.riley.ace.R.layout.settings
+import android.content.Intent
+import android.os.Bundle
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.main.*
-import kotlinx.android.synthetic.main.main.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.net.URL
 
 class MainActivity : Activity() {
 
     //VARIABLES
     val SHAREDPREFS = "com.cbsa.riley.ace"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
+
+        //GET DATA FROM CLOUD
+        makeData()
 
         //SET SHARED PREFERENCES FOR ONBOARDED BOOL
         var sharedPreference =  getSharedPreferences("SHAREDPREFS",Context.MODE_PRIVATE)
@@ -65,4 +70,38 @@ class MainActivity : Activity() {
         }
         //********************************
     }
+
+    fun makeData() {
+
+        if (makeArray.count() >= 2) {
+            makeArray.clear()
+            makeArray.add("Select One")
+        }
+
+        //TAKE RESULT OF GET CALL AND PARSE THE DATA
+        fun workload(data: String) {
+            println(data)
+            var gson = Gson()
+            var manufacturerModel = gson.fromJson(data, ManufacturerModel::class.java)
+            val manufacturer1 = JsonParser().parse((gson.toJson(manufacturerModel))).asJsonObject
+            val manufacturer2 = manufacturer1.getAsJsonObject("_embedded")
+            val manufacturer3 = manufacturer2.getAsJsonArray("manufacturers")
+            var manufacturer4: JsonObject
+            var manufacturer5: String
+            println("data: $manufacturer1")
+            manufacturer3.forEach {
+                manufacturer4 = it.asJsonObject
+                manufacturer5 = manufacturer4.get("name").asString
+                makeArray.add(manufacturer5)
+                println(makeArray)
+            }
+        }
+
+        //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
+        GlobalScope.launch {
+            val json = URL(makeurl).readText()
+            workload(json)
+        }
+    }
+
 }
