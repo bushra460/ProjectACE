@@ -22,7 +22,7 @@ class SearchResultsPage : AppCompatActivity() {
 
         // Access the RecyclerView Adapter and load the data into it
 
-        recyclerView1.adapter = SearchAdapter(car)
+        //recyclerView1.adapter = SearchAdapter(basicCarA)
 
     }
 }

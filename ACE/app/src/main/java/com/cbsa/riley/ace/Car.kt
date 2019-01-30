@@ -1,20 +1,26 @@
 package com.cbsa.riley.ace
 
 import com.beust.klaxon.Json
-import com.google.gson.internal.LinkedTreeMap
 
 data class ManufacturerModel(
-    val _embedded: LinkedTreeMap<Any,Any>
+    val data: ArrayList<Any>
 )
 
 data class Car(
-    @Json(name = "manufacturerName") val make: String?,
-@Json(name = "modelName") val model: String?,
-val year: String?
+    @Json(name = "manufacturerNameId") val makeId: String,
+    @Json(name = "manufacturerName") val make: String,
+    @Json(name = "modelNameId") val modelId: String,
+    @Json(name = "modelName") val model: String,
+    val yearId: String,
+    val year: String,
+    val carImageId: String,
+    val carImageURI: String,
+    val exteriorImage: Boolean,
+    val active: Boolean
 )
 
-
-
-data class CarNEW(val Cars: ArrayList<Any>)
-
-data class CarOLD(val make: String, val model: String, val year: String)
+data class basicCar(
+    val make: String,
+    val model: String,
+    val year: String
+)

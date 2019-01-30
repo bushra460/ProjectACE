@@ -3,12 +3,12 @@ package com.cbsa.riley.ace
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
 import kotlinx.coroutines.GlobalScope
@@ -18,6 +18,7 @@ import java.net.URL
 
 val makeurl = "https://webapp-190120211610.azurewebsites.net/deltaace/v1/manufacturers"
 var modelurl = "https://webapp-190120211610.azurewebsites.net/deltaace/v1/models"
+var carArray = ArrayList<Car>()
 var makeArray = arrayListOf<String>("Select One")
 var modelArray = arrayListOf<String>("Select One")
 var yearArray = arrayListOf<Any>("Select One")
@@ -29,8 +30,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-
-
+        //GET DATA FROM CLOUD
+        makeData()
         setMakeSpinner()
         setModelYearSpinners()
 
@@ -68,54 +69,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    fun modelYearData(pos: Int){
-        //TAKE RESULT OF GET CALL AND PARSE THE DATA
-        //ADDS DATA TO MODEL AND YEAR ARRAYS
-        fun workload(data:String) {
-            if (modelArray.count() >= 2) {
-                modelArray.clear()
-                modelArray.add("Select One")
-            }
-            if (yearArray.count() >= 2) {
-                yearArray.clear()
-                yearArray.add("Select One")
-            }
-
-            println(data)
-            var gson = Gson()
-            var manufacturerModel = gson.fromJson(data, ManufacturerModel::class.java)
-            val manufacturer1 = JsonParser().parse((gson.toJson(manufacturerModel))).asJsonObject
-            val manufacturer2 = manufacturer1.getAsJsonObject("_embedded")
-            val manufacturer3 = manufacturer2.getAsJsonArray("models")
-            var manufacturer4: JsonObject
-            var manufacturer5:String
-            println("data: $manufacturer1")
-            manufacturer3.forEach {
-                manufacturer4 = it.asJsonObject
-                manufacturer5 = manufacturer4.get("name").asString
-                modelArray.add(manufacturer5)
-                println(modelArray)
-
-                var year5 = manufacturer4.getAsJsonArray("modelYears")
-
-                year5.forEach{
-                    var year6 = it.asJsonObject
-                    var year7:Int = year6.get("yearValue").asInt
-                    yearArray.add(year7)
-                }
-            }
-        }
-
-        //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
-        GlobalScope.launch {
-            modelArray.clear()
-            modelArray.add("Select One")
-            modelurl = makeurl + "/$pos/models"
-            val json = URL(modelurl).readText()
-            workload(json)
-        }
-    }
-
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
@@ -125,14 +78,32 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         if ( makeSpinner.selectedItem == spinOption && spinOption != "Select One"){
             println("Spinner 1: " + spinOption)
-            modelYearData(pos)
-            setModelYearSpinners()
+            if (modelArray.count() >= 2) {
+                modelArray.clear()
+                modelArray.add("Select One")
+            }
+            carArray.forEach{
+                if (it.make == spinOption && !modelArray.contains(it.model)){
+                    modelArray.add(it.model)
+                }
+            }
             modelSpinner.visibility = View.VISIBLE
+            modelSpinner.setSelection(0)
             yearSpinner.visibility = View.INVISIBLE
 
         } else if (modelSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 2: " + spinOption)
+            if (yearArray.count() >= 2) {
+                yearArray.clear()
+                yearArray.add("Select One")
+            }
+            carArray.forEach{
+                if (it.model == spinOption && !yearArray.contains(it.year)){
+                    yearArray.add(it.year)
+                }
+            }
             yearSpinner.visibility = View.VISIBLE
+            yearSpinner.setSelection(0)
 
         } else if (yearSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 3: " + spinOption)
@@ -141,8 +112,12 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         if(makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
             searchBttnE.isEnabled = true
+            var blue = ContextCompat.getColor(this, R.color.CBSA_Blue)
+            searchBttnE.setBackgroundColor(blue)
         } else if (spinOption == "Select One"){
             searchBttnE.isEnabled = false
+            var gray = ContextCompat.getColor(this, R.color.disabledButton)
+            searchBttnE.setBackgroundColor(gray)
         }
 
         //HANDLE SEARCH BUTTON CLICKS
@@ -165,6 +140,64 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback
         println("onNothingSelected Function in searchPage.kt")
+    }
+
+    fun makeData() {
+
+        if (makeArray.count() >= 2) {
+            makeArray.clear()
+            makeArray.add("Select One")
+        }
+
+        //TAKE RESULT OF GET CALL AND PARSE THE DATA
+        fun workload(data: String) {
+            var gson = Gson()
+            var parse = JsonParser().parse(data)
+
+            println(parse)
+
+            val manufacturer1 = JsonParser().parse((gson.toJson(parse))).asJsonArray
+            manufacturer1.forEach{
+                val manufacturer2 = it.asJsonObject
+                val manufacturerId = manufacturer2.get("manufacturerId").asString
+                val name = manufacturer2.get("name").asString
+                val models = manufacturer2.get("models").asJsonArray
+                makeArray.add(name)
+                models.forEach {
+                    val model = it.asJsonObject
+                    val modelId = model.get("modelId").asString
+                    val modelName = model.get("name").asString
+                    val modelYears = model.getAsJsonArray("modelYears")
+                    modelYears.forEach{
+                        val year = it.asJsonObject
+                        val yearId = year.get("modelYearId").asString
+                        val yearName = year.get("yearValue").asString
+
+                        val carData = year.get("car").asJsonObject
+                        val carDataId = carData.get("carId").asString
+                        val carImageArray = carData.get("carImage").asJsonArray
+
+                        carImageArray.forEach{
+                            val carImageObj = it.asJsonObject
+                            val carImageId = carImageObj.get("carImageId").asString
+                            var carImageURI = carImageObj.get("uri").toString()
+                            val exteriorImage = carImageObj.get("exteriorImage").asBoolean
+                            val active = carImageObj.get("active").asBoolean
+
+                            var newCar = Car(manufacturerId, name, modelId, modelName, yearId, yearName, carImageId, carImageURI, exteriorImage, active)
+                            carArray.add(newCar)
+                            println(carArray)
+                        }
+                    }
+                }
+            }
+        }
+
+        //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
+        GlobalScope.launch {
+            val json = URL(makeurl).readText()
+            workload(json)
+        }
     }
 
 }
