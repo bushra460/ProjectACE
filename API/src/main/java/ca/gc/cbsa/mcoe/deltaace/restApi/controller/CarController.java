@@ -1,0 +1,38 @@
+package ca.gc.cbsa.mcoe.deltaace.restApi.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import ca.gc.cbsa.mcoe.deltaace.restApi.model.Car;
+import ca.gc.cbsa.mcoe.deltaace.restApi.repository.CarRepository;
+
+@RestController
+@RequestMapping("/cars")
+public class CarController {
+	
+	@Autowired 
+	CarRepository carRepository;
+	
+	@GetMapping()
+    public List<Car> all() {
+        return carRepository.findAll();
+    }
+	
+	@GetMapping("/{id}")
+    public Optional<Car> id(@PathVariable Long id) {
+        return carRepository.findById(id);
+    }
+	
+	@GetMapping(value = "/mnf/{manufacturerid}/mod/{modelid}/yr/{yearid}")
+	public Car getCarByManfIdModIdYrId
+	  (@PathVariable long manufacturerid, @PathVariable long modelid,@PathVariable long yearid) {
+		return carRepository.findCarByManfIdModIdYrId(manufacturerid,modelid,yearid);
+	}
+
+}
