@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/CBSA_Blue"
+            app:titleTextColor="@android:color/white"
+            app:title="@string/CarDetail"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        <Button
+                android:id="@+id/nextBttn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/CBSA_Blue"
+                android:textColor="@color/disabledButton"
+                android:text="@string/Next"
+                android:layout_gravity="end"
+                android:elevation="0dp"
+                android:enabled="false"
+        />
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+            android:id="@+id/addHotspotImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_alignParentBottom="true"
+    />
+    <ImageView
+            android:id="@+id/hotspotImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_alignParentBottom="true"
+    />
+
+</RelativeLayout>
