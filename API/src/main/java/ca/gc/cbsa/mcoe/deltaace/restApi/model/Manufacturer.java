@@ -38,6 +38,11 @@ public class Manufacturer implements Serializable {
 			this.manufacturerId = manufacturerId;
 			this.name = name;
 	}
+	
+	//used for Post - for Add Vehicle
+	public Manufacturer(Long manufacturerId){
+		this.manufacturerId = manufacturerId;
+	}
 
 	/**
 	 * @return the manufacturerId

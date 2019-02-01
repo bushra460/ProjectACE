@@ -49,6 +49,11 @@ public class Model implements Serializable {
 		this.name=modelName;
 		this.manufacturer=manufacturer;
 	}
+	
+	//used for Post - for Add Vehicle
+	public Model(Long modelId){
+		this.modelId = modelId;
+	}
 	 
     public Long getModelId() {
 		return modelId;
