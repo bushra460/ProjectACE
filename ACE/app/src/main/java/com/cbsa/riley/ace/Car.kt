@@ -19,8 +19,15 @@ data class Car(
     val active: Boolean
 )
 
+data class Hotspot(
+    val carImageId: String,
+    val xLoc: Int,
+    val yLoc: Int
+)
+
 data class basicCar(
     val make: String,
     val model: String,
     val year: String
 )
+
