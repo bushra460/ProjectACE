@@ -13,7 +13,7 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.ModelYear;
 import ca.gc.cbsa.mcoe.deltaace.restApi.repository.ModelYearRepository;
 
 @RestController
-@RequestMapping("/model_years")
+@RequestMapping("/model-years")
 public class ModelYearController {
 	
 	@Autowired 

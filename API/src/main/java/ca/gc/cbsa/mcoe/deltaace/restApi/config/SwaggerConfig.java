@@ -35,11 +35,11 @@ public class SwaggerConfig {
 	
 	private ApiInfo apiInfo() {
 	    return new ApiInfo(
-	      "Delta ACE API", 
-	      "Describes the API available for the Delta ACE application.", 
-	      "Version 1.0", 
-	      "Terms of service - API to be used by the Delta ACE mobile application", 
-	      new Contact("Riley & Wael", "", "MCOE"), 
-	      "API License", "API license URL", Collections.emptyList());
+	      "Project Delta ACE API", 
+	      "API for the Project Delta ACE micro-mission.", 
+	      "Version 1", 
+	      "", 
+	      new Contact("","",""), 
+	      "", "", Collections.emptyList());
 	}
 }

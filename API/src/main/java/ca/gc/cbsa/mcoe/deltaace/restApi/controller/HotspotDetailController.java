@@ -13,7 +13,7 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.HotspotDetail;
 import ca.gc.cbsa.mcoe.deltaace.restApi.repository.HotspotDetailRepository;
 
 @RestController
-@RequestMapping("/hotspot_details")
+@RequestMapping("/hotspot-details")
 public class HotspotDetailController {
 	
 	@Autowired 

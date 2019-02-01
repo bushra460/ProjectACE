@@ -17,7 +17,7 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.CarImage;
 import ca.gc.cbsa.mcoe.deltaace.restApi.repository.CarImageRepository;
 
 @RestController
-@RequestMapping("/car_images")
+@RequestMapping("/car-images")
 public class CarImageController {
 	
 	@Autowired 
