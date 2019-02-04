@@ -1,65 +1,76 @@
 package com.cbsa.riley.ace
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
 
-
 var basicCarA: ArrayList<basicCar> = ArrayList()
-
+var exteriorImageURIArray: ArrayList<String> = ArrayList()
+var interiorImageURIArray: ArrayList<String> = ArrayList()
+var exteriorHotspotArray: ArrayList<Int> = ArrayList()
+var interiorHotspotArray: ArrayList<Int> = ArrayList()
+val newArrayX = ArrayList<Int>()
+val newArrayY = ArrayList<Int>()
+var exterior = true
+val SHAREDPREFS = "com.cbsa.riley.ace"
 
 class ImageViewPage: AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
-
+        checkExterior()
         addCar()
+        var numTab: Int = 0
+        val carMake = basicCarA[0].make
+        val carModel = basicCarA[0].model
+        val carYear = basicCarA[0].year
 
-        var carMake = basicCarA[0].make
-        var carModel = basicCarA[0].model
-        var carYear = basicCarA[0].year
-
-        toolbar.title = "$carMake $carModel $carYear"
+        imageViewToolbar.title = "$carMake $carModel $carYear"
         println("$carMake $carModel $carYear")
 
-        fab.setOnClickListener { view ->
-            val intent = Intent(this, SettingsPage::class.java)
-            startActivity(intent)
+        fab.setOnClickListener {
+            val intent = Intent(this, AddHotspotPage::class.java)
+            if(numTab == 0) {
+                intent.putExtra("imageURI", exteriorImageURIArray[0])
+                intent.putExtra("exterior", true)
+                setExterior()
+                startActivity(intent)
+
+            } else {
+                intent.putExtra("imageURI", "https://via.placeholder.com/150")
+                //intent.putExtra("imageURI", interiorImageURIArray[0])
+                intent.putExtra("exterior", false)
+                setExterior()
+                startActivity(intent)
+            }
         }
 
-        //HANDLE LISTVIEW BUTTON CLICKS
-        val listViewBttn: Button = listViewBttn
-        listViewBttn.setOnClickListener {
+//        //HANDLE LISTVIEW BUTTON CLICKS
+//        val listViewBttn: Button = listViewBttn
+//        listViewBttn.setOnClickListener {
+//
+//            val intent = Intent(this, SettingsPage::class.java)
+//
+//            startActivity(intent)
+//        }
 
-            val intent = Intent(this, SettingsPage::class.java)
-
-            startActivity(intent)
-        }
-
-
-
-
-
-
-    }
-
-    fun setImage(carImageURI: Uri){
-        imageView.setImageURI(carImageURI)
         val tabLayout = tabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                var numTab = tab.position
+                numTab = tab.position
                 when (numTab) {
-                    0 -> println("Option 1")
-                    0 -> imageView.setImageURI(carImageURI)
+                    0 -> setExteriorImage()
                     else -> {
-                        println("Option 2")
-
+                        setInteriorImage()
                     }
                 }
             }
@@ -74,29 +85,145 @@ class ImageViewPage: AppCompatActivity()  {
         })
     }
 
+    fun setExteriorImage(){
+        println("Option 1")
+        imageViewE.setImageResource(0)
+        hotspotImageViewE.setImageResource(0)
+        Picasso.get().load(exteriorImageURIArray[0]).into(imageViewE)
+        setHotspotsExterior()
+    }
+
+    fun setInteriorImage(){
+        println("Option 2")
+        imageViewE.setImageResource(0)
+        hotspotImageViewE.setImageResource(0)
+        //Picasso.get().load(interiorImageURIArray[0]).into(imageViewE)
+        Picasso.get().load("https://via.placeholder.com/150").into(imageViewE)
+        setHotspotsInterior()
+    }
+
     fun getURI(){
         carArray.forEach{
             if (it.make == basicCarA[0].make && it.model == basicCarA[0].model && it.year == basicCarA[0].year){
-                var carImageURI = Uri.parse(it.carImageURI)
-
-                val drawable = Drawable.createFromPath(carImageURI.toString())
-
-                imageView.setImageDrawable(drawable)
-
+                val carImageURI = Uri.parse(it.carImageURI).toString()
+                val dataRemoved =  carImageURI.replace("\"","")
+                val manufacturerId = it.carImageId
+                val exteriorImage = it.exteriorImage
+                if (exteriorImage){
+                    exteriorImageURIArray.add(dataRemoved)
+                    println("Image Added to Exterior Array")
+                } else {
+                    interiorImageURIArray.add(dataRemoved)
+                    println("Image Added to Interior Array")
+                }
                 println(carImageURI)
-                setImage(carImageURI)
+                if (exteriorHotspotArray.isEmpty()) {
+                    hotspotArray.forEach {
+                        if (it.carImageId == manufacturerId) {
+                            if (exteriorImage) {
+                                val xLoc = it.xLoc
+                                val yLoc = it.yLoc
+
+                                println("EXTERIOR HOTSPOT xLoc: $xLoc yLoc: $yLoc")
+
+                                exteriorHotspotArray.add(xLoc)
+                                exteriorHotspotArray.add(yLoc)
+                            } else {
+                                val xLoc = it.xLoc
+                                val yLoc = it.yLoc
+
+                                println("INTERIOR HOTSPOT xLoc: $xLoc yLoc: $yLoc")
+
+                                interiorHotspotArray.add(xLoc)
+                                interiorHotspotArray.add(yLoc)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (exterior) {
+
+        } else {
+
+        }
+    }
+
+    fun setHotspotsExterior(){
+        if (!exteriorHotspotArray.isEmpty()) {
+            sortLocations(exteriorHotspotArray)
+
+            val bitmap: Bitmap = Bitmap.createBitmap(1080, 1584, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            var index = 0
+            while (index <= newArrayX.size-1) {
+                val xLoc = newArrayX[index]
+                val yLoc = newArrayY[index]
+                val left = xLoc - 20.0f
+                val top = yLoc + 20.0f
+                val right = xLoc + 20.0f
+                val bottom = yLoc - 20.0f
+                val paint = Paint(Color.parseColor("#9b59b6"))
+                canvas.drawOval(left, top, right, bottom, paint)
+
+                hotspotImageViewE.setImageBitmap(bitmap)
+                index += 1
             }
         }
     }
 
-    // Adds cars to the empty cars ArrayList
+    fun setHotspotsInterior() {
+        if (!interiorHotspotArray.isEmpty()){
+            sortLocations(interiorHotspotArray)
+            val bitmap: Bitmap = Bitmap.createBitmap(1080, 1584, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            var index = 0
+            while (index <= newArrayX.size-1) {
+                val xLoc = newArrayX[index]
+                val yLoc = newArrayY[index]
+                val left = xLoc - 20.0f
+                val top = yLoc + 20.0f
+                val right = xLoc + 20.0f
+                val bottom = yLoc - 20.0f
+                val paint = Paint(Color.parseColor("#9b59b6"))
+                canvas.drawOval(left, top, right, bottom, paint)
+
+                hotspotImageViewE.setImageBitmap(bitmap)
+                index += 1
+            }
+        }
+    }
+
+    fun sortLocations(arrayList: ArrayList<Int>){
+        val length = arrayList.size
+        var index = 0
+        newArrayX.clear()
+        newArrayY.clear()
+        while (index <= length-1){
+            newArrayX.add(arrayList[index])
+            index += 2
+            newArrayY.add(arrayList[index-1])
+        }
+        println("X Array: $newArrayX    Y Array: $newArrayY")
+    }
+
     fun addCar() {
-        var carMakeIntent:String = intent.getStringExtra("carMake")
-        var carModelIntent:String = intent.getStringExtra("carModel")
-        var carYearIntent:String = intent.getStringExtra("carYear")
+        val carMakeIntent:String = intent.getStringExtra("carMake")
+        val carModelIntent:String = intent.getStringExtra("carModel")
+        val carYearIntent:String = intent.getStringExtra("carYear")
         println()
         basicCarA.clear()
         basicCarA.add(basicCar(carMakeIntent, carModelIntent, carYearIntent))
         getURI()
+    }
+
+    fun checkExterior(){
+        val prefs = getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE)
+        exterior = prefs.getBoolean("exterior", true)
+    }
+
+    fun setExterior(){
+        exterior = tabLayout.selectedTabPosition == 0
+        getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE).edit().putBoolean("exterior", exterior).apply()
     }
 }

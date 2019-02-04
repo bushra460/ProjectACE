@@ -17,12 +17,11 @@ import kotlinx.serialization.ImplicitReflectionSerializer
 import java.net.URL
 
 val makeurl = "https://webapp-190120211610.azurewebsites.net/deltaace/v1/manufacturers"
-var modelurl = "https://webapp-190120211610.azurewebsites.net/deltaace/v1/models"
 var carArray = ArrayList<Car>()
+var hotspotArray = ArrayList<Hotspot>()
 var makeArray = arrayListOf<String>("Select One")
 var modelArray = arrayListOf<String>("Select One")
 var yearArray = arrayListOf<Any>("Select One")
-
 
 @UseExperimental(ImplicitReflectionSerializer::class)
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
@@ -34,7 +33,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         makeData()
         setMakeSpinner()
         setModelYearSpinners()
-
     }
 
     fun setMakeSpinner(){
@@ -154,7 +152,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             var gson = Gson()
             var parse = JsonParser().parse(data)
 
-            println(parse)
+            println("raw parsed data: $parse")
 
             val manufacturer1 = JsonParser().parse((gson.toJson(parse))).asJsonArray
             manufacturer1.forEach{
@@ -180,17 +178,27 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                         carImageArray.forEach{
                             val carImageObj = it.asJsonObject
                             val carImageId = carImageObj.get("carImageId").asString
-                            var carImageURI = carImageObj.get("uri").toString()
+                            var carImageURI = carImageObj.get("uri").asString
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val active = carImageObj.get("active").asBoolean
 
+                            val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
+
                             var newCar = Car(manufacturerId, name, modelId, modelName, yearId, yearName, carImageId, carImageURI, exteriorImage, active)
                             carArray.add(newCar)
-                            println(carArray)
+                            hotspotArrayValue.forEach{
+                                val hotspotObj = it.asJsonObject
+                                val xLoc = hotspotObj.get("xLoc").asInt
+                                val yLoc = hotspotObj.get("yLoc").asInt
+
+                                val newHotspot = Hotspot(carImageId, xLoc, yLoc)
+                                hotspotArray.add(newHotspot)
+                            }
                         }
                     }
                 }
             }
+            println("carArray data: $carArray")
         }
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION

@@ -7,10 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
+        android:id="@+id/layout"
 >
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/imageViewToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/CBSA_Blue"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteY="1dp"
             tools:layout_editor_absoluteX="8dp"
-            android:layout_below="@+id/toolbar"
+            android:layout_below="@+id/imageViewToolbar"
             android:background="@color/CBSA_Blue"
             app:tabTextColor="@android:color/white"
             android:elevation="4dp" app:tabIndicatorColor="@android:color/white">
@@ -55,19 +56,34 @@
 
     </android.support.design.widget.TabLayout>
 
-
     <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/imageViewE"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tabLayout"
             android:layout_alignParentBottom="true"
-
     />
 
+    <ImageView
+            android:id="@+id/hotspotImageViewE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabLayout"
+            android:layout_alignParentBottom="true"
+    />
 
+    <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/fab"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|end"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="@dimen/fab_margin"-->
+            <!--app:srcCompat="@drawable/pluswhite"-->
+            <!--app:backgroundTint="@color/CBSA_Blue"/>-->
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,8 +91,15 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/pluswhite"
-            app:backgroundTint="@color/CBSA_Blue"/>
+            android:text="@string/AddHotspot"
+            android:textColor="@android:color/white"
+            android:drawableLeft="@drawable/pluswhite"
+            android:drawablePadding="20dp"
+            android:padding="15dp"
+            app:backgroundTint="@color/CBSA_Blue"
+            android:background="@drawable/fabbttn"
+
+    />
 
 
 
