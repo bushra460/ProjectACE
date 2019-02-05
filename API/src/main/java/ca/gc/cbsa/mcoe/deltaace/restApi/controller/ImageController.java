@@ -33,9 +33,6 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.Image;
 @RequestMapping("/images")
 public class ImageController {
 	
-	@Value("${azure.storage.account.connection-string}")
-	private String connectionString;
-	
 	@Value("${azure.storage.account.name}")
 	private String accountName;
 	
