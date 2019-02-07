@@ -58,6 +58,10 @@ public class CarImage implements Serializable {
 		this.exteriorImage = "1".equals(exteriorImage);;
 		this.active = active;
 	}
+	//used for Post - for Add Hotspot Location
+	public CarImage(Long carImageId){
+		this.carImageId = carImageId;
+	}
 	 
 	public Car getCar() {
 		return car;

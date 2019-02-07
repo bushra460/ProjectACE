@@ -46,6 +46,11 @@ public class ModelYear implements Serializable {
 		this.yearValue=yearValue;
 		this.model=model;
 	}
+	
+	//used for Post - for Add Vehicle
+	public ModelYear(Long modelYearId){
+		this.modelYearId = modelYearId;
+	}
 	 
     public Long getModelYearId() {
 		return modelYearId;

@@ -53,6 +53,12 @@
 			<artifactId>springfox-bean-validators</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+		<!-- used to add image to Azure storage -->
+		<dependency>
+    		<groupId>com.microsoft.azure</groupId>
+    		<artifactId>azure-storage</artifactId>
+    		<version>8.0.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

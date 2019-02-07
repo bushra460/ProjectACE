@@ -17,7 +17,7 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.CarImage;
 import ca.gc.cbsa.mcoe.deltaace.restApi.repository.CarImageRepository;
 
 @RestController
-@RequestMapping("/car_images")
+@RequestMapping("/car-images")
 public class CarImageController {
 	
 	@Autowired 
@@ -33,9 +33,8 @@ public class CarImageController {
         return carImageRepository.findById(id);
     }
 	
-	@PostMapping(headers = {"content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE) 
-	public @ResponseBody CarImage createHotspotLocation(@RequestBody CarImage carImage) {
+	@PostMapping(value="/add", headers = {"content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CarImage addCarImage(@RequestBody CarImage carImage) {
 		return carImageRepository.save(carImage);
 	}
-
 }

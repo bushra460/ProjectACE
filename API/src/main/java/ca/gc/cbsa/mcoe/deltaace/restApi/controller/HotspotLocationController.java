@@ -17,7 +17,7 @@ import ca.gc.cbsa.mcoe.deltaace.restApi.model.HotspotLocation;
 import ca.gc.cbsa.mcoe.deltaace.restApi.repository.HotspotLocationRepository;
 
 @RestController
-@RequestMapping("/hotspot_locations")
+@RequestMapping("/hotspot-locations")
 public class HotspotLocationController {
 	
 	@Autowired 
@@ -33,8 +33,8 @@ public class HotspotLocationController {
         return hotspotLocationRepository.findById(id);
     }
 	
-	@PostMapping(headers = {"content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE) 
-	public @ResponseBody HotspotLocation createHotspotLocation(@RequestBody HotspotLocation hotspotLocation) {
+	@PostMapping(value="/add",headers = {"content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE) 
+	public @ResponseBody HotspotLocation addHotspotLocation(@RequestBody HotspotLocation hotspotLocation) {
 		return hotspotLocationRepository.save(hotspotLocation);
 	}
 
