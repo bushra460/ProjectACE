@@ -13,17 +13,15 @@ import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ImplicitReflectionSerializer
 import java.net.URL
 
-val makeurl = "https://webapp-190120211610.azurewebsites.net/deltaace/v1/manufacturers"
+val makeurl = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/manufacturers"
 var carArray = ArrayList<Car>()
 var hotspotArray = ArrayList<Hotspot>()
-var makeArray = arrayListOf<String>("Select One")
-var modelArray = arrayListOf<String>("Select One")
+var makeArray = arrayListOf("Select One")
+var modelArray = arrayListOf("Select One")
 var yearArray = arrayListOf<Any>("Select One")
 
-@UseExperimental(ImplicitReflectionSerializer::class)
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -190,8 +188,9 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                 val hotspotObj = it.asJsonObject
                                 val xLoc = hotspotObj.get("xLoc").asInt
                                 val yLoc = hotspotObj.get("yLoc").asInt
+                                val hotspotId = hotspotObj.get("hotspotId").asInt
 
-                                val newHotspot = Hotspot(carImageId, xLoc, yLoc)
+                                val newHotspot = Hotspot(carImageId, xLoc, yLoc, hotspotId)
                                 hotspotArray.add(newHotspot)
                             }
                         }

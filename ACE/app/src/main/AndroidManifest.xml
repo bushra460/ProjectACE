@@ -3,6 +3,8 @@
           package="com.cbsa.riley.ace">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
             android:allowBackup="true"
@@ -39,16 +41,22 @@
         <activity
                 android:name=".SettingsPage"
                 android:label="@string/Settings"
-                android:theme="@style/MyTheme.Splash">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
                 android:name=".ImageViewPage"
                 android:label="@string/CarDetail"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                android:parentActivityName="com.cbsa.riley.ace.searchPage" >>
         </activity>
         <activity
                 android:name=".AddHotspotPage"
                 android:label="@string/AddHotspot"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+                android:name=".HotspotDetails"
+                android:label="@string/HotspotDetails"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>

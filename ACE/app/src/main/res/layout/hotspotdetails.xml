@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/CBSA_Blue"
+            app:titleTextColor="@android:color/white"
+            app:title="@string/HotspotDetails"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        <Button
+                android:id="@+id/finishBttn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/CBSA_Blue"
+                android:textColor="@color/disabledButton"
+                android:text="@string/Finish"
+                android:layout_gravity="end"
+                android:elevation="0dp"
+                android:enabled="false"
+        />
+    </android.support.v7.widget.Toolbar>
+
+
+    <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            tools:srcCompat="@tools:sample/avatars"
+            tools:layout_editor_absoluteY="115dp"
+            tools:layout_editor_absoluteX="141dp"
+            android:id="@+id/hotspotDetailsImageView"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="32dp" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hotspotDetailsImageView"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/notesText" android:hint="Add Notes" android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp" android:layout_marginRight="16dp"/>
+
+</RelativeLayout>

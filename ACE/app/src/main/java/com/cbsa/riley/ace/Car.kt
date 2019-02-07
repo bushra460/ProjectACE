@@ -22,7 +22,8 @@ data class Car(
 data class Hotspot(
     val carImageId: String,
     val xLoc: Int,
-    val yLoc: Int
+    val yLoc: Int,
+    val hotspotId: Int
 )
 
 data class basicCar(

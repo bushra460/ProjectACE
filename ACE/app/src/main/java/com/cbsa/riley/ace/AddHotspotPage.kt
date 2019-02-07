@@ -24,34 +24,41 @@ class AddHotspotPage: AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
         exterior = intent.getBooleanExtra("exterior",true)
-        if (exterior) {
-            setHotspotsExterior()
-        } else {
-            setHotspotsInterior()
-        }
 
-        val imageURI:String = intent.getStringExtra("imageURI")
-        Picasso.get().load(imageURI).into(addHotspotImageView)
-        addHotspotImageView.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
-            when (motionEvent.action){
-                MotionEvent.ACTION_DOWN -> {
-                    if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        xLoc = motionEvent.getX().toInt()
-                        yLoc = motionEvent.getY().toInt()
-                        println("X coord is: $xLoc and Y coord is: $yLoc")
-                        drawHotspot(xLoc, yLoc)
+        nextBttnClick()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus){
+            if (exterior) {
+                setHotspotsExterior()
+            } else {
+                setHotspotsInterior()
+            }
+
+            val imageURI:String = intent.getStringExtra("imageURI")
+            Picasso.get().load(imageURI).into(addHotspotImageView)
+            addHotspotImageView.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+                when (motionEvent.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                            xLoc = motionEvent.getX().toInt()
+                            yLoc = motionEvent.getY().toInt()
+                            println("X coord is: $xLoc and Y coord is: $yLoc")
+                            drawHotspot(xLoc, yLoc)
+                        }
                     }
                 }
-            }
-            return@OnTouchListener true
-        })
-        nextBttnClick()
+                return@OnTouchListener true
+            })
+        }
     }
 
     fun setHotspotsExterior(){
         if (!exteriorHotspotArray.isEmpty()) {
             sortLocations(exteriorHotspotArray)
-            val bitmap: Bitmap = Bitmap.createBitmap(1080, 1584, Bitmap.Config.ARGB_8888)
+            val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             var index = 0
             while (index <= newArrayX.size-1) {
@@ -74,7 +81,7 @@ class AddHotspotPage: AppCompatActivity(){
     fun setHotspotsInterior() {
         if (!interiorHotspotArray.isEmpty()){
             sortLocations(interiorHotspotArray)
-            val bitmap: Bitmap = Bitmap.createBitmap(1080, 1584, Bitmap.Config.ARGB_8888)
+            val bitmap: Bitmap = Bitmap.createBitmap(addHotspotLayout.width, addHotspotLayout.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             var index = 0
             while (index <= newArrayX.size-1) {
@@ -136,10 +143,7 @@ class AddHotspotPage: AppCompatActivity(){
                 interiorHotspotArray.add(yLoc)
             }
 
-            val intent = Intent(this, ImageViewPage::class.java)
-            intent.putExtra("carMake", "Acura")
-            intent.putExtra("carModel","ILX")
-            intent.putExtra("carYear","2018")
+            val intent = Intent(this, HotspotDetails::class.java)
             startActivity(intent)
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+        android:id="@+id/addHotspotLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -33,6 +34,7 @@
             android:id="@+id/addHotspotImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:layout_below="@id/toolbar"
             android:layout_alignParentBottom="true"
     />
@@ -40,6 +42,7 @@
             android:id="@+id/hotspotImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:layout_below="@id/toolbar"
             android:layout_alignParentBottom="true"
     />
@@ -47,6 +50,7 @@
             android:id="@+id/previousHotspotImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:layout_below="@id/toolbar"
             android:layout_alignParentBottom="true"
     />

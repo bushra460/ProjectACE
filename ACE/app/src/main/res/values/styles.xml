@@ -16,10 +16,14 @@
         <item name="android:background">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <style name="Theme.AppCompat.Light.ActionBar.NoActionBar">
+
+    <style name="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/CBSA_Blue</item>
     </style>
+
     <style name="Theme.AppCompat.Light.ActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
     <style name="Theme.AppCompat.Light.ActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>
