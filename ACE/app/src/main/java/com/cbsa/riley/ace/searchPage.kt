@@ -175,7 +175,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
                         carImageArray.forEach{
                             val carImageObj = it.asJsonObject
-                            val carImageId = carImageObj.get("carImageId").asString
+                            val carImageId = carImageObj.get("carImageId").asInt
                             var carImageURI = carImageObj.get("uri").asString
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val active = carImageObj.get("active").asBoolean

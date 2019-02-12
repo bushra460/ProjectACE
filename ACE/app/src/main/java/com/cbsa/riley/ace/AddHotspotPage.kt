@@ -19,11 +19,13 @@ class AddHotspotPage: AppCompatActivity(){
     var xLoc: Int = 0
     var yLoc: Int = 0
     var exterior = true
+    var carImageId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
         exterior = intent.getBooleanExtra("exterior",true)
+        carImageId = intent.getIntExtra("carImageId", 0)
 
         nextBttnClick()
     }
@@ -68,7 +70,8 @@ class AddHotspotPage: AppCompatActivity(){
                 val top = yLoc + 20.0f
                 val right = xLoc + 20.0f
                 val bottom = yLoc - 20.0f
-                val paint = Paint(Color.parseColor("#9b59b6"))
+                val paint = Paint()
+                paint.color = Color.RED
                 canvas.drawOval(left, top, right, bottom, paint)
 
                 previousHotspotImage.setImageBitmap(bitmap)
@@ -91,7 +94,8 @@ class AddHotspotPage: AppCompatActivity(){
                 val top = yLoc + 20.0f
                 val right = xLoc + 20.0f
                 val bottom = yLoc - 20.0f
-                val paint = Paint(Color.parseColor("#9b59b6"))
+                val paint = Paint()
+                paint.color = Color.RED
                 canvas.drawOval(left, top, right, bottom, paint)
 
                 previousHotspotImage.setImageBitmap(bitmap)
@@ -122,7 +126,8 @@ class AddHotspotPage: AppCompatActivity(){
         val top = yLoc + 20.0f
         val right = xLoc + 20.0f
         val bottom = yLoc - 20.0f
-        val paint = Paint(Color.parseColor("#9b59b6"))
+        val paint = Paint()
+        paint.color = Color.CYAN
         canvas.drawOval(left, top, right, bottom, paint)
         hotspotImage.setImageBitmap(bitmap)
 
@@ -144,6 +149,7 @@ class AddHotspotPage: AppCompatActivity(){
             }
 
             val intent = Intent(this, HotspotDetails::class.java)
+            intent.putExtra("carImageId", carImageId)
             startActivity(intent)
         }
     }
