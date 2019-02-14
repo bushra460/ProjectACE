@@ -16,7 +16,6 @@ import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
 
-
 var basicCarA: ArrayList<BasicCar> = ArrayList()
 var exteriorImageURIArray: ArrayList<String> = ArrayList()
 var interiorImageURIArray: ArrayList<String> = ArrayList()
@@ -51,7 +50,9 @@ class ImageViewPage: AppCompatActivity()  {
             println("$carMake $carModel $carYear")
 
             fab.setOnClickListener {
+                val carValue = basicCarA[0].make +" "+ basicCarA[0].model +" "+ basicCarA[0].year
                 val intent = Intent(this, AddHotspotPage::class.java)
+                intent.putExtra("carValue", carValue)
                 if(numTab == 0) {
                     intent.putExtra("imageURI", exteriorImageURIArray[0])
                     intent.putExtra("exterior", true)
@@ -123,6 +124,8 @@ class ImageViewPage: AppCompatActivity()  {
     fun getURI(){
         carArray.forEach{
             if (it.make == basicCarA[0].make && it.model == basicCarA[0].model && it.year == basicCarA[0].year){
+                exteriorHotspotID.clear()
+                interiorHotspotID.clear()
                 val carImageURI = Uri.parse(it.carImageURI).toString()
                 val dataRemoved =  carImageURI.replace("\"","")
                 val manufacturerId:Int = it.carImageId
@@ -180,14 +183,20 @@ class ImageViewPage: AppCompatActivity()  {
             while (index <= newArrayX.size-1) {
                 val xLoc = newArrayX[index]
                 val yLoc = newArrayY[index]
-                val left = xLoc - 20.0f
-                val top = yLoc + 20.0f
-                val right = xLoc + 20.0f
-                val bottom = yLoc - 20.0f
+                val left = xLoc - 30.0f
+                val top = yLoc + 30.0f
+                val right = xLoc + 30.0f
+                val bottom = yLoc - 30.0f
                 val paint = Paint()
-                paint.color = Color.RED
-                //canvas.drawPaint(paint)
-                canvas.drawOval(left, top, right, bottom, paint)
+                val stroke = Paint()
+
+                paint.color = Color.YELLOW
+                stroke.color = Color.RED
+                stroke.style = Paint.Style.STROKE
+                stroke.strokeWidth = 10.0f
+
+                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                canvas.drawOval(left, top, right, bottom, stroke)
 
                 hotspotImageViewE.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
                     when (motionEvent.action) {
@@ -199,8 +208,8 @@ class ImageViewPage: AppCompatActivity()  {
                                 val bitmapHeight = 30
                                 var i = 0
 
-                                println(motionEvent.x.toInt())
-                                println(motionEvent.y.toInt())
+                                println("X location Tapped: " + motionEvent.x.toInt())
+                                println("Y location Tapped: " + motionEvent.y.toInt())
 
                             while (i < newArrayX.size) {
                                 val xLocCheck = newArrayX[i]
@@ -218,7 +227,8 @@ class ImageViewPage: AppCompatActivity()  {
                                         }
                                     }
                                     val theNumber = newArrayX[idx]
-                                    //println(exteriorHotspotID[idx])
+                                    println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
+                                    println("exteriorHotspotID array: $exteriorHotspotID")
                                     toHotspotDetails(exteriorHotspotID[idx].toString())
 
                                     println(newArrayX)
@@ -247,13 +257,20 @@ class ImageViewPage: AppCompatActivity()  {
             while (index <= newArrayX.size-1) {
                 val xLoc = newArrayX[index]
                 val yLoc = newArrayY[index]
-                val left = xLoc - 20.0f
-                val top = yLoc + 20.0f
-                val right = xLoc + 20.0f
-                val bottom = yLoc - 20.0f
+                val left = xLoc - 30.0f
+                val top = yLoc + 30.0f
+                val right = xLoc + 30.0f
+                val bottom = yLoc - 30.0f
                 val paint = Paint()
-                paint.color = Color.RED
-                canvas.drawOval(left, top, right, bottom, paint)
+                val stroke = Paint()
+
+                paint.color = Color.YELLOW
+                stroke.color = Color.RED
+                stroke.style = Paint.Style.STROKE
+                stroke.strokeWidth = 10.0f
+
+                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                canvas.drawOval(left, top, right, bottom, stroke)
 
                 hotspotImageViewE.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
                     when (motionEvent.action) {
@@ -313,7 +330,7 @@ class ImageViewPage: AppCompatActivity()  {
             index += 2
             newArrayY.add(arrayList[index-1])
         }
-        println("X Array: $newArrayX    Y Array: $newArrayY")
+        println("X newArray: $newArrayX    Y newArray: $newArrayY")
     }
 
     fun addCar() {
@@ -348,12 +365,16 @@ class ImageViewPage: AppCompatActivity()  {
         newArrayY.clear()
 
         val detailsIntent = Intent(this, searchPage::class.java)
+        //val transitionManager = contentTransitionManager
+        //window.enterTransition = Explode()
         navigateUpTo(detailsIntent)
     }
 
     fun toHotspotDetails(hotspotID: String) {
         val intent = Intent(this, ViewHotspotDetails::class.java)
+        val carValue = basicCarA[0].make +" "+ basicCarA[0].model +" "+ basicCarA[0].year
         intent.putExtra("hotspotID", hotspotID)
+        intent.putExtra("carValue", carValue)
         startActivity(intent)
     }
 }

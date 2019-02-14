@@ -20,12 +20,16 @@ class AddHotspotPage: AppCompatActivity(){
     var yLoc: Int = 0
     var exterior = true
     var carImageId = 0
+    var carValue = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
         exterior = intent.getBooleanExtra("exterior",true)
         carImageId = intent.getIntExtra("carImageId", 0)
+        carValue = intent.getStringExtra("carValue")
+
+        toolbar.title = carValue
 
         nextBttnClick()
     }
@@ -66,13 +70,21 @@ class AddHotspotPage: AppCompatActivity(){
             while (index <= newArrayX.size-1) {
                 val xLoc = newArrayX[index]
                 val yLoc = newArrayY[index]
-                val left = xLoc - 20.0f
-                val top = yLoc + 20.0f
-                val right = xLoc + 20.0f
-                val bottom = yLoc - 20.0f
+
+                val left = xLoc - 30.0f
+                val top = yLoc + 30.0f
+                val right = xLoc + 30.0f
+                val bottom = yLoc - 30.0f
                 val paint = Paint()
-                paint.color = Color.RED
-                canvas.drawOval(left, top, right, bottom, paint)
+                val stroke = Paint()
+
+                paint.color = Color.YELLOW
+                stroke.color = Color.RED
+                stroke.style = Paint.Style.STROKE
+                stroke.strokeWidth = 10.0f
+
+                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                canvas.drawOval(left, top, right, bottom, stroke)
 
                 previousHotspotImage.setImageBitmap(bitmap)
                 println("setHotspotExterior")
@@ -90,13 +102,20 @@ class AddHotspotPage: AppCompatActivity(){
             while (index <= newArrayX.size-1) {
                 val xLoc = newArrayX[index]
                 val yLoc = newArrayY[index]
-                val left = xLoc - 20.0f
-                val top = yLoc + 20.0f
-                val right = xLoc + 20.0f
-                val bottom = yLoc - 20.0f
+                val left = xLoc - 30.0f
+                val top = yLoc + 30.0f
+                val right = xLoc + 30.0f
+                val bottom = yLoc - 30.0f
                 val paint = Paint()
-                paint.color = Color.RED
-                canvas.drawOval(left, top, right, bottom, paint)
+                val stroke = Paint()
+
+                paint.color = Color.YELLOW
+                stroke.color = Color.RED
+                stroke.style = Paint.Style.STROKE
+                stroke.strokeWidth = 10.0f
+
+                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                canvas.drawOval(left, top, right, bottom, stroke)
 
                 previousHotspotImage.setImageBitmap(bitmap)
                 println("setHotspotInterior")
@@ -108,8 +127,6 @@ class AddHotspotPage: AppCompatActivity(){
     fun sortLocations(arrayList: ArrayList<Int>){
         val length = arrayList.size
         var index = 0
-        newArrayX.clear()
-        newArrayY.clear()
         while (index <= length-1){
             newArrayX.add(arrayList[index])
             index += 2
@@ -122,13 +139,22 @@ class AddHotspotPage: AppCompatActivity(){
         val bitmap: Bitmap = Bitmap.createBitmap(addHotspotImageView.width, addHotspotImageView.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas (bitmap)
 
-        val left = xLoc - 20.0f
-        val top = yLoc + 20.0f
-        val right = xLoc + 20.0f
-        val bottom = yLoc - 20.0f
+        val left = xLoc - 30.0f
+        val top = yLoc + 30.0f
+        val right = xLoc + 30.0f
+        val bottom = yLoc - 30.0f
         val paint = Paint()
+        val stroke = Paint()
+
         paint.color = Color.CYAN
-        canvas.drawOval(left, top, right, bottom, paint)
+        stroke.color = Color.CYAN
+        stroke.style = Paint.Style.STROKE
+        stroke.strokeWidth = 10.0f
+
+
+
+        canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+        canvas.drawOval(left, top, right, bottom, stroke)
         hotspotImage.setImageBitmap(bitmap)
 
         val colorValue = ContextCompat.getColor(this, android.R.color.white)
@@ -140,16 +166,13 @@ class AddHotspotPage: AppCompatActivity(){
         val nextBttn: Button = nextBttn
         nextBttn.setOnClickListener {
 
-            if (exterior){
-                exteriorHotspotArray.add(xLoc)
-                exteriorHotspotArray.add(yLoc)
-            } else {
-                interiorHotspotArray.add(xLoc)
-                interiorHotspotArray.add(yLoc)
-            }
+            println("what are the locations when next is clicked " + xLoc+ "   " + yLoc)
 
             val intent = Intent(this, HotspotDetails::class.java)
             intent.putExtra("carImageId", carImageId)
+            intent.putExtra("xLoc", xLoc)
+            intent.putExtra("yLoc", yLoc)
+            intent.putExtra("carValue", carValue)
             startActivity(intent)
         }
     }

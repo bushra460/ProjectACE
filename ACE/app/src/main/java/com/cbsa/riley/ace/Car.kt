@@ -23,7 +23,9 @@ data class Hotspot(
     val carImageId: Int,
     val xLoc: Int,
     val yLoc: Int,
-    val hotspotId: Int
+    val hotspotId: Int,
+    val hotspotUri: String,
+    val notes: String
 )
 
 data class BasicCar(

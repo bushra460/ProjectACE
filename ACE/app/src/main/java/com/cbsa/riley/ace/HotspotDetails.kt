@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Base64
-import android.widget.Button
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.squareup.picasso.Picasso
@@ -29,58 +26,55 @@ class HotspotDetails: AppCompatActivity(){
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
     var carImageIdIntent = 0
+    var carValue = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.hotspotdetails)
 
+        carValue = intent.getStringExtra("carValue")
+
+        toolbar.title = carValue
         carImageIdIntent = intent.getIntExtra("carImageId", 0)
-
-        println(exteriorHotspotID[0])
-
         Picasso.get().load("https://via.placeholder.com/150").into(hotspotDetailsImageView)
-
         hotspotDetailsImageView.setOnClickListener{
             takePictureIntent()
         }
 
         finishBttnClick()
 
-        notesText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {  }
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-                if (notesText.text != null) {
-                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
-                    finishBttn.setTextColor(colorValue)
-                    finishBttn.isEnabled = true
-                } else {
-                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
-                    finishBttn.setTextColor(colorValue)
-                    finishBttn.isEnabled = false
-                }
-            }
-        })
+//        notesText.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable) {}
+//            override fun beforeTextChanged(s: CharSequence, start: Int,
+//                                           count: Int, after: Int) {  }
+//            override fun onTextChanged(s: CharSequence, start: Int,
+//                                       before: Int, count: Int) {
+//                if (notesText.text != null) {
+//                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
+//                    finishBttn.setTextColor(colorValue)
+//                    finishBttn.isEnabled = true
+//                } else {
+//                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
+//                    finishBttn.setTextColor(colorValue)
+//                    finishBttn.isEnabled = false
+//                }
+//            }
+//        })
     }
 
     fun finishBttnClick() {
-        val finishBttn: Button = finishBttn
         finishBttn.setOnClickListener {
+            finishBttn.isEnabled = false
 
             val imagePOST = ImagePOST(base64String, "rileysimages.jpg")
-
             fun workload(data: String) {
                 val gson = Gson()
                 val parse = JsonParser().parse(data)
-                println(parse)
+                println("URL returned by API $parse")
 
                 val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
                 val imageURL = returnedObject.get("imageUri").toString()
                 val dataRemoved =  imageURL.replace("\"","")
-
-                println(dataRemoved)
 
                 postData(dataRemoved)
             }
@@ -91,25 +85,16 @@ class HotspotDetails: AppCompatActivity(){
                     openConnection().run {
                         val httpURLConnection = this as HttpURLConnection
                         httpURLConnection.requestMethod = "POST"
-
                         httpURLConnection.setRequestProperty("charset", "utf-8")
                         httpURLConnection.setRequestProperty("Content-Type", "application/json")
 
                         val gson = Gson()
-
                         val outputStream = DataOutputStream(httpURLConnection.outputStream)
                         outputStream.writeBytes(gson.toJson(imagePOST))
                         workload(inputStream.bufferedReader().readText())
                     }
                 }
             }
-
-            val intent = Intent(this, ImageViewPage::class.java)
-
-            intent.putExtra("carMake", basicCarA[0].make)
-            intent.putExtra("carModel", basicCarA[0].model)
-            intent.putExtra("carYear", basicCarA[0].year)
-            startActivity(intent)
         }
     }
 
@@ -149,42 +134,67 @@ class HotspotDetails: AppCompatActivity(){
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
     }
 
-    fun postData(uri: String){
-        val notes = notesText.text.toString()
-        val carImageId = CarImage(carImageId = carImageIdIntent)
-        val size = newArrayX.size-1
-        val xLoc = newArrayX[size]
-        val yLoc = newArrayY[size]
+     fun postData(uri: String) {
+         val notes = notesText.text.toString()
+         val carImageId = CarImage(carImageId = carImageIdIntent)
+
+         val xLoc = intent.getIntExtra("xLoc", 0)
+         val yLoc = intent.getIntExtra("yLoc", 0)
 
 
+         val hotspotDetails = ArrayList<HotspotDeets>()
+         val hotspotDeets = HotspotDeets(uri, notes, true)
+         hotspotDetails.add(hotspotDeets)
 
-        val hotspotDetails = ArrayList<HotspotDeets>()
-        val hotspotDeets = HotspotDeets(uri,notes,true)
-        hotspotDetails.add(hotspotDeets)
+         val hotspotPost = HotspotPost(carImageId, xLoc, yLoc, "Front Exterior", true, hotspotDetails)
 
-        val hotspotPost = HotspotPost(carImageId,xLoc,yLoc,"Front Exterior",true, hotspotDetails)
+         fun workload(data: String) {
+             val gson = Gson()
+             val parse = JsonParser().parse(data)
+             println(parse)
+
+             val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
+
+             val hotspotId = returnedObject.get("hotspotId").asInt
+             val newXloc = returnedObject.get("xLoc").asInt
+             val newYloc = returnedObject.get("yLoc").asInt
+             val newHotspot = Hotspot(carImageIdIntent,newXloc,newYloc,hotspotId,uri,notes)
+             hotspotArray.add(newHotspot)
+
+             println("returned hotspot POST data $returnedObject")
+             sendIntent()
+         }
 
 
+         GlobalScope.launch {
+                 URL(postURL).run {
+                     openConnection().run {
+                         val httpURLConnection = this as HttpURLConnection
 
+                         httpURLConnection.requestMethod = "POST"
+                         httpURLConnection.setRequestProperty("charset", "utf-8")
+                         httpURLConnection.setRequestProperty("Content-Type", "application/json")
 
-        GlobalScope.launch {
-            URL(postURL).run {
-                openConnection().run {
-                    val httpURLConnection = this as HttpURLConnection
-                    httpURLConnection.requestMethod = "POST"
+                         val gson = Gson()
+                         val data = gson.toJson(hotspotPost)
+                         val outputStream = DataOutputStream(httpURLConnection.outputStream)
 
-                    httpURLConnection.setRequestProperty("charset", "utf-8")
-                    httpURLConnection.setRequestProperty("Content-Type", "application/json")
-                    val gson = Gson()
-                    val data = gson.toJson(hotspotPost)
+                         outputStream.writeBytes(data)
+                         println("server response code " + httpURLConnection.responseCode)
+                         workload(inputStream.bufferedReader().readText())
+                     }
+                 }
+         }
+     }
 
-                    val outputStream = DataOutputStream(httpURLConnection.outputStream)
-                    outputStream.writeBytes(data)
-                    println(httpURLConnection.responseCode)
-                    println(data)
-                }
-            }
-        }
+    fun sendIntent(){
+        val intent = Intent(this, ImageViewPage::class.java)
+        intent.putExtra("carMake", basicCarA[0].make)
+        intent.putExtra("carModel", basicCarA[0].model)
+        intent.putExtra("carYear", basicCarA[0].year)
+        exteriorHotspotArray.clear()
+        interiorHotspotArray.clear()
+        startActivity(intent)
     }
 
 }

@@ -27,6 +27,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
+        hotspotArray.clear()
         //GET DATA FROM CLOUD
         makeData()
         setMakeSpinner()
@@ -139,7 +140,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     }
 
     fun makeData() {
-
+        carArray.clear()
         if (makeArray.count() >= 2) {
             makeArray.clear()
             makeArray.add("Select One")
@@ -147,8 +148,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         //TAKE RESULT OF GET CALL AND PARSE THE DATA
         fun workload(data: String) {
-            var gson = Gson()
-            var parse = JsonParser().parse(data)
+            val gson = Gson()
+            val parse = JsonParser().parse(data)
 
             println("raw parsed data: $parse")
 
@@ -176,13 +177,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                         carImageArray.forEach{
                             val carImageObj = it.asJsonObject
                             val carImageId = carImageObj.get("carImageId").asInt
-                            var carImageURI = carImageObj.get("uri").asString
+                            val carImageURI = carImageObj.get("uri").asString
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val active = carImageObj.get("active").asBoolean
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
 
-                            var newCar = Car(manufacturerId, name, modelId, modelName, yearId, yearName, carImageId, carImageURI, exteriorImage, active)
+                            val newCar = Car(manufacturerId, name, modelId, modelName, yearId, yearName, carImageId, carImageURI, exteriorImage, active)
                             carArray.add(newCar)
                             hotspotArrayValue.forEach{
                                 val hotspotObj = it.asJsonObject
@@ -190,8 +191,20 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                 val yLoc = hotspotObj.get("yLoc").asInt
                                 val hotspotId = hotspotObj.get("hotspotId").asInt
 
-                                val newHotspot = Hotspot(carImageId, xLoc, yLoc, hotspotId)
-                                hotspotArray.add(newHotspot)
+                                val hotspotDetailsArray = hotspotObj.get("hotspotDetails").asJsonArray
+
+                                hotspotDetailsArray.forEach{
+                                    val hotspotDetailsObj = it.asJsonObject
+                                    val hotspotUri = hotspotDetailsObj.get("uri").asString
+                                    val hotspotNotes = hotspotDetailsObj.get("notes").asString
+
+                                    val newHotspot = Hotspot(carImageId, xLoc, yLoc, hotspotId, hotspotUri, hotspotNotes)
+                                    hotspotArray.add(newHotspot)
+                                }
+
+
+
+
                             }
                         }
                     }
