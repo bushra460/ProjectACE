@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(val hotspotList: ArrayList<Hotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.txtTitle.text = hotspotList[position].hotspotId.toString()

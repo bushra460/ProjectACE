@@ -18,7 +18,6 @@ import java.net.URL
 
 val makeurl = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/manufacturers"
 var carArray = ArrayList<Car>()
-var hotspotArray = ArrayList<Hotspot>()
 var makeArray = arrayListOf("Select One")
 var modelArray = arrayListOf("Select One")
 var yearArray = arrayListOf<Any>("Select One")
@@ -31,7 +30,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-        hotspotArray.clear()
         //GET DATA FROM CLOUD
         makeData()
         setMakeSpinner()
@@ -190,6 +188,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                             val dataRemoved =  parse.replace("\"","")
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val active = carImageObj.get("active").asBoolean
+                            val newImageArray = ArrayList<NewDataClassCarImage>()
+                            newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId))
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
 
@@ -206,15 +206,10 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                     val hotspotUri = hotspotDetailsObj.get("uri").asString
                                     val hotspotNotes = hotspotDetailsObj.get("notes").asString
 
-                                    val newImageArray = arrayListOf(NewDataClassCarImage(carImageId, carImageURI, exteriorImage))
-                                    val newHotspotArray = arrayListOf(NewDataClassHotspot(hotspotId, xLoc, yLoc,"Front Exterior",true, carImageId, hotspotUri, hotspotNotes, carDataId))
-
-
+                                    val newHotspotArray = ArrayList<NewDataClassHotspot>()
+                                    newHotspotArray.add(NewDataClassHotspot(hotspotId, xLoc, yLoc,"Front Exterior",true, carImageId, hotspotUri, hotspotNotes, carDataId, exteriorImage))
                                     val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, newImageArray, newHotspotArray)
                                     newCarArray.add(newCar)
-
-
-                                    //hotspotArray.add()
                                 }
                             }
                         }

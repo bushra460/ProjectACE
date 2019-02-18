@@ -18,7 +18,7 @@ class ListViewPage: AppCompatActivity(){
 
          //Access the RecyclerView Adapter and load the data into it
 
-        recyclerView1.adapter = SearchAdapter(hotspotArray)
+        recyclerView1.adapter = SearchAdapter(hotspotArrayList)
 
     }
 

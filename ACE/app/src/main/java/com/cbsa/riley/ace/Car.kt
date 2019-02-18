@@ -2,10 +2,6 @@ package com.cbsa.riley.ace
 
 import com.beust.klaxon.Json
 
-data class ManufacturerModel(
-    val data: ArrayList<Any>
-)
-
 data class Car(
     @Json(name = "manufacturerNameId") val makeId: String,
     @Json(name = "manufacturerName") val make: String,
@@ -28,12 +24,6 @@ data class Hotspot(
     val hotspotUri: String,
     val notes: String,
     val carId: Int?
-)
-
-data class BasicCar(
-    val make: String,
-    val model: String,
-    val year: String
 )
 
 data class ImagePOST(
@@ -59,9 +49,6 @@ data class HotspotDeets(
     val notes: String,
     val active: Boolean
 )
-
-
-
 
 data class NewDataClassCar(
     val carId: Int,
@@ -91,13 +78,15 @@ data class NewDataClassHotspot(
     val hotspotUri: String,
 
     val notes: String?,
-    val carId: Int?
+    val carId: Int?,
+    val exteriorImage: Boolean
 )
 
 data class NewDataClassCarImage(
     val carImageId: Int,
     val carImageURI: String,
-    val exteriorImage: Boolean
+    val exteriorImage: Boolean,
+    val carId: Int?
 )
 
 

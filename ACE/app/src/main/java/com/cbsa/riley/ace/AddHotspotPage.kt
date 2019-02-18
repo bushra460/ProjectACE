@@ -12,22 +12,22 @@ import android.view.MotionEvent
 import android.view.View
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.addhotspot.*
-import kotlinx.android.synthetic.main.imageview.*
 
 class AddHotspotPage: AppCompatActivity(){
 
     var exterior = true
     var carImageId = 0
-    var hotspotArrayList = ArrayList<NewDataClassHotspot>()
-    var imageArrayList = ArrayList<NewDataClassCarImage>()
+    var hotspotArrayList = selectedCar.hotspotArrayList!!
+    var imageArrayList = selectedCar.imageArrayList!![0]
+    var xLoc = 0
+    var yLoc = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
         exterior = intent.getBooleanExtra("exterior",true)
-        hotspotArrayList = intent.getExtra
 
-        carImageId = imageArrayList[0].carImageId
+        carImageId = imageArrayList.carImageId
 
         val carMake = selectedCar.make
         val carModel = selectedCar.model
@@ -41,20 +41,16 @@ class AddHotspotPage: AppCompatActivity(){
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus){
-            if (exterior) {
-                setHotspotsExterior()
-            } else {
-                setHotspotsInterior()
-            }
+            setHotspots()
 
-            val imageURI:String =
-            Picasso.get().load().into(addHotspotImageView)
-            addHotspotImageView.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            val imageURI:String = imageArrayList.carImageURI
+            Picasso.get().load(imageURI).into(addHotspotImageView)
+            addHotspotImageView.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
                 when (motionEvent.action){
                     MotionEvent.ACTION_DOWN -> {
-                        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                            xLoc = motionEvent.getX().toInt()
-                            yLoc = motionEvent.getY().toInt()
+                        if(motionEvent.action == MotionEvent.ACTION_DOWN) {
+                            xLoc = motionEvent.x.toInt()
+                            yLoc = motionEvent.y.toInt()
                             println("X coord is: $xLoc and Y coord is: $yLoc")
                             drawHotspot(xLoc, yLoc)
                         }
@@ -65,53 +61,33 @@ class AddHotspotPage: AppCompatActivity(){
         }
     }
 
-    fun setHotspotsExterior(){
+    fun setHotspots() {
+        val bitmap: Bitmap =
+            Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            val xLoc = it.xLoc
-            val yLoc = it.yLoc
-            val left = xLoc - 30.0f
-            val top = yLoc + 30.0f
-            val right = xLoc + 30.0f
-            val bottom = yLoc - 30.0f
-            val paint = Paint()
-            val stroke = Paint()
-            paint.color = Color.YELLOW
-            stroke.color = Color.RED
-            stroke.style = Paint.Style.STROKE
-            stroke.strokeWidth = 10.0f
+            if (it.carId == selectedCar.carId) {
+                if (it.exteriorImage == exterior) {
+                    val canvas = Canvas(bitmap)
+                    val xLoc = it.xLoc
+                    val yLoc = it.yLoc
+                    val left = xLoc - 30.0f
+                    val top = yLoc + 30.0f
+                    val right = xLoc + 30.0f
+                    val bottom = yLoc - 30.0f
+                    val paint = Paint()
+                    val stroke = Paint()
+                    paint.color = Color.YELLOW
+                    stroke.color = Color.RED
+                    stroke.style = Paint.Style.STROKE
+                    stroke.strokeWidth = 10.0f
 
-            canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-            canvas.drawOval(left, top, right, bottom, stroke)
+                    canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                    canvas.drawOval(left, top, right, bottom, stroke)
 
-            previousHotspotImage.setImageBitmap(bitmap)
-            println("setHotspotExterior")
+                    previousHotspotImage.setImageBitmap(bitmap)
+                    println("setHotspotExterior")
+                }
             }
-        }
-
-    fun setHotspotsInterior() {
-        hotspotArrayList.forEach {
-            val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            val xLoc = it.xLoc
-            val yLoc = it.yLoc
-            val left = xLoc - 30.0f
-            val top = yLoc + 30.0f
-            val right = xLoc + 30.0f
-            val bottom = yLoc - 30.0f
-            val paint = Paint()
-            val stroke = Paint()
-            paint.color = Color.YELLOW
-            stroke.color = Color.RED
-            stroke.style = Paint.Style.STROKE
-            stroke.strokeWidth = 10.0f
-
-            canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-            canvas.drawOval(left, top, right, bottom, stroke)
-
-            previousHotspotImage.setImageBitmap(bitmap)
-            println("setHotspotExterior")
         }
     }
 
@@ -131,8 +107,6 @@ class AddHotspotPage: AppCompatActivity(){
         stroke.style = Paint.Style.STROKE
         stroke.strokeWidth = 10.0f
 
-
-
         canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
         canvas.drawOval(left, top, right, bottom, stroke)
         hotspotImage.setImageBitmap(bitmap)
@@ -144,8 +118,9 @@ class AddHotspotPage: AppCompatActivity(){
 
     fun nextBttnClick() {
         nextBttn.setOnClickListener {
-
             val intent = Intent(this, HotspotDetails::class.java)
+            intent.putExtra("xLoc", xLoc)
+            intent.putExtra("yLoc", yLoc)
             startActivity(intent)
         }
     }
