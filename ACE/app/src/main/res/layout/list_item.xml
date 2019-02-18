@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/linearLayoutM">
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/linearLayoutM">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+        <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                tools:srcCompat="@tools:sample/avatars"
+                android:id="@+id/thumbnail"
+        />
         <LinearLayout
             android:padding="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp">
             <TextView
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:id="@+id/carMakeTVE"
+                android:id="@+id/txtTitle"
                 android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:text=""
-                android:id="@+id/carModelTVE"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text=""
-                android:id="@+id/carYearTVE"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:text=""
-                android:id="@+id/carTrimTVE"
+                android:id="@+id/txtSubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

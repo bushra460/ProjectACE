@@ -158,7 +158,7 @@ class HotspotDetails: AppCompatActivity(){
              val hotspotId = returnedObject.get("hotspotId").asInt
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
-             val newHotspot = Hotspot(carImageIdIntent,newXloc,newYloc,hotspotId,uri,notes)
+             val newHotspot = Hotspot(carImageIdIntent,newXloc,newYloc,hotspotId,uri,notes, null)
              hotspotArray.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
@@ -189,11 +189,6 @@ class HotspotDetails: AppCompatActivity(){
 
     fun sendIntent(){
         val intent = Intent(this, ImageViewPage::class.java)
-        intent.putExtra("carMake", basicCarA[0].make)
-        intent.putExtra("carModel", basicCarA[0].model)
-        intent.putExtra("carYear", basicCarA[0].year)
-        exteriorHotspotArray.clear()
-        interiorHotspotArray.clear()
         startActivity(intent)
     }
 

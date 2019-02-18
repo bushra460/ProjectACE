@@ -75,6 +75,11 @@
                 android:label="@string/HotspotDetails"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity
+                android:name=".ListViewPage"
+                android:label="@string/ListView"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
