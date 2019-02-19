@@ -1,18 +1,19 @@
 package com.cbsa.riley.ace
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.main.*
 
 class MainActivity : Activity() {
 
-    //VARIABLES
-    val carArray = ArrayList<Car>()
+    val SHAREDPREFS = "com.cbsa.riley.ace"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
+        setExterior()
 
         //HANDLE SEARCH BUTTON CLICKS
         val searchBttn = SearchBttnE
@@ -34,6 +35,9 @@ class MainActivity : Activity() {
         //********************************
     }
 
+    fun setExterior() {
+        getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE).edit().putBoolean("exterior", true).apply()
+    }
 
 
 }

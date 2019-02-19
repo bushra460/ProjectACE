@@ -2,10 +2,6 @@ package com.cbsa.riley.ace
 
 import com.beust.klaxon.Json
 
-data class ManufacturerModel(
-    val data: ArrayList<Any>
-)
-
 data class Car(
     @Json(name = "manufacturerNameId") val makeId: String,
     @Json(name = "manufacturerName") val make: String,
@@ -16,7 +12,8 @@ data class Car(
     val carImageId: Int,
     val carImageURI: String,
     val exteriorImage: Boolean,
-    val active: Boolean
+    val active: Boolean,
+    val carId: Int
 )
 
 data class Hotspot(
@@ -25,13 +22,8 @@ data class Hotspot(
     val yLoc: Int,
     val hotspotId: Int,
     val hotspotUri: String,
-    val notes: String
-)
-
-data class BasicCar(
-    val make: String,
-    val model: String,
-    val year: String
+    val notes: String,
+    val carId: Int?
 )
 
 data class ImagePOST(
@@ -50,8 +42,6 @@ data class HotspotPost(
     val hotspotDesc: String,
     val active: Boolean,
     val hotspotDetails: ArrayList<HotspotDeets>
-
-
 )
 
 data class HotspotDeets(
@@ -60,6 +50,44 @@ data class HotspotDeets(
     val active: Boolean
 )
 
+data class NewDataClassCar(
+    val carId: Int,
+    val active: Boolean,
+
+    val makeId: String?,
+    val make: String,
+    val modelId: String?,
+    val model: String,
+    val yearId: String?,
+    val year: String,
+
+    val imageArrayList: ArrayList<NewDataClassCarImage>?,
+    val hotspotArrayList: ArrayList<NewDataClassHotspot>?
+)
+
+data class NewDataClassHotspot(
+    val hotspotId: Int?,
+
+    val xLoc: Int,
+    val yLoc: Int,
+
+    val hotspotDesc: String,
+    val active: Boolean,
+
+    val carImageId: Int,
+    val hotspotUri: String,
+
+    val notes: String?,
+    val carId: Int?,
+    val exteriorImage: Boolean
+)
+
+data class NewDataClassCarImage(
+    val carImageId: Int,
+    val carImageURI: String,
+    val exteriorImage: Boolean,
+    val carId: Int?
+)
 
 
 

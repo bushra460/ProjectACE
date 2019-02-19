@@ -25,17 +25,18 @@ class HotspotDetails: AppCompatActivity(){
     var base64String:String = ""
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
-    var carImageIdIntent = 0
-    var carValue = ""
+    val carImageIdIntent = imageArrayList[0].carImageId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.hotspotdetails)
 
-        carValue = intent.getStringExtra("carValue")
+        val carMake = selectedCar.make
+        val carModel = selectedCar.model
+        val carYear = selectedCar.year
 
-        toolbar.title = carValue
-        carImageIdIntent = intent.getIntExtra("carImageId", 0)
+        toolbar.title = "$carMake $carModel $carYear"
+
         Picasso.get().load("https://via.placeholder.com/150").into(hotspotDetailsImageView)
         hotspotDetailsImageView.setOnClickListener{
             takePictureIntent()
@@ -158,8 +159,8 @@ class HotspotDetails: AppCompatActivity(){
              val hotspotId = returnedObject.get("hotspotId").asInt
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
-             val newHotspot = Hotspot(carImageIdIntent,newXloc,newYloc,hotspotId,uri,notes)
-             hotspotArray.add(newHotspot)
+             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,"Front Exterior", true, carImageIdIntent, uri, notes, selectedCar.carId, exterior)
+             hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
              sendIntent()
@@ -189,11 +190,6 @@ class HotspotDetails: AppCompatActivity(){
 
     fun sendIntent(){
         val intent = Intent(this, ImageViewPage::class.java)
-        intent.putExtra("carMake", basicCarA[0].make)
-        intent.putExtra("carModel", basicCarA[0].model)
-        intent.putExtra("carYear", basicCarA[0].year)
-        exteriorHotspotArray.clear()
-        interiorHotspotArray.clear()
         startActivity(intent)
     }
 

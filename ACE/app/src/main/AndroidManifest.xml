@@ -40,11 +40,6 @@
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-                android:name=".SearchResultsPage"
-                android:label="@string/Search"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
                 android:name=".PrivacyPolicyEN"
                 android:label="@string/PrivacyPolicyEN"
                 android:theme="@style/Theme.AppCompat.Light.ActionBar">
@@ -73,6 +68,11 @@
         <activity
                 android:name=".ViewHotspotDetails"
                 android:label="@string/HotspotDetails"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+                android:name=".ListViewPage"
+                android:label="@string/ListView"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>

@@ -2,6 +2,7 @@ package com.cbsa.riley.ace
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -16,18 +17,18 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 val makeurl = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/manufacturers"
-var carArray = ArrayList<Car>()
-var hotspotArray = ArrayList<Hotspot>()
 var makeArray = arrayListOf("Select One")
 var modelArray = arrayListOf("Select One")
 var yearArray = arrayListOf<Any>("Select One")
+
+var carArray = ArrayList<NewDataClassCar>()
+
 
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-        hotspotArray.clear()
         //GET DATA FROM CLOUD
         makeData()
         setMakeSpinner()
@@ -79,11 +80,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 modelArray.clear()
                 modelArray.add("Select One")
             }
+
             carArray.forEach{
-                if (it.make == spinOption && !modelArray.contains(it.model)){
+                if (spinOption == it.make && !modelArray.contains(it.model)){
                     modelArray.add(it.model)
                 }
             }
+
             modelSpinner.visibility = View.VISIBLE
             modelSpinner.setSelection(0)
             yearSpinner.visibility = View.INVISIBLE
@@ -109,26 +112,28 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         if(makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
             searchBttnE.isEnabled = true
-            var blue = ContextCompat.getColor(this, R.color.CBSA_Blue)
+            val blue = ContextCompat.getColor(this, R.color.CBSA_Blue)
             searchBttnE.setBackgroundColor(blue)
         } else if (spinOption == "Select One"){
             searchBttnE.isEnabled = false
-            var gray = ContextCompat.getColor(this, R.color.disabledButton)
+            val gray = ContextCompat.getColor(this, R.color.disabledButton)
             searchBttnE.setBackgroundColor(gray)
         }
 
         //HANDLE SEARCH BUTTON CLICKS
         val searchBttn = searchBttnE
         searchBttn.setOnClickListener {
-            var carMake: String = makeSpinner.selectedItem.toString()
-            var carModel: String = modelSpinner.selectedItem.toString()
-            var carYear: String = yearSpinner.selectedItem.toString()
+            val carMake: String = makeSpinner.selectedItem.toString()
+            val carModel: String = modelSpinner.selectedItem.toString()
+            val carYear: String = yearSpinner.selectedItem.toString()
 
             val intent = Intent(this, ImageViewPage::class.java)
-            intent.putExtra("carMake", carMake)
-            intent.putExtra("carModel", carModel)
-            intent.putExtra("carYear", carYear)
 
+            carArray.forEach {
+                if (it.make == carMake && it.model == carModel && it.year == carYear){
+                    intent.putExtra("carId", it.carId)
+                }
+            }
             startActivity(intent)
         }
 
@@ -136,11 +141,10 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         // Another interface callback
-        println("onNothingSelected Function in searchPage.kt")
+        println("onNothingSelected Function in SearchPage.kt")
     }
 
     fun makeData() {
-        carArray.clear()
         if (makeArray.count() >= 2) {
             makeArray.clear()
             makeArray.add("Select One")
@@ -171,20 +175,22 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                         val yearName = year.get("yearValue").asString
 
                         val carData = year.get("car").asJsonObject
-                        val carDataId = carData.get("carId").asString
+                        val carDataId = carData.get("carId").asInt
                         val carImageArray = carData.get("carImage").asJsonArray
 
                         carImageArray.forEach{
                             val carImageObj = it.asJsonObject
                             val carImageId = carImageObj.get("carImageId").asInt
                             val carImageURI = carImageObj.get("uri").asString
+                            val parse = Uri.parse(carImageURI).toString()
+                            val dataRemoved =  parse.replace("\"","")
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val active = carImageObj.get("active").asBoolean
+                            val newImageArray = ArrayList<NewDataClassCarImage>()
+                            newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId))
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
 
-                            val newCar = Car(manufacturerId, name, modelId, modelName, yearId, yearName, carImageId, carImageURI, exteriorImage, active)
-                            carArray.add(newCar)
                             hotspotArrayValue.forEach{
                                 val hotspotObj = it.asJsonObject
                                 val xLoc = hotspotObj.get("xLoc").asInt
@@ -198,13 +204,11 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                     val hotspotUri = hotspotDetailsObj.get("uri").asString
                                     val hotspotNotes = hotspotDetailsObj.get("notes").asString
 
-                                    val newHotspot = Hotspot(carImageId, xLoc, yLoc, hotspotId, hotspotUri, hotspotNotes)
-                                    hotspotArray.add(newHotspot)
+                                    val newHotspotArray = ArrayList<NewDataClassHotspot>()
+                                    newHotspotArray.add(NewDataClassHotspot(hotspotId, xLoc, yLoc,"Front Exterior",true, carImageId, hotspotUri, hotspotNotes, carDataId, exteriorImage))
+                                    val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, newImageArray, newHotspotArray)
+                                    carArray.add(newCar)
                                 }
-
-
-
-
                             }
                         }
                     }

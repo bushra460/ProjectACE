@@ -10,47 +10,45 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.addhotspot.*
 
 class AddHotspotPage: AppCompatActivity(){
 
-    var xLoc: Int = 0
-    var yLoc: Int = 0
     var exterior = true
     var carImageId = 0
-    var carValue = ""
+    var hotspotArrayList = selectedCar.hotspotArrayList!!
+    var imageArrayList = selectedCar.imageArrayList!!
+    var xLoc = 0
+    var yLoc = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
-        exterior = intent.getBooleanExtra("exterior",true)
-        carImageId = intent.getIntExtra("carImageId", 0)
-        carValue = intent.getStringExtra("carValue")
 
-        toolbar.title = carValue
-
-        nextBttnClick()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus){
-            if (exterior) {
-                setHotspotsExterior()
-            } else {
-                setHotspotsInterior()
-            }
+            exterior = intent.getBooleanExtra("exterior",true)
 
-            val imageURI:String = intent.getStringExtra("imageURI")
-            Picasso.get().load(imageURI).into(addHotspotImageView)
-            addHotspotImageView.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            setImage()
+
+            val carMake = selectedCar.make
+            val carModel = selectedCar.model
+            val carYear = selectedCar.year
+            toolbar.title = "$carMake $carModel $carYear"
+
+            nextBttnClick()
+            setHotspots()
+
+            addHotspotImageView.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
                 when (motionEvent.action){
                     MotionEvent.ACTION_DOWN -> {
-                        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                            xLoc = motionEvent.getX().toInt()
-                            yLoc = motionEvent.getY().toInt()
+                        if(motionEvent.action == MotionEvent.ACTION_DOWN) {
+                            xLoc = motionEvent.x.toInt()
+                            yLoc = motionEvent.y.toInt()
                             println("X coord is: $xLoc and Y coord is: $yLoc")
                             drawHotspot(xLoc, yLoc)
                         }
@@ -61,78 +59,33 @@ class AddHotspotPage: AppCompatActivity(){
         }
     }
 
-    fun setHotspotsExterior(){
-        if (!exteriorHotspotArray.isEmpty()) {
-            sortLocations(exteriorHotspotArray)
-            val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            var index = 0
-            while (index <= newArrayX.size-1) {
-                val xLoc = newArrayX[index]
-                val yLoc = newArrayY[index]
+    fun setHotspots() {
+        val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
+        hotspotArrayList.forEach {
+            if (it.carId == selectedCar.carId) {
+                if (it.exteriorImage == exterior) {
+                    val canvas = Canvas(bitmap)
+                    val xLoc = it.xLoc
+                    val yLoc = it.yLoc
+                    val left = xLoc - 30.0f
+                    val top = yLoc + 30.0f
+                    val right = xLoc + 30.0f
+                    val bottom = yLoc - 30.0f
+                    val paint = Paint()
+                    val stroke = Paint()
+                    paint.color = Color.YELLOW
+                    stroke.color = Color.RED
+                    stroke.style = Paint.Style.STROKE
+                    stroke.strokeWidth = 10.0f
 
-                val left = xLoc - 30.0f
-                val top = yLoc + 30.0f
-                val right = xLoc + 30.0f
-                val bottom = yLoc - 30.0f
-                val paint = Paint()
-                val stroke = Paint()
+                    canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                    canvas.drawOval(left, top, right, bottom, stroke)
 
-                paint.color = Color.YELLOW
-                stroke.color = Color.RED
-                stroke.style = Paint.Style.STROKE
-                stroke.strokeWidth = 10.0f
-
-                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-                canvas.drawOval(left, top, right, bottom, stroke)
-
-                previousHotspotImage.setImageBitmap(bitmap)
-                println("setHotspotExterior")
-                index += 1
+                    previousHotspotImage.setImageBitmap(bitmap)
+                    println("setHotspotExterior")
+                }
             }
         }
-    }
-
-    fun setHotspotsInterior() {
-        if (!interiorHotspotArray.isEmpty()){
-            sortLocations(interiorHotspotArray)
-            val bitmap: Bitmap = Bitmap.createBitmap(addHotspotLayout.width, addHotspotLayout.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            var index = 0
-            while (index <= newArrayX.size-1) {
-                val xLoc = newArrayX[index]
-                val yLoc = newArrayY[index]
-                val left = xLoc - 30.0f
-                val top = yLoc + 30.0f
-                val right = xLoc + 30.0f
-                val bottom = yLoc - 30.0f
-                val paint = Paint()
-                val stroke = Paint()
-
-                paint.color = Color.YELLOW
-                stroke.color = Color.RED
-                stroke.style = Paint.Style.STROKE
-                stroke.strokeWidth = 10.0f
-
-                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-                canvas.drawOval(left, top, right, bottom, stroke)
-
-                previousHotspotImage.setImageBitmap(bitmap)
-                println("setHotspotInterior")
-                index += 1
-            }
-        }
-    }
-
-    fun sortLocations(arrayList: ArrayList<Int>){
-        val length = arrayList.size
-        var index = 0
-        while (index <= length-1){
-            newArrayX.add(arrayList[index])
-            index += 2
-            newArrayY.add(arrayList[index-1])
-        }
-        println("X Array: $newArrayX    Y Array: $newArrayY")
     }
 
     fun drawHotspot(xLoc: Int, yLoc: Int){
@@ -151,8 +104,6 @@ class AddHotspotPage: AppCompatActivity(){
         stroke.style = Paint.Style.STROKE
         stroke.strokeWidth = 10.0f
 
-
-
         canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
         canvas.drawOval(left, top, right, bottom, stroke)
         hotspotImage.setImageBitmap(bitmap)
@@ -163,17 +114,30 @@ class AddHotspotPage: AppCompatActivity(){
     }
 
     fun nextBttnClick() {
-        val nextBttn: Button = nextBttn
         nextBttn.setOnClickListener {
-
-            println("what are the locations when next is clicked " + xLoc+ "   " + yLoc)
-
             val intent = Intent(this, HotspotDetails::class.java)
-            intent.putExtra("carImageId", carImageId)
             intent.putExtra("xLoc", xLoc)
             intent.putExtra("yLoc", yLoc)
-            intent.putExtra("carValue", carValue)
             startActivity(intent)
+        }
+    }
+
+    fun setImage() {
+        imageArrayList.forEach {
+            if (it.carId == selectedCar.carId) {
+                if (exterior) {
+                    if (it.exteriorImage) {
+                        carImageId = it.carImageId
+                        Picasso.get().load(it.carImageURI).into(hotspotImage)
+                    }
+                } else {
+                    if (!it.exteriorImage) {
+                        carImageId = it.carImageId
+                        Picasso.get().load("https://via.placeholder.com/150").into(hotspotImage)
+                    }
+                }
+
+            }
         }
     }
 }
