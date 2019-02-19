@@ -18,33 +18,31 @@ class AddHotspotPage: AppCompatActivity(){
     var exterior = true
     var carImageId = 0
     var hotspotArrayList = selectedCar.hotspotArrayList!!
-    var imageArrayList = selectedCar.imageArrayList!![0]
+    var imageArrayList = selectedCar.imageArrayList!!
     var xLoc = 0
     var yLoc = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addhotspot)
-        exterior = intent.getBooleanExtra("exterior",true)
 
-        carImageId = imageArrayList.carImageId
-
-        val carMake = selectedCar.make
-        val carModel = selectedCar.model
-        val carYear = selectedCar.year
-
-        toolbar.title = "$carMake $carModel $carYear"
-
-        nextBttnClick()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus){
+            exterior = intent.getBooleanExtra("exterior",true)
+
+            setImage()
+
+            val carMake = selectedCar.make
+            val carModel = selectedCar.model
+            val carYear = selectedCar.year
+            toolbar.title = "$carMake $carModel $carYear"
+
+            nextBttnClick()
             setHotspots()
 
-            val imageURI:String = imageArrayList.carImageURI
-            Picasso.get().load(imageURI).into(addHotspotImageView)
             addHotspotImageView.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
                 when (motionEvent.action){
                     MotionEvent.ACTION_DOWN -> {
@@ -62,8 +60,7 @@ class AddHotspotPage: AppCompatActivity(){
     }
 
     fun setHotspots() {
-        val bitmap: Bitmap =
-            Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
+        val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
             if (it.carId == selectedCar.carId) {
                 if (it.exteriorImage == exterior) {
@@ -122,6 +119,25 @@ class AddHotspotPage: AppCompatActivity(){
             intent.putExtra("xLoc", xLoc)
             intent.putExtra("yLoc", yLoc)
             startActivity(intent)
+        }
+    }
+
+    fun setImage() {
+        imageArrayList.forEach {
+            if (it.carId == selectedCar.carId) {
+                if (exterior) {
+                    if (it.exteriorImage) {
+                        carImageId = it.carImageId
+                        Picasso.get().load(it.carImageURI).into(hotspotImage)
+                    }
+                } else {
+                    if (!it.exteriorImage) {
+                        carImageId = it.carImageId
+                        Picasso.get().load("https://via.placeholder.com/150").into(hotspotImage)
+                    }
+                }
+
+            }
         }
     }
 }

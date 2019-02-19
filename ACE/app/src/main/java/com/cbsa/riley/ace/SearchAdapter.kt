@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 class SearchAdapter(val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.txtTitle.text = hotspotList[position].hotspotId.toString()
+        holder.txtTitle.text = hotspotList[position].hotspotDesc
         holder.txtSubtitle.text = hotspotList[position].notes
         Picasso.get().load(hotspotList[position].hotspotUri).into(holder.thumbnail)
     }

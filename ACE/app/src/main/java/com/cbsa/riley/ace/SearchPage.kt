@@ -17,12 +17,11 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 val makeurl = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/manufacturers"
-var carArray = ArrayList<Car>()
 var makeArray = arrayListOf("Select One")
 var modelArray = arrayListOf("Select One")
 var yearArray = arrayListOf<Any>("Select One")
 
-var newCarArray = ArrayList<NewDataClassCar>()
+var carArray = ArrayList<NewDataClassCar>()
 
 
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
@@ -82,7 +81,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 modelArray.add("Select One")
             }
 
-            newCarArray.forEach{
+            carArray.forEach{
                 if (spinOption == it.make && !modelArray.contains(it.model)){
                     modelArray.add(it.model)
                 }
@@ -98,7 +97,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 yearArray.clear()
                 yearArray.add("Select One")
             }
-            newCarArray.forEach{
+            carArray.forEach{
                 if (it.model == spinOption && !yearArray.contains(it.year)){
                     yearArray.add(it.year)
                 }
@@ -130,7 +129,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
             val intent = Intent(this, ImageViewPage::class.java)
 
-            newCarArray.forEach {
+            carArray.forEach {
                 if (it.make == carMake && it.model == carModel && it.year == carYear){
                     intent.putExtra("carId", it.carId)
                 }
@@ -146,7 +145,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     }
 
     fun makeData() {
-        carArray.clear()
         if (makeArray.count() >= 2) {
             makeArray.clear()
             makeArray.add("Select One")
@@ -209,14 +207,14 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                     val newHotspotArray = ArrayList<NewDataClassHotspot>()
                                     newHotspotArray.add(NewDataClassHotspot(hotspotId, xLoc, yLoc,"Front Exterior",true, carImageId, hotspotUri, hotspotNotes, carDataId, exteriorImage))
                                     val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, newImageArray, newHotspotArray)
-                                    newCarArray.add(newCar)
+                                    carArray.add(newCar)
                                 }
                             }
                         }
                     }
                 }
             }
-            println("carArray data: $newCarArray")
+            println("carArray data: $carArray")
         }
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION

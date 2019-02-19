@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.imageview.*
 
 var exterior = true
 val SHAREDPREFS = "com.cbsa.riley.ace"
-var selectedCar = newCarArray[0]
+var selectedCar = carArray[0]
 var hotspotArrayList = ArrayList<NewDataClassHotspot>()
 var imageArrayList = ArrayList<NewDataClassCarImage>()
 
@@ -34,9 +34,9 @@ class ImageViewPage: AppCompatActivity() {
             var numTab = 0
             var index = 0
             val carId = intent.getIntExtra("carId", 0)
-            newCarArray.forEach {
+            carArray.forEach {
                 if (carId == it.carId) {
-                    selectedCar = newCarArray[index]
+                    selectedCar = carArray[index]
                     println(carId.toString() + "  " + it.carId.toString())
                     println("Index:  $index")
                 }
@@ -237,7 +237,7 @@ class ImageViewPage: AppCompatActivity() {
         //val transitionManager = contentTransitionManager
         //window.enterTransition = Explode()
         navigateUpTo(detailsIntent)
-        newCarArray.clear()
+        carArray.clear()
     }
 
     fun toHotspotDetails(hotspotID: Int) {

@@ -23,11 +23,10 @@
                 android:id="@+id/listViewBttn"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:background="@color/CBSA_Blue"
                 android:textColor="@android:color/white"
                 android:text="@string/ListView"
                 android:layout_gravity="end"
-                android:elevation="0dp"/>
+                android:elevation="0dp" android:background="@null"/>
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout

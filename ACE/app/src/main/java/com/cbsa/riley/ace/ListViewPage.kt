@@ -3,7 +3,7 @@ package com.cbsa.riley.ace
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.searchresults.*
+import kotlinx.android.synthetic.main.listview.*
 
 class ListViewPage: AppCompatActivity(){
 
@@ -11,16 +11,22 @@ class ListViewPage: AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.listview)
         // Creates a vertical Layout Manager
-        recyclerView1.layoutManager = LinearLayoutManager(this)
+        recyclerView2.layoutManager = LinearLayoutManager(this)
 
-        // You can use GridLayoutManager if you want multiple columns. Enter the number of columns as a parameter.
-        //rv_animal_list.layoutManager = GridLayoutManager(this, 2)
+        val carMake = selectedCar.make
+        val carModel = selectedCar.model
+        val carYear = selectedCar.year
+        listViewToolbar.title = "$carMake $carModel $carYear"
 
          //Access the RecyclerView Adapter and load the data into it
-
-        recyclerView1.adapter = SearchAdapter(hotspotArrayList)
+        recyclerView2.adapter = SearchAdapter(hotspotArrayList)
 
     }
 
+//    fun toHotspotDetails(hotspotID: Int) {
+//        val intent = Intent(this, ViewHotspotDetails::class.java)
+//        intent.putExtra("hotspotID", hotspotID)
+//        startActivity(intent)
+//    }
 
 }

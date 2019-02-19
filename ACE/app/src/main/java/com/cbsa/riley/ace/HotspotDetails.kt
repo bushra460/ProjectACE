@@ -160,7 +160,7 @@ class HotspotDetails: AppCompatActivity(){
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
              val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,"Front Exterior", true, carImageIdIntent, uri, notes, selectedCar.carId, exterior)
-             selectedCar.hotspotArrayList!!.add(newHotspot)
+             hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
              sendIntent()
