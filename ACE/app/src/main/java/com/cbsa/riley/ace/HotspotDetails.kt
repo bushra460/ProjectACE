@@ -22,6 +22,8 @@ import java.sql.Timestamp
 import java.util.*
 
 
+
+
 class HotspotDetails: AppCompatActivity(){
 
     var base64String:String = ""
@@ -32,6 +34,10 @@ class HotspotDetails: AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.hotspotdetails)
+
+//        floatingActionButton.setOnClickListener {
+//            startVoiceInput()
+//        }
 
         val carMake = selectedCar.make
         val carModel = selectedCar.model
@@ -196,5 +202,36 @@ class HotspotDetails: AppCompatActivity(){
         startActivity(intent)
     }
 
+
+//    private fun startVoiceInput() {
+//        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+//        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please say the make, model and year of the car you are searching for")
+//        try {
+//            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+//        } catch (a: ActivityNotFoundException) {
+//
+//        }
+//
+//    }
+//
+//
+//
+//    fun onActivitysResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when (requestCode) {
+//            REQ_CODE_SPEECH_INPUT -> {
+//                if (resultCode == Activity.RESULT_OK && data != null) {
+//                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+//                    println("The result is: $result")
+//                    val editable = SpannableStringBuilder(result[0])
+//                    println(editable)
+//
+//                    notesText.text = editable
+//                }
+//            }
+//        }
+//    }
 }
 

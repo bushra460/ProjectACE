@@ -43,7 +43,21 @@
             android:layout_below="@+id/hotspotDetailsImageView"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/notesText" android:hint="Add Notes" android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp" android:layout_marginRight="16dp"/>
+            android:id="@+id/notesText"
+            android:hint="Add Notes"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:maxLength="256"/>
+    <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true"-->
+            <!--app:srcCompat="@drawable/microphone"-->
+            <!--android:id="@+id/floatingActionButton"-->
+            <!--app:backgroundTint="@color/CBSA_Blue"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="16dp"/>-->
 
 </RelativeLayout>
