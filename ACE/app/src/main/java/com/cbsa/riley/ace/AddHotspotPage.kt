@@ -128,12 +128,12 @@ class AddHotspotPage: AppCompatActivity(){
                 if (exterior) {
                     if (it.exteriorImage) {
                         carImageId = it.carImageId
-                        Picasso.get().load(it.carImageURI).into(hotspotImage)
+                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
                     }
                 } else {
                     if (!it.exteriorImage) {
                         carImageId = it.carImageId
-                        Picasso.get().load("https://via.placeholder.com/150").into(hotspotImage)
+                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
                     }
                 }
 

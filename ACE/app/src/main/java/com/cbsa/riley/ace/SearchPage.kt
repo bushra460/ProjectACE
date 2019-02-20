@@ -1,9 +1,10 @@
 package com.cbsa.riley.ace
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.AdapterView
@@ -15,14 +16,18 @@ import kotlinx.android.synthetic.main.search.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 val makeurl = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/manufacturers"
 var makeArray = arrayListOf("Select One")
 var modelArray = arrayListOf("Select One")
 var yearArray = arrayListOf<Any>("Select One")
-
+val REQ_CODE_SPEECH_INPUT = 100
 var carArray = ArrayList<NewDataClassCar>()
-
+val newHotspotArray = ArrayList<NewDataClassHotspot>()
+val newImageArray = ArrayList<NewDataClassCarImage>()
 
 class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
@@ -30,9 +35,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
         //GET DATA FROM CLOUD
+        voiceBttn.setOnClickListener {startVoiceInput()}
         makeData()
         setMakeSpinner()
         setModelYearSpinners()
+        carArray.clear()
+        newHotspotArray.clear()
+        newImageArray.clear()
     }
 
     fun setMakeSpinner(){
@@ -75,7 +84,20 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
 
         if ( makeSpinner.selectedItem == spinOption && spinOption != "Select One"){
+
+
+            voiceBttn.isEnabled = true
+
+
+
+
+
             println("Spinner 1: " + spinOption)
+
+
+            val selectedItem = modelSpinner.selectedItem
+
+
             if (modelArray.count() >= 2) {
                 modelArray.clear()
                 modelArray.add("Select One")
@@ -88,11 +110,21 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             }
 
             modelSpinner.visibility = View.VISIBLE
-            modelSpinner.setSelection(0)
             yearSpinner.visibility = View.INVISIBLE
-
+            if (!modelArray.contains(selectedItem)) {
+                modelSpinner.setSelection(0)
+            }
         } else if (modelSpinner.selectedItem == spinOption && spinOption != "Select One") {
+
+            voiceBttn.isEnabled = false
+
+
+
+
             println("Spinner 2: " + spinOption)
+            val selectedItem = yearSpinner.selectedItem
+
+
             if (yearArray.count() >= 2) {
                 yearArray.clear()
                 yearArray.add("Select One")
@@ -103,7 +135,10 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 }
             }
             yearSpinner.visibility = View.VISIBLE
-            yearSpinner.setSelection(0)
+
+            if (!yearArray.contains(selectedItem)) {
+                yearSpinner.setSelection(0)
+            }
 
         } else if (yearSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 3: " + spinOption)
@@ -182,11 +217,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                             val carImageObj = it.asJsonObject
                             val carImageId = carImageObj.get("carImageId").asInt
                             val carImageURI = carImageObj.get("uri").asString
-                            val parse = Uri.parse(carImageURI).toString()
-                            val dataRemoved =  parse.replace("\"","")
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
-                            val active = carImageObj.get("active").asBoolean
-                            val newImageArray = ArrayList<NewDataClassCarImage>()
                             newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId))
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
@@ -196,6 +227,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                 val xLoc = hotspotObj.get("xLoc").asInt
                                 val yLoc = hotspotObj.get("yLoc").asInt
                                 val hotspotId = hotspotObj.get("hotspotId").asInt
+                                val hotspotDesc = hotspotObj.get("hotspotDesc").asString
+
 
                                 val hotspotDetailsArray = hotspotObj.get("hotspotDetails").asJsonArray
 
@@ -204,13 +237,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                                     val hotspotUri = hotspotDetailsObj.get("uri").asString
                                     val hotspotNotes = hotspotDetailsObj.get("notes").asString
 
-                                    val newHotspotArray = ArrayList<NewDataClassHotspot>()
-                                    newHotspotArray.add(NewDataClassHotspot(hotspotId, xLoc, yLoc,"Front Exterior",true, carImageId, hotspotUri, hotspotNotes, carDataId, exteriorImage))
-                                    val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, newImageArray, newHotspotArray)
-                                    carArray.add(newCar)
+                                    newHotspotArray.add(NewDataClassHotspot(hotspotId, xLoc, yLoc, hotspotDesc,true, carImageId, hotspotUri, hotspotNotes, carDataId, exteriorImage))
+
                                 }
                             }
                         }
+                        val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, newImageArray, newHotspotArray)
+                        carArray.add(newCar)
                     }
                 }
             }
@@ -224,5 +257,106 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    // setting up speech to text intent
+    private fun startVoiceInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please say the make, model and year of the car you are searching for")
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+        } catch (a: ActivityNotFoundException) {
+
+        }
+
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    println("The result is: $result")
+
+                    val stringList = result[0].split(" ")
+
+                    if (stringList.size in 1..3) {
+                        var i = 0
+                        makeArray.forEach {
+                            println("result: ${stringList[0]} | makeArrayValue:  $it")
+                            if (stringList[0] == it) {
+                                println(it)
+                                println(modelSpinner.selectedItem)
+                                modelSpinner.visibility = View.VISIBLE
+                                modelSpinner.setSelection(0)
+
+                                makeSpinner.setSelection(i)
+                                modelArray.clear()
+                                modelArray.add("Select One")
+
+
+                                carArray.forEach{
+                                    if (makeSpinner.selectedItem == it.make && !modelArray.contains(it.model)){
+                                        modelArray.add(it.model)
+                                    }
+                                }
+                            } else if (i == makeArray.size - 1) {
+//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                            }
+                            i++
+                        }
+                    }
+
+                    if (stringList.size in 2..3) {
+                        var index = 0
+                        modelArray.forEach {
+                            println("result: ${stringList[1]} | modelArrayValue:  $it")
+                            if (stringList[1] == it || stringList[1] == "F150") {
+                                println(it)
+
+
+                                yearSpinner.visibility = View.VISIBLE
+                                yearSpinner.setSelection(0)
+
+                                modelSpinner.setSelection(index)
+                                yearArray.clear()
+                                yearArray.add("Select One")
+
+
+                                carArray.forEach{
+                                    if (modelSpinner.selectedItem == it.model){
+                                        yearArray.add(it.year)
+                                    }
+                                }
+                            } else if (index == modelArray.size - 1) {
+//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                            }
+                            index++
+                        }
+                    }
+
+
+
+                    if (stringList.size == 3) {
+                        var index2 = 0
+                        yearArray.forEach {
+                            println("result: ${stringList[2]} | yearArrayValue:  $it")
+                            if (stringList[2] == it) {
+                                println(it)
+                                yearSpinner.setSelection(index2)
+                            }
+                            else if (index2 == yearArray.size) {
+//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                            }
+                            index2++
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 

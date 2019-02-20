@@ -1,5 +1,7 @@
 package com.cbsa.riley.ace
 
+import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,21 +10,34 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(val context: Context, val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.txtTitle.text = hotspotList[position].hotspotDesc
         holder.txtSubtitle.text = hotspotList[position].notes
         Picasso.get().load(hotspotList[position].hotspotUri).into(holder.thumbnail)
+        holder.itemView.id = hotspotList[position].hotspotId!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        v.setOnClickListener {
+            val intent = Intent(context, ViewHotspotDetails::class.java)
+            intent.putExtra("hotspotID", v.id)
+            context.startActivity(intent)
+        }
         return ViewHolder(v)
     }
 
     override fun getItemCount(): Int {
-        return hotspotArrayList.size
+        var index = 0
+        hotspotArrayList.forEach {
+            println(it.carId.toString() + "  vs  "+ selectedCar.carId.toString())
+            if (it.carId == selectedCar.carId){
+                index++
+            }
+        }
+        return index
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

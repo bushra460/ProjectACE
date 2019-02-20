@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.listview.*
 
-class ListViewPage: AppCompatActivity(){
+class ListViewPage: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,15 +18,8 @@ class ListViewPage: AppCompatActivity(){
         val carYear = selectedCar.year
         listViewToolbar.title = "$carMake $carModel $carYear"
 
-         //Access the RecyclerView Adapter and load the data into it
-        recyclerView2.adapter = SearchAdapter(hotspotArrayList)
+        //Access the RecyclerView Adapter and load the data into it
+        recyclerView2.adapter = SearchAdapter(this ,hotspotArrayList)
 
     }
-
-//    fun toHotspotDetails(hotspotID: Int) {
-//        val intent = Intent(this, ViewHotspotDetails::class.java)
-//        intent.putExtra("hotspotID", hotspotID)
-//        startActivity(intent)
-//    }
-
 }

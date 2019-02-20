@@ -37,38 +37,40 @@ class ImageViewPage: AppCompatActivity() {
             carArray.forEach {
                 if (carId == it.carId) {
                     selectedCar = carArray[index]
-                    println(carId.toString() + "  " + it.carId.toString())
-                    println("Index:  $index")
                 }
                 index += 1
             }
-
-            println("selected car:   $selectedCar")
-
+            println("selected car:   ${selectedCar.carId}")
 
             hotspotArrayList = selectedCar.hotspotArrayList!!
-
-            println("hotspot array list:   " + hotspotArrayList)
-            println(selectedCar.hotspotArrayList)
-
             imageArrayList = selectedCar.imageArrayList!!
+
+
+
+
+            hotspotArrayList.forEach {
+                if (it.carId == selectedCar.carId) {
+                    println(hotspotArrayList)
+                }
+            }
 
 
             checkExterior()
             if (exterior) {
                 setExteriorImage()
             } else {
-                setInteriorImage()
+                setExteriorImage()
+                //setInteriorImage()
             }
 
             val carMake = selectedCar.make
             val carModel = selectedCar.model
             val carYear = selectedCar.year
-
             imageViewToolbar.title = "$carMake $carModel $carYear"
             println("$carMake $carModel $carYear")
 
             fab.setOnClickListener {
+                setExterior()
                 val intent = Intent(this, AddHotspotPage::class.java)
                 if (numTab == 0) {
                     intent.putExtra("exterior", true)
@@ -82,9 +84,7 @@ class ImageViewPage: AppCompatActivity() {
             //HANDLE LISTVIEW BUTTON CLICKS
             val listViewBttn: Button = listViewBttn
             listViewBttn.setOnClickListener {
-
                 val intent = Intent(this, ListViewPage::class.java)
-
                 startActivity(intent)
             }
 
@@ -99,25 +99,19 @@ class ImageViewPage: AppCompatActivity() {
                         }
                     }
                 }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {
-
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab) {
-
-                }
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab) {}
             })
         }
     }
 
     fun setExteriorImage() {
+        fab.isEnabled = true
         setExterior()
         imageArrayList.forEach {
             if (it.carId == selectedCar.carId) {
                 if (it.exteriorImage) {
                     println("Exterior view")
-
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load(it.carImageURI).into(imageViewE)
@@ -128,12 +122,12 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setInteriorImage() {
+        fab.isEnabled = false
         setExterior()
         imageArrayList.forEach {
             if (it.carId == selectedCar.carId) {
                 if (!it.exteriorImage) {
-                    println("Exterior view")
-
+                    println("Interior view")
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load(it.carImageURI).into(imageViewE)
@@ -142,6 +136,7 @@ class ImageViewPage: AppCompatActivity() {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load("https://via.placeholder.com/150").into(imageViewE)
+                    setHotspots()
                 }
             }
         }
@@ -150,7 +145,6 @@ class ImageViewPage: AppCompatActivity() {
     fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(hotspotImageViewE.width, hotspotImageViewE.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            println("alskdf;alsdjf;akjsd;fkasdfj;asdkjf;laskjd;fkja;sdlkj;aslkdfj;")
             if (it.carId == selectedCar.carId) {
                 if (it.exteriorImage == exterior) {
                     val canvas = Canvas(bitmap)
@@ -169,8 +163,6 @@ class ImageViewPage: AppCompatActivity() {
 
                     canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
                     canvas.drawOval(left, top, right, bottom, stroke)
-
-                    hotspotImageViewE.setImageBitmap(bitmap)
 
                     hotspotImageViewE.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
                         when (motionEvent.action) {
@@ -216,9 +208,11 @@ class ImageViewPage: AppCompatActivity() {
                         }
                         return@OnTouchListener true
                     })
+
                 }
             }
         }
+        hotspotImageViewE.setImageBitmap(bitmap)
     }
 
     fun checkExterior() {
@@ -236,6 +230,10 @@ class ImageViewPage: AppCompatActivity() {
         val detailsIntent = Intent(this, searchPage::class.java)
         //val transitionManager = contentTransitionManager
         //window.enterTransition = Explode()
+
+        exterior = true
+        getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE).edit().putBoolean("exterior", exterior).apply()
+
         navigateUpTo(detailsIntent)
         carArray.clear()
     }

@@ -18,6 +18,8 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import java.sql.Timestamp
+import java.util.*
 
 
 class HotspotDetails: AppCompatActivity(){
@@ -66,8 +68,9 @@ class HotspotDetails: AppCompatActivity(){
     fun finishBttnClick() {
         finishBttn.setOnClickListener {
             finishBttn.isEnabled = false
-
-            val imagePOST = ImagePOST(base64String, "rileysimages.jpg")
+            val date = Date()
+            val ts = Timestamp(date.time)
+            val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}")
             fun workload(data: String) {
                 val gson = Gson()
                 val parse = JsonParser().parse(data)
