@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
@@ -34,8 +35,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
+
         //GET DATA FROM CLOUD
-        voiceBttn.setOnClickListener {startVoiceInput()}
+        voiceBttn.setOnClickListener {
+            modelSpinner.setSelection(0)
+            yearSpinner.setSelection(0)
+            startVoiceInput()
+        }
         makeData()
         setMakeSpinner()
         setModelYearSpinners()
@@ -83,26 +89,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
         val spinOption:String = parent.getItemAtPosition(pos).toString()
 
 
-        if ( makeSpinner.selectedItem == spinOption && spinOption != "Select One"){
-
-
-            voiceBttn.isEnabled = true
-
-
-
-
-
+        if (makeSpinner.selectedItem == spinOption && spinOption != "Select One"){
             println("Spinner 1: " + spinOption)
-
-
-            val selectedItem = modelSpinner.selectedItem
-
 
             if (modelArray.count() >= 2) {
                 modelArray.clear()
                 modelArray.add("Select One")
             }
-
             carArray.forEach{
                 if (spinOption == it.make && !modelArray.contains(it.model)){
                     modelArray.add(it.model)
@@ -111,16 +104,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
             modelSpinner.visibility = View.VISIBLE
             yearSpinner.visibility = View.INVISIBLE
-            if (!modelArray.contains(selectedItem)) {
-                modelSpinner.setSelection(0)
-            }
-        } else if (modelSpinner.selectedItem == spinOption && spinOption != "Select One") {
-
-            voiceBttn.isEnabled = false
-
-
-
-
+        }
+        if (modelSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 2: " + spinOption)
             val selectedItem = yearSpinner.selectedItem
 
@@ -280,78 +265,101 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     println("The result is: $result")
+                    var resultString = result[0]
 
-                    val stringList = result[0].split(" ")
+                    if (result[0].contains("-")) {
+                        resultString = result[0].replace("-","")
+                    }
+                    val stringList = resultString.split(" ")
 
                     if (stringList.size in 1..3) {
                         var i = 0
-                        makeArray.forEach {
-                            println("result: ${stringList[0]} | makeArrayValue:  $it")
-                            if (stringList[0] == it) {
-                                println(it)
-                                println(modelSpinner.selectedItem)
-                                modelSpinner.visibility = View.VISIBLE
-                                modelSpinner.setSelection(0)
+                        var set = false
+                        if (!set) {
+                            makeArray.forEach {
+                                println("result: ${stringList[0]} | makeArrayValue:  $it")
 
-                                makeSpinner.setSelection(i)
-                                modelArray.clear()
-                                modelArray.add("Select One")
-
-
-                                carArray.forEach{
-                                    if (makeSpinner.selectedItem == it.make && !modelArray.contains(it.model)){
-                                        modelArray.add(it.model)
-                                    }
+                                var replaceString = it
+                                if (it.contains("-")) {
+                                    replaceString = it.replace("-", "")
                                 }
-                            } else if (i == makeArray.size - 1) {
-//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+
+                                if (stringList[0] == replaceString) {
+                                    println(replaceString)
+                                    makeSpinner.setSelection(i)
+                                    set = true
+                                }
+                                if (i == makeArray.size - 1 && !set) {
+                                    Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                                }
+                                i++
                             }
-                            i++
                         }
                     }
 
                     if (stringList.size in 2..3) {
-                        var index = 0
-                        modelArray.forEach {
-                            println("result: ${stringList[1]} | modelArrayValue:  $it")
-                            if (stringList[1] == it || stringList[1] == "F150") {
-                                println(it)
 
-
-                                yearSpinner.visibility = View.VISIBLE
-                                yearSpinner.setSelection(0)
-
-                                modelSpinner.setSelection(index)
-                                yearArray.clear()
-                                yearArray.add("Select One")
-
-
-                                carArray.forEach{
-                                    if (modelSpinner.selectedItem == it.model){
-                                        yearArray.add(it.year)
-                                    }
-                                }
-                            } else if (index == modelArray.size - 1) {
-//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                        modelArray.clear()
+                        modelArray.add("Select One")
+                        carArray.forEach {
+                            if (makeSpinner.selectedItem == it.make && !modelArray.contains(it.model)) {
+                                modelArray.add(it.model)
                             }
-                            index++
+                        }
+
+                        var set = false
+                        var index = 0
+                        if (!set) {
+                            modelArray.forEach {
+                                println("result: ${stringList[1]} | modelArrayValue:  $it")
+
+                                var replaceString = it
+                                if (it.contains("-")) {
+                                    replaceString = it.replace("-", "")
+                                }
+
+                                if (stringList[1] == replaceString) {
+                                    println(replaceString)
+
+                                    modelSpinner.visibility = View.VISIBLE
+                                    modelSpinner.setSelection(index)
+                                    set = true
+
+                                    yearArray.clear()
+                                    yearArray.add("Select One")
+                                    carArray.forEach {
+                                        if (modelSpinner.selectedItem == it.model) {
+                                            yearArray.add(it.year)
+                                        }
+                                    }
+                                } else if (index == modelArray.size - 1 && !set) {
+                                    Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                                }
+                                index++
+                            }
                         }
                     }
 
-
-
                     if (stringList.size == 3) {
                         var index2 = 0
-                        yearArray.forEach {
-                            println("result: ${stringList[2]} | yearArrayValue:  $it")
-                            if (stringList[2] == it) {
-                                println(it)
-                                yearSpinner.setSelection(index2)
+                        var set = false
+                        if (!set) {
+                            yearArray.forEach {
+                                var replaceString = it.toString()
+                                if (replaceString.contains("-")) {
+                                    replaceString = replaceString.replace("-", "")
+                                }
+
+                                println("result: ${stringList[2]} | yearArrayValue:  $replaceString")
+                                if (stringList[2] == replaceString) {
+                                    println(replaceString)
+                                    yearSpinner.setSelection(index2)
+                                    set = true
+                                } else if (index2 == yearArray.size-1 && !set) {
+                                    Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
+                                }
+                                index2++
                             }
-                            else if (index2 == yearArray.size) {
-//                                Toast.makeText(this, "No match found, please try again", Toast.LENGTH_LONG).show()
-                            }
-                            index2++
                         }
                     }
                 }

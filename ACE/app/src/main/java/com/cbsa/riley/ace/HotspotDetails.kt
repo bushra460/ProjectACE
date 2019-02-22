@@ -1,12 +1,15 @@
 package com.cbsa.riley.ace
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.SpannableStringBuilder
 import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -21,23 +24,21 @@ import java.net.URL
 import java.sql.Timestamp
 import java.util.*
 
-
-
-
 class HotspotDetails: AppCompatActivity(){
 
     var base64String:String = ""
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
     val carImageIdIntent = imageArrayList[0].carImageId
+    val REQ_CODE_SPEECH_INPUT = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.hotspotdetails)
 
-//        floatingActionButton.setOnClickListener {
-//            startVoiceInput()
-//        }
+        floatingActionButton.setOnClickListener {
+            startVoiceInput()
+        }
 
         val carMake = selectedCar.make
         val carModel = selectedCar.model
@@ -51,24 +52,6 @@ class HotspotDetails: AppCompatActivity(){
         }
 
         finishBttnClick()
-
-//        notesText.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable) {}
-//            override fun beforeTextChanged(s: CharSequence, start: Int,
-//                                           count: Int, after: Int) {  }
-//            override fun onTextChanged(s: CharSequence, start: Int,
-//                                       before: Int, count: Int) {
-//                if (notesText.text != null) {
-//                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
-//                    finishBttn.setTextColor(colorValue)
-//                    finishBttn.isEnabled = true
-//                } else {
-//                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
-//                    finishBttn.setTextColor(colorValue)
-//                    finishBttn.isEnabled = false
-//                }
-//            }
-//        })
     }
 
     fun finishBttnClick() {
@@ -130,6 +113,20 @@ class HotspotDetails: AppCompatActivity(){
                 finishBttn.setTextColor(colorValue)
                 finishBttn.isEnabled = true
 
+            }
+        }
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+
+
+                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    println("The result is: $result")
+                    val editable = SpannableStringBuilder(result[0])
+                    println(editable)
+
+                    notesText.text = editable
+                }
             }
         }
     }
@@ -203,35 +200,16 @@ class HotspotDetails: AppCompatActivity(){
     }
 
 
-//    private fun startVoiceInput() {
-//        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-//        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please say the make, model and year of the car you are searching for")
-//        try {
-//            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
-//        } catch (a: ActivityNotFoundException) {
-//
-//        }
-//
-//    }
-//
-//
-//
-//    fun onActivitysResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        when (requestCode) {
-//            REQ_CODE_SPEECH_INPUT -> {
-//                if (resultCode == Activity.RESULT_OK && data != null) {
-//                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-//                    println("The result is: $result")
-//                    val editable = SpannableStringBuilder(result[0])
-//                    println(editable)
-//
-//                    notesText.text = editable
-//                }
-//            }
-//        }
-//    }
+    private fun startVoiceInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please say the make, model and year of the car you are searching for")
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+        } catch (a: ActivityNotFoundException) {
+
+        }
+    }
 }
 

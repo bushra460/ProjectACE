@@ -20,6 +20,7 @@ val SHAREDPREFS = "com.cbsa.riley.ace"
 var selectedCar = carArray[0]
 var hotspotArrayList = ArrayList<NewDataClassHotspot>()
 var imageArrayList = ArrayList<NewDataClassCarImage>()
+var voiceStrings = ArrayList<String>()
 
 
 class ImageViewPage: AppCompatActivity() {
@@ -35,7 +36,8 @@ class ImageViewPage: AppCompatActivity() {
             var index = 0
             val carId = intent.getIntExtra("carId", 0)
             carArray.forEach {
-                if (carId == it.carId) {
+                val car = it
+                if (carId == car.carId) {
                     selectedCar = carArray[index]
                 }
                 index += 1
@@ -45,15 +47,11 @@ class ImageViewPage: AppCompatActivity() {
             hotspotArrayList = selectedCar.hotspotArrayList!!
             imageArrayList = selectedCar.imageArrayList!!
 
-
-
-
             hotspotArrayList.forEach {
                 if (it.carId == selectedCar.carId) {
                     println(hotspotArrayList)
                 }
             }
-
 
             checkExterior()
             if (exterior) {
