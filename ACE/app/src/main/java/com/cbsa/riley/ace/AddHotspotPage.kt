@@ -62,11 +62,12 @@ class AddHotspotPage: AppCompatActivity(){
     fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
-                if (it.exteriorImage == exterior) {
+            var hotspot = it
+            if (hotspot.carId == selectedCar.carId) {
+                if (hotspot.exteriorImage == exterior) {
                     val canvas = Canvas(bitmap)
-                    val xLoc = it.xLoc
-                    val yLoc = it.yLoc
+                    val xLoc = hotspot.xLoc
+                    val yLoc = hotspot.yLoc
                     val left = xLoc - 30.0f
                     val top = yLoc + 30.0f
                     val right = xLoc + 30.0f
@@ -124,16 +125,17 @@ class AddHotspotPage: AppCompatActivity(){
 
     fun setImage() {
         imageArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
+            val image = it
+            if (image.carId == selectedCar.carId) {
                 if (exterior) {
-                    if (it.exteriorImage) {
-                        carImageId = it.carImageId
-                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
+                    if (image.exteriorImage) {
+                        carImageId = image.carImageId
+                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
                     }
                 } else {
-                    if (!it.exteriorImage) {
-                        carImageId = it.carImageId
-                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
+                    if (!image.exteriorImage) {
+                        carImageId = image.carImageId
+                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
                     }
                 }
 
