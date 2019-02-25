@@ -1,31 +1,5 @@
 package com.cbsa.riley.ace
 
-import com.beust.klaxon.Json
-
-data class Car(
-    @Json(name = "manufacturerNameId") val makeId: String,
-    @Json(name = "manufacturerName") val make: String,
-    @Json(name = "modelNameId") val modelId: String,
-    @Json(name = "modelName") val model: String,
-    val yearId: String,
-    val year: String,
-    val carImageId: Int,
-    val carImageURI: String,
-    val exteriorImage: Boolean,
-    val active: Boolean,
-    val carId: Int
-)
-
-data class Hotspot(
-    val carImageId: Int,
-    val xLoc: Int,
-    val yLoc: Int,
-    val hotspotId: Int,
-    val hotspotUri: String,
-    val notes: String,
-    val carId: Int?
-)
-
 data class ImagePOST(
     val encodedImage: String,
     val imageName: String

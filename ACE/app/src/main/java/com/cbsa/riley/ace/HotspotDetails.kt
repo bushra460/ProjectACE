@@ -29,7 +29,7 @@ class HotspotDetails: AppCompatActivity(){
     var base64String:String = ""
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
-    val carImageIdIntent = imageArrayList[0].carImageId
+    val carImageIdIntent = imageArrayList[selectedImage].carImageId
     val REQ_CODE_SPEECH_INPUT = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,11 +143,10 @@ class HotspotDetails: AppCompatActivity(){
 
      fun postData(uri: String) {
          val notes = notesText.text.toString()
-         val carImageId = CarImage(carImageId = carImageIdIntent)
+         val carImageId = CarImage(carImageIdIntent)
 
          val xLoc = intent.getIntExtra("xLoc", 0)
          val yLoc = intent.getIntExtra("yLoc", 0)
-
 
          val hotspotDetails = ArrayList<HotspotDeets>()
          val hotspotDeets = HotspotDeets(uri, notes, true)
