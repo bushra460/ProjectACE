@@ -32,7 +32,6 @@ class SearchAdapter(val context: Context, val hotspotList: ArrayList<NewDataClas
     override fun getItemCount(): Int {
         var index = 0
         hotspotArrayList.forEach {
-            println(it.carId.toString() + "  vs  "+ selectedCar.carId.toString())
             if (it.carId == selectedCar.carId){
                 index++
             }

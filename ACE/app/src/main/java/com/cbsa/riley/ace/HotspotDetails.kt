@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.SpannableStringBuilder
 import android.util.Base64
+import android.view.View
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.squareup.picasso.Picasso
@@ -29,7 +30,7 @@ class HotspotDetails: AppCompatActivity(){
     var base64String:String = ""
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
-    val carImageIdIntent = imageArrayList[0].carImageId
+    val carImageIdIntent = imageArrayList[selectedImage].carImageId
     val REQ_CODE_SPEECH_INPUT = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +58,7 @@ class HotspotDetails: AppCompatActivity(){
     fun finishBttnClick() {
         finishBttn.setOnClickListener {
             finishBttn.isEnabled = false
+            runOnUiThread { progress_loader.visibility = View.VISIBLE }
             val date = Date()
             val ts = Timestamp(date.time)
             val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}")
@@ -102,7 +104,7 @@ class HotspotDetails: AppCompatActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) when (requestCode) {
             1 -> {
-                val extras = data?.getExtras()
+                val extras = data?.extras
                 val imageBitmap = extras?.get("data") as Bitmap
 
                 base64String = getBase64String(imageBitmap)
@@ -143,7 +145,7 @@ class HotspotDetails: AppCompatActivity(){
 
      fun postData(uri: String) {
          val notes = notesText.text.toString()
-         val carImageId = CarImage(carImageId = carImageIdIntent)
+         val carImageId = CarImage(carImageIdIntent)
 
          val xLoc = intent.getIntExtra("xLoc", 0)
          val yLoc = intent.getIntExtra("yLoc", 0)
@@ -169,9 +171,9 @@ class HotspotDetails: AppCompatActivity(){
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
+             runOnUiThread { progress_loader.visibility = View.INVISIBLE }
              sendIntent()
          }
-
 
          GlobalScope.launch {
                  URL(postURL).run {
