@@ -10,9 +10,8 @@ class ViewHotspotDetails: AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.viewhotspotdetails)
         val hotspotID = intent.getIntExtra("hotspotID", 0)
-        //val carValue = intent.getStringExtra("carValue")
-        //println(carValue)
-        //toolbar.title = carValue
+        println(carValue)
+        toolbar.title = carValue
 
         hotspotArrayList.forEach {
             if (hotspotID == it.hotspotId){
@@ -21,6 +20,8 @@ class ViewHotspotDetails: AppCompatActivity(){
                 textView.text = it.notes
             }
         }
-
+//        imageView.setOnClickListener {
+//
+//        }
     }
 }

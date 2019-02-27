@@ -20,12 +20,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.net.URL
 
+
+
 var exterior = true
 val SHAREDPREFS = "com.cbsa.riley.ace"
 var selectedCar = carArray[0]
 var hotspotArrayList = ArrayList<NewDataClassHotspot>()
 var imageArrayList = ArrayList<NewDataClassCarImage>()
 var selectedImage = 0
+var carValue = ""
 
 
 class ImageViewPage: AppCompatActivity() {
@@ -56,6 +59,8 @@ class ImageViewPage: AppCompatActivity() {
                 }
             }
 
+            resizeForScreenSize()
+
             checkExterior()
             if (exterior) {
                 setExteriorImage()
@@ -68,8 +73,9 @@ class ImageViewPage: AppCompatActivity() {
             val carMake = selectedCar.make
             val carModel = selectedCar.model
             val carYear = selectedCar.year
-            imageViewToolbar.title = "$carMake $carModel $carYear"
-            println("$carMake $carModel $carYear")
+            carValue = "$carMake $carModel $carYear"
+            imageViewToolbar.title = carValue
+            println(carValue)
 
             fab.setOnClickListener {
                 setExterior()
@@ -285,5 +291,22 @@ class ImageViewPage: AppCompatActivity() {
             val json = URL("https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/car-images/${imageArrayList[selectedImage].carImageId}").readText()
             workload(json)
         }
+    }
+
+    fun resizeForScreenSize(){
+        val heightDefault = 1794.0f
+        val widthdefault = 1080.0f
+        val display = windowManager.defaultDisplay
+        val width = display.width
+        val height = display.height
+        val heightDifference = height - heightDefault
+        val widthDifference = width - widthdefault
+        if (heightDifference > 0) {
+            hotspotImageViewE.translationY = heightDifference/2.2f
+        }
+        if (widthDifference > 0) {
+            hotspotImageViewE.translationX = widthDifference/2
+        }
+        println("resizeForScreenSize:   $width    $height")
     }
 }
