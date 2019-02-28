@@ -312,11 +312,58 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     println("The result is: $result")
                     var resultString = result[0]
-
                     if (result[0].contains("-")) {
                         resultString = result[0].replace("-", "")
                     }
                     val stringList = resultString.split(" ")
+                    val voiceModelArray = ArrayList<String>()
+                    val voiceYearArray = ArrayList<String>()
+
+
+//                    carArray.forEach {
+//                        voiceModelArray.add(it.model)
+//                    }
+//                    carArray.forEach {
+//                        voiceYearArray.add(it.year)
+//                    }
+//                    stringList.forEach{
+//                        var set = false
+//                        var makeIndex = 0
+//                        var modelIndex = 0
+//                        var yearIndex = 0
+//                        var searchTerm = it
+//                        if (it.contains("-")) {
+//                            searchTerm = it.replace("-", "")
+//                        }
+//                        if (!set){
+//                            makeArray.forEach{
+//                                if (it == searchTerm){
+//                                    makeSpinner.setSelection(makeIndex)
+//                                    set = true
+//                                }
+//                                makeIndex++
+//                            }
+//                            voiceModelArray.forEach{
+//                                if (it == searchTerm){
+//                                    modelSpinner.visibility = View.VISIBLE
+//                                    modelSpinner.setSelection(modelIndex)
+//                                    set = true
+//                                }
+//                                modelIndex++
+//                            }
+//                            voiceYearArray.forEach{
+//                                if (it == searchTerm){
+//                                    yearSpinner.setSelection(yearIndex)
+//                                    set = true
+//                                }
+//                                yearIndex++
+//                            }
+//                        }
+//                    }
+
+
+
+
 
                     if (stringList.size in 1..3) {
                         var i = 0

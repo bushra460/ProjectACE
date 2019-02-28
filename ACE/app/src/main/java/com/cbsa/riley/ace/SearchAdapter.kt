@@ -29,8 +29,9 @@ class SearchAdapter(val context: Context, val make: String, val model: String, v
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.search_list_item, parent, false)
         v.setOnClickListener {
+            println("clicked car Id:   ${v.id}")
             val intent = Intent(context, ImageViewPage::class.java)
-            intent.putExtra("hotspotID", v.id)
+            intent.putExtra("carId", v.id)
             context.startActivity(intent)
         }
         return ViewHolder(v)

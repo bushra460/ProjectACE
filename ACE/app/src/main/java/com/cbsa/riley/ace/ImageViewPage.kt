@@ -45,6 +45,7 @@ class ImageViewPage: AppCompatActivity() {
             val carId = intent.getIntExtra("carId", 0)
             carArray.forEach {
                 val car = it
+                println(carId)
                 if (carId == car.carId) {
                     selectedCar = carArray[index]
                 }
