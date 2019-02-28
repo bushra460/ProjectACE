@@ -16,7 +16,7 @@
                 android:layout_height="75dp"
                 tools:srcCompat="@tools:sample/avatars"
                 android:id="@+id/thumbnail"
-                android:contentDescription="@string/contentDescriptionCar"
+                android:contentDescription="CarPicture"
         />
         <LinearLayout
                 android:padding="10dp"

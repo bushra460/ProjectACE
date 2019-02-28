@@ -98,7 +98,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                     modelArray.add(it.model)
                 }
             }
-            modelSpinner.setSelection(0)
+
             modelSpinner.visibility = View.VISIBLE
             yearSpinner.visibility = View.INVISIBLE
         }
@@ -316,54 +316,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                         resultString = result[0].replace("-", "")
                     }
                     val stringList = resultString.split(" ")
-                    val voiceModelArray = ArrayList<String>()
-                    val voiceYearArray = ArrayList<String>()
-
-
-//                    carArray.forEach {
-//                        voiceModelArray.add(it.model)
-//                    }
-//                    carArray.forEach {
-//                        voiceYearArray.add(it.year)
-//                    }
-//                    stringList.forEach{
-//                        var set = false
-//                        var makeIndex = 0
-//                        var modelIndex = 0
-//                        var yearIndex = 0
-//                        var searchTerm = it
-//                        if (it.contains("-")) {
-//                            searchTerm = it.replace("-", "")
-//                        }
-//                        if (!set){
-//                            makeArray.forEach{
-//                                if (it == searchTerm){
-//                                    makeSpinner.setSelection(makeIndex)
-//                                    set = true
-//                                }
-//                                makeIndex++
-//                            }
-//                            voiceModelArray.forEach{
-//                                if (it == searchTerm){
-//                                    modelSpinner.visibility = View.VISIBLE
-//                                    modelSpinner.setSelection(modelIndex)
-//                                    set = true
-//                                }
-//                                modelIndex++
-//                            }
-//                            voiceYearArray.forEach{
-//                                if (it == searchTerm){
-//                                    yearSpinner.setSelection(yearIndex)
-//                                    set = true
-//                                }
-//                                yearIndex++
-//                            }
-//                        }
-//                    }
-
-
-
-
 
                     if (stringList.size in 1..3) {
                         var i = 0
