@@ -166,7 +166,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                     intent.putExtra("searchResultsModel", modelSpinner.selectedItem.toString())
 
                     startActivity(intent)
-                } else {
+                } else if (index == 1) {
                     val intent = Intent(this, ImageViewPage::class.java)
                     carArray.forEach {
                         if (it.make == makeSpinner.selectedItem && it.model == modelSpinner.selectedItem){
