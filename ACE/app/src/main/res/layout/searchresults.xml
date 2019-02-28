@@ -4,12 +4,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
->
+        android:background="@android:color/white">
+
     <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@color/CBSA_Blue"
             app:titleTextColor="@android:color/white"
             app:title="@string/Search"
@@ -20,9 +22,6 @@
             android:id="@+id/recyclerView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="52dp"/>
+            android:layout_below="@id/my_toolbar"/>
 
 </RelativeLayout>
