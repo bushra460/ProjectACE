@@ -19,7 +19,7 @@ class ListViewPage: AppCompatActivity() {
         listViewToolbar.title = "$carMake $carModel $carYear"
 
         //Access the RecyclerView Adapter and load the data into it
-        recyclerView2.adapter = SearchAdapter(this ,hotspotArrayList)
+        recyclerView2.adapter = ListViewAdapter(this ,hotspotArrayList)
 
     }
 }

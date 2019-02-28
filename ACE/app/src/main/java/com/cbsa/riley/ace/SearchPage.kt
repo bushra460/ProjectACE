@@ -98,7 +98,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                     modelArray.add(it.model)
                 }
             }
-
+            modelSpinner.setSelection(0)
             modelSpinner.visibility = View.VISIBLE
             yearSpinner.visibility = View.INVISIBLE
         }
@@ -127,7 +127,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         }
 
-        if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One") {
+        if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One") {
             searchBttnE.isEnabled = true
             val blue = ContextCompat.getColor(this, R.color.CBSA_Blue)
             searchBttnE.setBackgroundColor(blue)
@@ -144,14 +144,38 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             val carModel: String = modelSpinner.selectedItem.toString()
             val carYear: String = yearSpinner.selectedItem.toString()
 
-            val intent = Intent(this, ImageViewPage::class.java)
 
-            carArray.forEach {
-                if (it.make == carMake && it.model == carModel && it.year == carYear) {
-                    intent.putExtra("carId", it.carId)
+            if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
+                val intent = Intent(this, ImageViewPage::class.java)
+                carArray.forEach {
+                    if (it.make == carMake && it.model == carModel && it.year == carYear) {
+                        intent.putExtra("carId", it.carId)
+                    }
+                }
+                startActivity(intent)
+            } else if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One"){
+                var index = 0
+                carArray.forEach {
+                    if (it.make == makeSpinner.selectedItem && it.model == modelSpinner.selectedItem){
+                        index += 1
+                    }
+                }
+                if (index > 1) {
+                    val intent = Intent(this, SearchResultsPage::class.java)
+                    intent.putExtra("searchResultsMake", makeSpinner.selectedItem.toString())
+                    intent.putExtra("searchResultsModel", modelSpinner.selectedItem.toString())
+
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this, ImageViewPage::class.java)
+                    carArray.forEach {
+                        if (it.make == makeSpinner.selectedItem && it.model == modelSpinner.selectedItem){
+                            intent.putExtra("carId", it.carId)
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
-            startActivity(intent)
         }
 
     }

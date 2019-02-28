@@ -76,6 +76,12 @@
                 android:label="@string/ListView"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity
+                android:name=".SearchResultsPage"
+                android:label="@string/Search"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        >
+        </activity>
     </application>
 
 </manifest>
