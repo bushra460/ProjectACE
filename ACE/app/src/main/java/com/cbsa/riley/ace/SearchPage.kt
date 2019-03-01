@@ -39,6 +39,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
             yearSpinner.setSelection(0)
             startVoiceInput()
         }
+        voiceBttn.isEnabled = false
+        makeSpinner.isEnabled = false
         makeData()
         setMakeSpinner()
         setModelYearSpinners()
@@ -278,7 +280,13 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 }
             }
             println("carArray data: $carArray")
-            runOnUiThread { progress_loader.visibility = View.INVISIBLE } }
+
+            runOnUiThread {
+                progress_loader.visibility = View.INVISIBLE
+                voiceBttn.isEnabled = true
+                makeSpinner.isEnabled = true
+            }
+        }
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
         GlobalScope.launch {

@@ -34,7 +34,7 @@ class AddHotspotPage: AppCompatActivity(){
             exterior = intent.getBooleanExtra("exterior",true)
 
             setImage()
-
+            resizeForScreenSize()
             val carMake = selectedCar.make
             val carModel = selectedCar.model
             val carYear = selectedCar.year
@@ -141,5 +141,21 @@ class AddHotspotPage: AppCompatActivity(){
 
             }
         }
+    }
+    fun resizeForScreenSize(){
+        val heightDefault = 1794.0f
+        val widthdefault = 1080.0f
+        val display = windowManager.defaultDisplay
+        val width = display.width
+        val height = display.height
+        val heightDifference = height - heightDefault
+        val widthDifference = width - widthdefault
+        if (heightDifference > 0) {
+            previousHotspotImage.translationY = heightDifference/2.2f
+        }
+        if (widthDifference > 0) {
+            previousHotspotImage.translationX = widthDifference/2
+        }
+        println("resizeForScreenSize:   $width    $height")
     }
 }
