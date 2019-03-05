@@ -1,5 +1,6 @@
 package com.cbsa.riley.ace
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -31,7 +32,8 @@ class AddHotspotPage: AppCompatActivity(){
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus){
-            exterior = intent.getBooleanExtra("exterior",true)
+            val prefs = getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE)
+            exterior = prefs.getBoolean("exterior", true)
 
             setImage()
             resizeForScreenSize()
@@ -62,7 +64,7 @@ class AddHotspotPage: AppCompatActivity(){
     fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            var hotspot = it
+            val hotspot = it
             if (hotspot.carId == selectedCar.carId) {
                 if (hotspot.exteriorImage == exterior) {
                     val canvas = Canvas(bitmap)
@@ -131,6 +133,7 @@ class AddHotspotPage: AppCompatActivity(){
                     if (image.exteriorImage) {
                         carImageId = image.carImageId
                         Picasso.get().load(image.carImageURI).into(addHotspotImageView)
+                        addHotspotImageView.maxHeight = hotspotImage.measuredHeight
                     }
                 } else {
                     if (!image.exteriorImage) {

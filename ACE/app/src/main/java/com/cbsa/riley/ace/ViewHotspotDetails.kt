@@ -15,13 +15,10 @@ class ViewHotspotDetails: AppCompatActivity(){
 
         hotspotArrayList.forEach {
             if (hotspotID == it.hotspotId){
-                Picasso.get().load(it.hotspotUri).into(imageView)
+                Picasso.get().load(it.hotspotUri).into(photo_view)
 
                 textView.text = it.notes
             }
         }
-//        imageView.setOnClickListener {
-//
-//        }
     }
 }

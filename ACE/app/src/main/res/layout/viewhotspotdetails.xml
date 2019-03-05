@@ -15,19 +15,29 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
     </android.support.v7.widget.Toolbar>
-    <ImageView
-            android:layout_width="200dp"
+    <!--<ImageView-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--tools:srcCompat="@tools:sample/avatars"-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:layout_below="@id/toolbar" android:layout_marginTop="24dp"-->
+            <!--android:layout_marginStart="24dp" android:layout_marginEnd="24dp" android:layout_marginBottom="24dp"-->
+            <!--android:contentDescription="Hotspot Detail Image"/>-->
+
+    <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
-            tools:srcCompat="@tools:sample/avatars"
-            android:id="@+id/imageView"
-            android:layout_below="@id/toolbar" android:layout_marginTop="24dp"
-            android:layout_marginStart="24dp" android:layout_marginEnd="24dp" android:layout_marginBottom="24dp"
-            android:contentDescription="Hotspot Detail Image"/>
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/hotspot_detail_image" android:layout_marginBottom="24dp"
+            android:layout_marginStart="24dp" android:layout_marginEnd="24dp" android:adjustViewBounds="false"
+    />
     <TextView
             android:text="@string/Notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/notesLabel"
-            android:layout_below="@+id/imageView" android:layout_marginBottom="6dp"
+            android:layout_below="@+id/photo_view" android:layout_marginBottom="6dp"
             android:textColor="@color/disabledButton" android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"/>
     <TextView

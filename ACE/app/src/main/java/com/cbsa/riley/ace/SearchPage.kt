@@ -90,6 +90,7 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
 
         if (makeSpinner.selectedItem == spinOption && spinOption != "Select One") {
             println("Spinner 1: " + spinOption)
+            val selectedItem = modelSpinner.selectedItem
 
             if (modelArray.count() >= 2) {
                 modelArray.clear()
@@ -99,6 +100,10 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 if (spinOption == it.make && !modelArray.contains(it.model)) {
                     modelArray.add(it.model)
                 }
+            }
+
+            if (!modelArray.contains(selectedItem)) {
+                modelSpinner.setSelection(0)
             }
 
             modelSpinner.visibility = View.VISIBLE
@@ -216,11 +221,9 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                         val year = it.asJsonObject
                         val yearId = year.get("modelYearId").asString
                         val yearName = year.get("yearValue").asString
-
                         val carData = year.get("car").asJsonObject
                         val carDataId = carData.get("carId").asInt
                         val carImageArray = carData.get("carImage").asJsonArray
-
                         carImageArray.forEach {
                             val carImageObj = it.asJsonObject
                             val carImageId = carImageObj.get("carImageId").asInt
@@ -280,6 +283,8 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 }
             }
             println("carArray data: $carArray")
+            println("hotspot Array List size makeData():   " + newHotspotArray.size )
+
 
             runOnUiThread {
                 progress_loader.visibility = View.INVISIBLE

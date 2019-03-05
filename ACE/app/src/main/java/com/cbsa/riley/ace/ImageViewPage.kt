@@ -40,12 +40,12 @@ class ImageViewPage: AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
+            println("onwindowfocuschanged() arraylistsize:    ${newHotspotArray.size}")
             var numTab = 0
             var index = 0
             val carId = intent.getIntExtra("carId", 0)
             carArray.forEach {
                 val car = it
-                println(carId)
                 if (carId == car.carId) {
                     selectedCar = carArray[index]
                 }
@@ -66,10 +66,11 @@ class ImageViewPage: AppCompatActivity() {
             if (exterior) {
                 setExteriorImage()
             } else {
-                setExteriorImage()
-                //setInteriorImage()
+                setInteriorImage()
+                val tab = tabLayout.getTabAt(1)
+                tab?.select()
             }
-            refreshHotspotList()
+            //refreshHotspotList()
 
             val carMake = selectedCar.make
             val carModel = selectedCar.model
@@ -115,13 +116,13 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setExteriorImage() {
-        fab.isEnabled = true
+        //fab.isEnabled = true
         setExterior()
         var index = 0
+        println("Exterior view")
         imageArrayList.forEach {
             if (it.carId == selectedCar.carId) {
                 if (it.exteriorImage) {
-                    println("Exterior view")
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load(it.carImageURI).into(imageViewE)
@@ -134,26 +135,21 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setInteriorImage() {
-        fab.isEnabled = false
+        //fab.isEnabled = false
         setExterior()
         var index = 0
+        println("Interior view")
         imageArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
+            //**************UNCOMMENT WHEN ALL CARS HAVE INTERIOR IMAGES*****************
+            //if (it.carId == selectedCar.carId) {
                 if (!it.exteriorImage) {
-                    println("Interior view")
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load(it.carImageURI).into(imageViewE)
                     selectedImage = index
                     setHotspots()
-                } else {
-                    imageViewE.setImageResource(0)
-                    hotspotImageViewE.setImageResource(0)
-                    Picasso.get().load("https://via.placeholder.com/150").into(imageViewE)
-                    selectedImage = 0
-                    setHotspots()
                 }
-            }
+            //}
             index += 1
         }
     }
@@ -161,71 +157,71 @@ class ImageViewPage: AppCompatActivity() {
     fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(hotspotImageViewE.width, hotspotImageViewE.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
-                if (it.exteriorImage == exterior) {
-                    val canvas = Canvas(bitmap)
-                    val xLoc = it.xLoc
-                    val yLoc = it.yLoc
-                    val left = xLoc - 30.0f
-                    val top = yLoc + 30.0f
-                    val right = xLoc + 30.0f
-                    val bottom = yLoc - 30.0f
-                    val paint = Paint()
-                    val stroke = Paint()
-                    paint.color = Color.YELLOW
-                    stroke.color = Color.RED
-                    stroke.style = Paint.Style.STROKE
-                    stroke.strokeWidth = 10.0f
+            val hotspot = it
+            val exteriorImagecheck = imageArrayList[selectedImage].carImageId
+            println(exteriorImagecheck.toString() + "*****************" + hotspot.carImageId)
+            if (exteriorImagecheck == hotspot.carImageId) {
+                val canvas = Canvas(bitmap)
+                val xLoc = hotspot.xLoc
+                val yLoc = hotspot.yLoc
+                val left = xLoc - 30.0f
+                val top = yLoc + 30.0f
+                val right = xLoc + 30.0f
+                val bottom = yLoc - 30.0f
+                val paint = Paint()
+                val stroke = Paint()
+                paint.color = Color.YELLOW
+                stroke.color = Color.RED
+                stroke.style = Paint.Style.STROKE
+                stroke.strokeWidth = 10.0f
 
-                    canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-                    canvas.drawOval(left, top, right, bottom, stroke)
+                canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                canvas.drawOval(left, top, right, bottom, stroke)
 
-                    hotspotImageViewE.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
-                        when (motionEvent.action) {
-                            MotionEvent.ACTION_DOWN -> {
+                hotspotImageViewE.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
+                    when (motionEvent.action) {
+                        MotionEvent.ACTION_DOWN -> {
 
-                                val x: Int = motionEvent.x.toInt()
-                                val y: Int = motionEvent.y.toInt()
-                                val bitmapWidth = 30
-                                val bitmapHeight = 30
-                                var i = 0
+                            val x: Int = motionEvent.x.toInt()
+                            val y: Int = motionEvent.y.toInt()
+                            val bitmapWidth = 30
+                            val bitmapHeight = 30
+                            var i = 0
 
-                                println("X location Tapped: " + motionEvent.x.toInt())
-                                println("Y location Tapped: " + motionEvent.y.toInt())
+                            println("X location Tapped: " + motionEvent.x.toInt())
+                            println("Y location Tapped: " + motionEvent.y.toInt())
 
-                                while (i < hotspotArrayList.size) {
-                                    val xLocCheck = hotspotArrayList[i].xLoc
-                                    val yLocCheck = hotspotArrayList[i].yLoc
+                            while (i < hotspotArrayList.size) {
+                                val xLocCheck = hotspotArrayList[i].xLoc
+                                val yLocCheck = hotspotArrayList[i].yLoc
 
-                                    if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
-                                        val xdistance = Math.abs(hotspotArrayList[0].xLoc - x)
-                                        val ydistance = Math.abs(hotspotArrayList[0].yLoc - y)
-                                        var distance = xdistance + ydistance
-                                        var idx = 0
-                                        for (c in 1 until hotspotArrayList.size) {
-                                            val cxdistance = Math.abs(hotspotArrayList[c].xLoc - x)
-                                            val cydistance = Math.abs(hotspotArrayList[c].yLoc - y)
-                                            val cdistance = cxdistance + cydistance
-                                            if (cdistance < distance) {
-                                                idx = c
-                                                distance = cdistance
-                                            }
+                                if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
+                                    val xdistance = Math.abs(hotspotArrayList[0].xLoc - x)
+                                    val ydistance = Math.abs(hotspotArrayList[0].yLoc - y)
+                                    var distance = xdistance + ydistance
+                                    var idx = 0
+                                    for (c in 1 until hotspotArrayList.size) {
+                                        val cxdistance = Math.abs(hotspotArrayList[c].xLoc - x)
+                                        val cydistance = Math.abs(hotspotArrayList[c].yLoc - y)
+                                        val cdistance = cxdistance + cydistance
+                                        if (cdistance < distance) {
+                                            idx = c
+                                            distance = cdistance
                                         }
-                                        val theNumber = hotspotArrayList[idx].hotspotId!!
-                                        //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
-                                        //println("exteriorHotspotID array: $exteriorHotspotID")
-                                        toHotspotDetails(theNumber)
-                                        println("the number is: $theNumber")
                                     }
-
-                                    i++
+                                    val theNumber = hotspotArrayList[idx].hotspotId!!
+                                    //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
+                                    //println("exteriorHotspotID array: $exteriorHotspotID")
+                                    toHotspotDetails(theNumber)
+                                    println("the number is: $theNumber")
                                 }
+
+                                i++
                             }
                         }
-                        return@OnTouchListener true
-                    })
-
-                }
+                    }
+                    return@OnTouchListener true
+                })
             }
         }
         hotspotImageViewE.setImageBitmap(bitmap)
@@ -255,6 +251,7 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun toHotspotDetails(hotspotID: Int) {
+        setExterior()
         val intent = Intent(this, ViewHotspotDetails::class.java)
         intent.putExtra("hotspotID", hotspotID)
         setExterior()
@@ -308,6 +305,5 @@ class ImageViewPage: AppCompatActivity() {
         if (widthDifference > 0) {
             hotspotImageViewE.translationX = widthDifference/2
         }
-        println("resizeForScreenSize:   $width    $height")
     }
 }
