@@ -18,7 +18,7 @@ class MainActivity : Activity() {
         //HANDLE SEARCH BUTTON CLICKS
         val searchBttn = SearchBttnE
         searchBttn.setOnClickListener {
-            val intent = Intent(this, searchPage::class.java)
+            val intent = Intent(this, SearchPage::class.java)
 
             startActivity(intent)
         }

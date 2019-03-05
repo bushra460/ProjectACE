@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -29,7 +30,7 @@ var carArray = ArrayList<NewDataClassCar>()
 val newHotspotArray = ArrayList<NewDataClassHotspot>()
 val newImageArray = ArrayList<NewDataClassCarImage>()
 
-class searchPage : Activity(), AdapterView.OnItemSelectedListener {
+class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -283,7 +284,6 @@ class searchPage : Activity(), AdapterView.OnItemSelectedListener {
                 }
             }
             println("carArray data: $carArray")
-            println("hotspot Array List size makeData():   " + newHotspotArray.size )
 
 
             runOnUiThread {

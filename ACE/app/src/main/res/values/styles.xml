@@ -23,6 +23,12 @@
         <item name="android:statusBarColor">@color/CBSA_Blue</item>
     </style>
 
+    <style name="Theme.AppCompat.Light.NoStatusBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/background_dark</item>
+    </style>
+
     <style name="Theme.AppCompat.Light.ActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="Theme.AppCompat.Light.ActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

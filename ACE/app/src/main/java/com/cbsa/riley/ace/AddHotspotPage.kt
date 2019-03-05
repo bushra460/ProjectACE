@@ -76,7 +76,7 @@ class AddHotspotPage: AppCompatActivity(){
                     val bottom = yLoc - 30.0f
                     val paint = Paint()
                     val stroke = Paint()
-                    paint.color = Color.YELLOW
+                    paint.color = Color.MAGENTA
                     stroke.color = Color.RED
                     stroke.style = Paint.Style.STROKE
                     stroke.strokeWidth = 10.0f

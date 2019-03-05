@@ -159,7 +159,6 @@ class ImageViewPage: AppCompatActivity() {
         hotspotArrayList.forEach {
             val hotspot = it
             val exteriorImagecheck = imageArrayList[selectedImage].carImageId
-            println(exteriorImagecheck.toString() + "*****************" + hotspot.carImageId)
             if (exteriorImagecheck == hotspot.carImageId) {
                 val canvas = Canvas(bitmap)
                 val xLoc = hotspot.xLoc
@@ -170,7 +169,7 @@ class ImageViewPage: AppCompatActivity() {
                 val bottom = yLoc - 30.0f
                 val paint = Paint()
                 val stroke = Paint()
-                paint.color = Color.YELLOW
+                paint.color = Color.MAGENTA
                 stroke.color = Color.RED
                 stroke.style = Paint.Style.STROKE
                 stroke.strokeWidth = 10.0f
@@ -184,8 +183,8 @@ class ImageViewPage: AppCompatActivity() {
 
                             val x: Int = motionEvent.x.toInt()
                             val y: Int = motionEvent.y.toInt()
-                            val bitmapWidth = 30
-                            val bitmapHeight = 30
+                            val bitmapWidth = 40
+                            val bitmapHeight = 40
                             var i = 0
 
                             println("X location Tapped: " + motionEvent.x.toInt())
@@ -215,7 +214,6 @@ class ImageViewPage: AppCompatActivity() {
                                     toHotspotDetails(theNumber)
                                     println("the number is: $theNumber")
                                 }
-
                                 i++
                             }
                         }
@@ -239,7 +237,7 @@ class ImageViewPage: AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val detailsIntent = Intent(this, searchPage::class.java)
+        val detailsIntent = Intent(this, SearchPage::class.java)
         //val transitionManager = contentTransitionManager
         //window.enterTransition = Explode()
 

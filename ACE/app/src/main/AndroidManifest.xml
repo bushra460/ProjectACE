@@ -36,11 +36,6 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".searchPage"
-                android:label="@string/Search"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-        <activity
                 android:name=".PrivacyPolicyEN"
                 android:label="@string/PrivacyPolicyEN"
                 android:theme="@style/Theme.AppCompat.Light.ActionBar">
@@ -54,7 +49,7 @@
                 android:name=".ImageViewPage"
                 android:label="@string/CarDetail"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                android:parentActivityName="com.cbsa.riley.ace.searchPage" >
+                android:parentActivityName="com.cbsa.riley.ace.SearchPage" >
         </activity>
         <activity
                 android:name=".AddHotspotPage"
@@ -81,6 +76,16 @@
                 android:label="@string/Search"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
+        </activity>
+        <activity
+                android:name=".SearchPage"
+                android:label="@string/Search"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+                android:name=".ImageFullscreen"
+                android:label="@string/Search"
+                android:theme="@style/Theme.AppCompat.Light.NoStatusBar">
         </activity>
     </application>
 

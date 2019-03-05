@@ -14,7 +14,6 @@ import android.util.Base64
 import android.view.View
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.hotspotdetails.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -47,7 +46,6 @@ class HotspotDetails: AppCompatActivity(){
 
         toolbar.title = "$carMake $carModel $carYear"
 
-        Picasso.get().load("https://via.placeholder.com/150").into(hotspotDetailsImageView)
         hotspotDetailsImageView.setOnClickListener{
             takePictureIntent()
         }
