@@ -12,7 +12,6 @@ class ViewHotspotDetails: AppCompatActivity(){
         setContentView(R.layout.viewhotspotdetails)
         val hotspotID = intent.getIntExtra("hotspotID", 0)
         var uri = ""
-        println(carValue)
         toolbar.title = carValue
 
         hotspotArrayList.forEach {

@@ -18,8 +18,15 @@ class ListViewPage: AppCompatActivity() {
         val carYear = selectedCar.year
         listViewToolbar.title = "$carMake $carModel $carYear"
 
+        val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
+        hotspotArrayList.forEach {
+            if (it.carId == selectedCar.carId){
+                selectedCarHotspots.add(it)
+            }
+        }
+
         //Access the RecyclerView Adapter and load the data into it
-        recyclerView2.adapter = ListViewAdapter(this ,hotspotArrayList)
+        recyclerView2.adapter = ListViewAdapter(this ,selectedCarHotspots)
 
     }
 }

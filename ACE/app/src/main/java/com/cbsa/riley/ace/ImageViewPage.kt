@@ -55,11 +55,6 @@ class ImageViewPage: AppCompatActivity() {
             hotspotArrayList = selectedCar.hotspotArrayList!!
             imageArrayList = selectedCar.imageArrayList!!
 
-            hotspotArrayList.forEach {
-                if (it.carId == selectedCar.carId) {
-                }
-            }
-
             resizeForScreenSize()
 
             checkExterior()
@@ -155,8 +150,14 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setHotspots() {
-        val bitmap: Bitmap = Bitmap.createBitmap(hotspotImageViewE.width, hotspotImageViewE.height, Bitmap.Config.ARGB_8888)
+        val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
         hotspotArrayList.forEach {
+            if (it.carId == selectedCar.carId){
+                selectedCarHotspots.add(it)
+            }
+        }
+        val bitmap: Bitmap = Bitmap.createBitmap(hotspotImageViewE.width, hotspotImageViewE.height, Bitmap.Config.ARGB_8888)
+        selectedCarHotspots.forEach {
             val hotspot = it
             val exteriorImagecheck = imageArrayList[selectedImage].carImageId
             if (exteriorImagecheck == hotspot.carImageId) {
@@ -190,29 +191,32 @@ class ImageViewPage: AppCompatActivity() {
                             println("X location Tapped: " + motionEvent.x.toInt())
                             println("Y location Tapped: " + motionEvent.y.toInt())
 
-                            while (i < hotspotArrayList.size) {
-                                val xLocCheck = hotspotArrayList[i].xLoc
-                                val yLocCheck = hotspotArrayList[i].yLoc
+                            while (i < selectedCarHotspots.size) {
+                                println( selectedCarHotspots[i].carImageId.toString() + "   |  " + imageArrayList[selectedImage].carImageId.toString())
+                                if (selectedCarHotspots[i].carImageId == imageArrayList[selectedImage].carImageId) {
+                                    val xLocCheck = selectedCarHotspots[i].xLoc
+                                    val yLocCheck = selectedCarHotspots[i].yLoc
 
-                                if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
-                                    val xdistance = Math.abs(hotspotArrayList[0].xLoc - x)
-                                    val ydistance = Math.abs(hotspotArrayList[0].yLoc - y)
-                                    var distance = xdistance + ydistance
-                                    var idx = 0
-                                    for (c in 1 until hotspotArrayList.size) {
-                                        val cxdistance = Math.abs(hotspotArrayList[c].xLoc - x)
-                                        val cydistance = Math.abs(hotspotArrayList[c].yLoc - y)
-                                        val cdistance = cxdistance + cydistance
-                                        if (cdistance < distance) {
-                                            idx = c
-                                            distance = cdistance
+                                    if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
+                                        val xdistance = Math.abs(selectedCarHotspots[0].xLoc - x)
+                                        val ydistance = Math.abs(selectedCarHotspots[0].yLoc - y)
+                                        var distance = xdistance + ydistance
+                                        var idx = 0
+                                        for (c in 1 until selectedCarHotspots.size) {
+                                            val cxdistance = Math.abs(selectedCarHotspots[c].xLoc - x)
+                                            val cydistance = Math.abs(selectedCarHotspots[c].yLoc - y)
+                                            val cdistance = cxdistance + cydistance
+                                            if (cdistance < distance) {
+                                                idx = c
+                                                distance = cdistance
+                                            }
                                         }
+                                        val theNumber = selectedCarHotspots[idx].hotspotId!!
+                                        //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
+                                        //println("exteriorHotspotID array: $exteriorHotspotID")
+                                        toHotspotDetails(theNumber)
+                                        println("the number is: $theNumber")
                                     }
-                                    val theNumber = hotspotArrayList[idx].hotspotId!!
-                                    //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
-                                    //println("exteriorHotspotID array: $exteriorHotspotID")
-                                    toHotspotDetails(theNumber)
-                                    println("the number is: $theNumber")
                                 }
                                 i++
                             }
