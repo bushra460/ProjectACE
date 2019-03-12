@@ -30,34 +30,48 @@
     <ImageView
             android:src="@drawable/addpicture"
             android:id="@+id/hotspotDetailsImageView"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/toolbar"
-            android:layout_marginTop="24dp"
+            android:layout_below="@+id/toolbar"
             android:contentDescription="@string/hotspot_detail_image"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginEnd="24dp" android:layout_marginTop="8dp"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/hotspotDetailsImageView"
+            android:ems="10"
+            android:id="@+id/titleText"
+            android:hint="Hotspot Location"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:maxLength="256" android:inputType="textShortMessage"
+            android:backgroundTint="@color/CBSA_Blue" android:textColorLink="@color/CBSA_Blue"
+            android:textCursorDrawable="@drawable/color_cursor" android:layout_below="@+id/hotspotDetailsImageView"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/notesText"
-            android:hint="Add Notes"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:maxLength="256"/>
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_below="@+id/titleText"
+            android:hint="Steps to Reproduce"
 
+            android:gravity="start"
+            android:textColorLink="@color/CBSA_Blue"
+            android:textCursorDrawable="@drawable/color_cursor" android:backgroundTint="@color/CBSA_Blue"
+            android:maxLines="3" android:maxLength="255"/>
     <ProgressBar
             android:id="@+id/progress_loader"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"

@@ -9,7 +9,9 @@ import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
 import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
 import com.google.gson.Gson
@@ -31,6 +33,7 @@ class HotspotDetails: AppCompatActivity(){
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
     val carImageIdIntent = imageArrayList[selectedImage].carImageId
     val REQ_CODE_SPEECH_INPUT = 100
+    var imageSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +43,22 @@ class HotspotDetails: AppCompatActivity(){
             startVoiceInput()
         }
 
-        val carMake = selectedCar.make
-        val carModel = selectedCar.model
-        val carYear = selectedCar.year
+        titleText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (imageSet && !titleText.text.isEmpty()){
+                    val colorValue = ContextCompat.getColor(this@HotspotDetails, android.R.color.white)
+                    finishBttn.setTextColor(colorValue)
+                    finishBttn.isEnabled = true
+                } else {
+                    val colorValue = ContextCompat.getColor(this@HotspotDetails, R.color.disabledButton)
+                    finishBttn.setTextColor(colorValue)
+                    finishBttn.isEnabled = false
+                }
+            }
+            override fun afterTextChanged(s: Editable) {}
+        })
 
-        toolbar.title = "$carMake $carModel $carYear"
 
         hotspotDetailsImageView.setOnClickListener{
             takePictureIntent()
@@ -59,7 +73,7 @@ class HotspotDetails: AppCompatActivity(){
             runOnUiThread { progress_loader.visibility = View.VISIBLE }
             val date = Date()
             val ts = Timestamp(date.time)
-            val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}")
+            val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}.jpg")
             fun workload(data: String) {
                 val gson = Gson()
                 val parse = JsonParser().parse(data)
@@ -109,23 +123,27 @@ class HotspotDetails: AppCompatActivity(){
 
                 hotspotDetailsImageView.setImageBitmap(imageBitmap)
 
-                val colorValue = ContextCompat.getColor(this, android.R.color.white)
-                finishBttn.setTextColor(colorValue)
-                finishBttn.isEnabled = true
-
+                imageSet = true
+                if (titleText.text.toString() != ""){
+                    val colorValue = ContextCompat.getColor(this, android.R.color.white)
+                    finishBttn.setTextColor(colorValue)
+                    finishBttn.isEnabled = true
+                }
             }
         }
         when (requestCode) {
             REQ_CODE_SPEECH_INPUT -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-
-
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     println("The result is: $result")
                     val editable = SpannableStringBuilder(result[0])
                     println(editable)
 
-                    notesText.text = editable
+                    if (titleText.text.isEmpty()){
+                        titleText.text = editable
+                    } else {
+                        notesText.text = editable
+                    }
                 }
             }
         }
@@ -147,13 +165,14 @@ class HotspotDetails: AppCompatActivity(){
 
          val xLoc = intent.getIntExtra("xLoc", 0)
          val yLoc = intent.getIntExtra("yLoc", 0)
+         val title = titleText.text.toString()
 
 
          val hotspotDetails = ArrayList<HotspotDeets>()
          val hotspotDeets = HotspotDeets(uri, notes, true)
          hotspotDetails.add(hotspotDeets)
 
-         val hotspotPost = HotspotPost(carImageId, xLoc, yLoc, "Front Exterior", true, hotspotDetails)
+         val hotspotPost = HotspotPost(carImageId, xLoc, yLoc, title, true, hotspotDetails)
 
          fun workload(data: String) {
              val gson = Gson()
@@ -165,7 +184,8 @@ class HotspotDetails: AppCompatActivity(){
              val hotspotId = returnedObject.get("hotspotId").asInt
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
-             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,"Front Exterior", true, carImageIdIntent, uri, notes, selectedCar.carId, exterior)
+             val title = titleText.text.toString()
+             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, uri, notes, selectedCar.carId, exterior)
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")

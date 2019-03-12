@@ -12,7 +12,7 @@ class ViewHotspotDetails: AppCompatActivity(){
         setContentView(R.layout.viewhotspotdetails)
         val hotspotID = intent.getIntExtra("hotspotID", 0)
         var uri = ""
-        toolbar.title = carValue
+
 
         hotspotArrayList.forEach {
             if (hotspotID == it.hotspotId){
@@ -20,6 +20,7 @@ class ViewHotspotDetails: AppCompatActivity(){
                 Picasso.get().load(it.hotspotUri).into(photo_view)
 
                 textView.text = it.notes
+                toolbar.title = it.hotspotDesc
             }
         }
         photo_view.setOnClickListener {

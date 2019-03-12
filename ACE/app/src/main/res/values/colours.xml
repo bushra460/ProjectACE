@@ -6,4 +6,5 @@
     <color name="colorPrimaryDark">#022550</color>
     <color name="colorAccent">#DECD01</color>
     <color name="disabledButton">#949494</color>
+    <color name="material">#081E41</color>
 </resources>
