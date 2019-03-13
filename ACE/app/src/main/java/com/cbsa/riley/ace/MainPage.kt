@@ -15,10 +15,10 @@ class MainActivity : Activity() {
         setContentView(R.layout.main)
         setExterior()
 
-        //HANDLE SEARCH BUTTON CLICKS
-        val searchBttn = SearchBttnE
-        searchBttn.setOnClickListener {
-            val intent = Intent(this, SearchPage::class.java)
+        //HANDLE LOGIN BUTTON CLICKS
+        val loginBttn = LoginBttnE
+        loginBttn.setOnClickListener {
+            val intent = Intent(this, LoginPage::class.java)
 
             startActivity(intent)
         }

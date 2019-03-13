@@ -60,7 +60,7 @@
             <!--android:textSize="21sp"-->
             <!--/>-->
 
-    <ImageButton android:id="@+id/SearchBttnE"
+    <ImageButton android:id="@+id/LoginBttnE"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_below="@+id/title"
@@ -72,10 +72,10 @@
                  android:background="@color/CBSA_Blue"
     />
 
-    <ImageButton android:id="@+id/VoiceBttn"
+    <ImageButton android:id="@+id/FrenchBttn"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_below="@id/SearchBttnE"
+                 android:layout_below="@id/LoginBttnE"
                  android:layout_centerInParent="true"
                  android:layout_centerHorizontal="true"
                  android:width="350dp"

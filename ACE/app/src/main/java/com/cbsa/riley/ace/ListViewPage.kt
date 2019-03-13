@@ -30,8 +30,6 @@ class ListViewPage: AppCompatActivity() {
             }
         }
 
-
-
         //Access the RecyclerView Adapter and load the data into it
         recyclerView2.adapter = ListViewAdapter(this ,selectedCarHotspots)
 

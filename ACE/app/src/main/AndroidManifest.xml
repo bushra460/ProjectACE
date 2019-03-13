@@ -87,6 +87,11 @@
                 android:label="@string/Search"
                 android:theme="@style/Theme.AppCompat.Light.NoStatusBar">
         </activity>
+        <activity
+                android:name=".LoginPage"
+                android:label="@string/Login"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
