@@ -3,12 +3,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
->
+        android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
-
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="397dp"
@@ -22,19 +21,17 @@
                 android:src="@drawable/cbsalogo"/>
     </android.support.constraint.ConstraintLayout>
 
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/backgroundgradient"
             android:orientation="vertical"
-            android:gravity="center"
-    >
-
+            android:gravity="center">
 
         <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
             <LinearLayout
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
@@ -54,7 +51,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
-                        android:padding="10dp" android:backgroundTint="@color/colorAccent1"/>
+                        android:padding="10dp"
+                        android:backgroundTint="@color/colorAccent1"/>
+
                 <EditText
                         android:textCursorDrawable="@drawable/color_cursor_white"
                         android:layout_marginTop="10dp"
@@ -65,9 +64,8 @@
                         android:drawablePadding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-                        android:padding="10dp" android:backgroundTint="@color/colorAccent1"/>
-
+                        android:padding="10dp"
+                        android:backgroundTint="@color/colorAccent1"/>
 
                 <Button
                         android:layout_width="match_parent"
@@ -80,10 +78,7 @@
                         android:textAllCaps="false"
                         android:textSize="21sp"
                         android:textColor="@android:color/white"/>
-
-
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
 </RelativeLayout>
