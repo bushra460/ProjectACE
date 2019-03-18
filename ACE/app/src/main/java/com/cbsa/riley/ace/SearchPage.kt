@@ -41,7 +41,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startVoiceInput()
         }
         voiceBttn.isEnabled = false
-        makeSpinner.isEnabled = false
+        makeBttn.isEnabled = false
         makeData()
         setMakeSpinner()
         setModelYearSpinners()
@@ -52,14 +52,21 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     fun setMakeSpinner() {
         println(makeArray)
-        val makeSpinner: Spinner = findViewById(R.id.makeSpinner)
-        makeSpinner.onItemSelectedListener = this
-        ArrayAdapter(this, android.R.layout.simple_spinner_item, makeArray).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            makeSpinner.adapter = adapter
+
+        makeBttn.setOnClickListener{
+            val dialog = FullScreenDialog()
+            val ft = supportFragmentManager.beginTransaction()
+            dialog.show(ft, "Fullscreen")
         }
+
+//        val makeSpinner: Spinner = findViewById(R.id.makeSpinner)
+//        makeSpinner.onItemSelectedListener = this
+//        ArrayAdapter(this, android.R.layout.simple_spinner_item, makeArray).also { adapter ->
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            // Apply the adapter to the spinner
+//            makeSpinner.adapter = adapter
+//        }
     }
 
     fun setModelYearSpinners() {
@@ -89,7 +96,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val spinOption: String = parent.getItemAtPosition(pos).toString()
 
 
-        if (makeSpinner.selectedItem == spinOption && spinOption != "Select One") {
+        if (makeBttn.text == spinOption && spinOption != "Select One") {
             println("Spinner 1: " + spinOption)
             val selectedItem = modelSpinner.selectedItem
 
@@ -135,7 +142,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         }
 
-        if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One") {
+        if (makeBttn.text != "Select One" && modelSpinner.selectedItem != "Select One") {
             searchBttnE.isEnabled = true
             val blue = ContextCompat.getColor(this, R.color.CBSA_Blue)
             searchBttnE.setBackgroundColor(blue)
@@ -148,12 +155,12 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //HANDLE SEARCH BUTTON CLICKS
         val searchBttn = searchBttnE
         searchBttn.setOnClickListener {
-            val carMake: String = makeSpinner.selectedItem.toString()
+            val carMake: String = makeBttn.text.toString()
             val carModel: String = modelSpinner.selectedItem.toString()
             val carYear: String = yearSpinner.selectedItem.toString()
 
 
-            if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
+            if (makeBttn.text != "Select One" && modelSpinner.selectedItem != "Select One" && yearSpinner.selectedItem != "Select One"){
                 val intent = Intent(this, ImageViewPage::class.java)
                 carArray.forEach {
                     if (it.make == carMake && it.model == carModel && it.year == carYear) {
@@ -161,23 +168,23 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     }
                 }
                 startActivity(intent)
-            } else if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One"){
+            } else if (makeBttn.text != "Select One" && modelSpinner.selectedItem != "Select One"){
                 var index = 0
                 carArray.forEach {
-                    if (it.make == makeSpinner.selectedItem && it.model == modelSpinner.selectedItem){
+                    if (it.make == makeBttn.text && it.model == modelSpinner.selectedItem){
                         index += 1
                     }
                 }
                 if (index > 1) {
                     val intent = Intent(this, SearchResultsPage::class.java)
-                    intent.putExtra("searchResultsMake", makeSpinner.selectedItem.toString())
+                    intent.putExtra("searchResultsMake", makeBttn.text.toString())
                     intent.putExtra("searchResultsModel", modelSpinner.selectedItem.toString())
 
                     startActivity(intent)
                 } else if (index == 1) {
                     val intent = Intent(this, ImageViewPage::class.java)
                     carArray.forEach {
-                        if (it.make == makeSpinner.selectedItem && it.model == modelSpinner.selectedItem){
+                        if (it.make == makeBttn.text && it.model == modelSpinner.selectedItem){
                             intent.putExtra("carId", it.carId)
                             startActivity(intent)
                         }
@@ -289,7 +296,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             runOnUiThread {
                 progress_loader.visibility = View.INVISIBLE
                 voiceBttn.isEnabled = true
-                makeSpinner.isEnabled = true
+                makeBttn.isEnabled = true
             }
         }
 
@@ -344,7 +351,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
                                 if (stringList[0] == replaceString) {
                                     println(replaceString)
-                                    makeSpinner.setSelection(i)
+                                    makeBttn.text = makeArray[i]
                                     set = true
                                 }
                                 if (i == makeArray.size - 1 && !set) {
@@ -360,7 +367,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         modelArray.clear()
                         modelArray.add("Select One")
                         carArray.forEach {
-                            if (makeSpinner.selectedItem == it.make && !modelArray.contains(it.model)) {
+                            if (makeBttn.text == it.make && !modelArray.contains(it.model)) {
                                 modelArray.add(it.model)
                             }
                         }

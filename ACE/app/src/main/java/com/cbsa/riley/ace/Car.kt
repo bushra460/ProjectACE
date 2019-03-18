@@ -29,11 +29,11 @@ data class NewDataClassCar(
     val active: Boolean,
 
     val makeId: String?,
-    val make: String,
+    var make: String,
     val modelId: String?,
-    val model: String,
+    var model: String,
     val yearId: String?,
-    val year: String,
+    var year: String,
 
     val imageArrayList: ArrayList<NewDataClassCarImage>?,
     val hotspotArrayList: ArrayList<NewDataClassHotspot>?
