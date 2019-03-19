@@ -114,7 +114,6 @@ class ImageViewPage: AppCompatActivity() {
         //fab.isEnabled = true
         setExterior()
         var index = 0
-        println("Exterior view")
         imageArrayList.forEach {
             if (it.carId == selectedCar.carId) {
                 if (it.exteriorImage) {
@@ -133,7 +132,6 @@ class ImageViewPage: AppCompatActivity() {
         //fab.isEnabled = false
         setExterior()
         var index = 0
-        println("Interior view")
         imageArrayList.forEach {
             //**************UNCOMMENT WHEN ALL CARS HAVE INTERIOR IMAGES*****************
             //if (it.carId == selectedCar.carId) {

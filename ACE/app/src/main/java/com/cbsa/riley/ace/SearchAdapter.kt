@@ -18,9 +18,11 @@ class SearchAdapter(val context: Context, val make: String, val model: String, v
                 holder.txtTitle.text = title
                 holder.txtSubtitle.text = carArray[position].year
                 holder.itemView.id = carArray[position].carId
-                carArray[position].imageArrayList!!.forEach {
-                    if (carArray[position].carId == it.carId) {
-                        Picasso.get().load(it.carImageURI).into(holder.thumbnail)
+                carArray.forEach {
+                    if (it.carId == it.imageArrayList!![position].carId) {
+                        Picasso.get().load(it.imageArrayList[position].carImageURI).into(holder.thumbnail)
+                        //uncomment when you have more images
+                        //Picasso.get().load(it.imageArrayList[0].carImageURI).into(holder.thumbnail)
                     }
                 }
             }

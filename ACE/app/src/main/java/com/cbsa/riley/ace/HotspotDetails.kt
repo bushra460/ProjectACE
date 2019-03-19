@@ -2,8 +2,11 @@ package com.cbsa.riley.ace
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
@@ -14,6 +17,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.hotspotdetails.*
@@ -63,44 +67,51 @@ class HotspotDetails: AppCompatActivity(){
         hotspotDetailsImageView.setOnClickListener{
             takePictureIntent()
         }
-
         finishBttnClick()
     }
 
     fun finishBttnClick() {
         finishBttn.setOnClickListener {
-            finishBttn.isEnabled = false
-            runOnUiThread { progress_loader.visibility = View.VISIBLE }
-            val date = Date()
-            val ts = Timestamp(date.time)
-            val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}.jpg")
-            fun workload(data: String) {
-                val gson = Gson()
-                val parse = JsonParser().parse(data)
-                println("URL returned by API $parse")
+            val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnected == true
+            if (isConnected) {
+                finishBttn.isEnabled = false
+                runOnUiThread { progress_loader.visibility = View.VISIBLE }
+                val date = Date()
+                val ts = Timestamp(date.time)
+                val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}.jpg")
+                fun workload(data: String) {
+                    val gson = Gson()
+                    val parse = JsonParser().parse(data)
+                    println("URL returned by API $parse")
 
-                val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
-                val imageURL = returnedObject.get("imageUri").toString()
-                val dataRemoved =  imageURL.replace("\"","")
+                    val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
+                    val imageURL = returnedObject.get("imageUri").toString()
+                    val dataRemoved =  imageURL.replace("\"","")
 
-                postData(dataRemoved)
-            }
+                    postData(dataRemoved)
+                }
 
 
-            GlobalScope.launch {
-                URL(imageURL).run {
-                    openConnection().run {
-                        val httpURLConnection = this as HttpURLConnection
-                        httpURLConnection.requestMethod = "POST"
-                        httpURLConnection.setRequestProperty("charset", "utf-8")
-                        httpURLConnection.setRequestProperty("Content-Type", "application/json")
+                GlobalScope.launch {
+                    URL(imageURL).run {
+                        openConnection().run {
+                            val httpURLConnection = this as HttpURLConnection
+                            httpURLConnection.requestMethod = "POST"
+                            httpURLConnection.setRequestProperty("charset", "utf-8")
+                            httpURLConnection.setRequestProperty("Content-Type", "application/json")
 
-                        val gson = Gson()
-                        val outputStream = DataOutputStream(httpURLConnection.outputStream)
-                        outputStream.writeBytes(gson.toJson(imagePOST))
-                        workload(inputStream.bufferedReader().readText())
+                            val gson = Gson()
+                            val outputStream = DataOutputStream(httpURLConnection.outputStream)
+                            outputStream.writeBytes(gson.toJson(imagePOST))
+                            workload(inputStream.bufferedReader().readText())
+                        }
                     }
                 }
+            } else if (!isConnected){
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
+                progress_loader.visibility = View.INVISIBLE
             }
         }
     }
@@ -220,7 +231,7 @@ class HotspotDetails: AppCompatActivity(){
     }
 
 
-    private fun startVoiceInput() {
+    fun startVoiceInput() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())

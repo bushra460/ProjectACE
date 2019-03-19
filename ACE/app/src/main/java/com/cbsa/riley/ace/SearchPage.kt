@@ -2,7 +2,10 @@ package com.cbsa.riley.ace
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
@@ -40,9 +43,17 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             yearSpinner.setSelection(0)
             startVoiceInput()
         }
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnected == true
         voiceBttn.isEnabled = false
         makeSpinner.isEnabled = false
-        makeData()
+        if (isConnected) {
+            makeData()
+        } else if (!isConnected){
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
+            progress_loader.visibility = View.INVISIBLE
+        }
         setMakeSpinner()
         setModelYearSpinners()
         carArray.clear()
@@ -292,6 +303,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 makeSpinner.isEnabled = true
             }
         }
+
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
         GlobalScope.launch {
