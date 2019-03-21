@@ -38,7 +38,7 @@
         </activity>
         <activity
                 android:name=".PrivacyPolicyEN"
-                android:label="@string/PrivacyPolicyEN"
+                android:label="@string/PrivacyPolicy"
                 android:theme="@style/Theme.AppCompat.Light.ActionBar">
         </activity>
         <activity

@@ -32,12 +32,17 @@ import java.util.*
 
 class HotspotDetails: AppCompatActivity(){
 
-    var base64String:String = ""
+    var base64String1:String = ""
+    var base64String2:String = ""
+    var base64String3:String = ""
+    var base64String4:String = ""
+    var base64String5:String = ""
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
     val carImageIdIntent = imageArrayList[selectedImage].carImageId
     val REQ_CODE_SPEECH_INPUT = 100
     var imageSet = false
+    var imageClicked = "hotspotDetailsImageView"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +70,27 @@ class HotspotDetails: AppCompatActivity(){
 
 
         hotspotDetailsImageView.setOnClickListener{
+            imageClicked = "hotspotDetailsImageView"
             takePictureIntent()
         }
+        hotspotDetailsImageViewSmallTR.setOnClickListener{
+            imageClicked = "hotspotDetailsImageViewSmallTR"
+            takePictureIntent()
+        }
+        hotspotDetailsImageViewSmallTL.setOnClickListener{
+            imageClicked = "hotspotDetailsImageViewSmallTL"
+            takePictureIntent()
+        }
+        hotspotDetailsImageViewSmallBR.setOnClickListener{
+            imageClicked = "hotspotDetailsImageViewSmallBR"
+            takePictureIntent()
+        }
+        hotspotDetailsImageViewSmallBL.setOnClickListener{
+            imageClicked = "hotspotDetailsImageViewSmallBL"
+            takePictureIntent()
+        }
+
+
         finishBttnClick()
     }
 
@@ -80,7 +104,7 @@ class HotspotDetails: AppCompatActivity(){
                 runOnUiThread { progress_loader.visibility = View.VISIBLE }
                 val date = Date()
                 val ts = Timestamp(date.time)
-                val imagePOST = ImagePOST(base64String, "$ts-${selectedCar.carId}.jpg")
+                val imagePOST = ImagePOST(base64String1, "$ts-${selectedCar.carId}.jpg")
                 fun workload(data: String) {
                     val gson = Gson()
                     val parse = JsonParser().parse(data)
@@ -130,9 +154,23 @@ class HotspotDetails: AppCompatActivity(){
                 val extras = data?.extras
                 val imageBitmap = extras?.get("data") as Bitmap
 
-                base64String = getBase64String(imageBitmap)
+                when (imageClicked) {
+                    "hotspotDetailsImageView" -> hotspotDetailsImageView.setImageBitmap(imageBitmap)
+                    "hotspotDetailsImageViewSmallBL" -> hotspotDetailsImageViewSmallBL.setImageBitmap(imageBitmap)
+                    "hotspotDetailsImageViewSmallBR" -> hotspotDetailsImageViewSmallBR.setImageBitmap(imageBitmap)
+                    "hotspotDetailsImageViewSmallTL" -> hotspotDetailsImageViewSmallTL.setImageBitmap(imageBitmap)
+                    "hotspotDetailsImageViewSmallTR" -> hotspotDetailsImageViewSmallTR.setImageBitmap(imageBitmap)
+                }
+                when (imageClicked) {
+                    "hotspotDetailsImageView" -> this.base64String1 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallBL" -> this.base64String2 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallBR" -> this.base64String3 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallTL" -> this.base64String4 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallTR" -> this.base64String5 = getBase64String(imageBitmap)
+                }
 
-                hotspotDetailsImageView.setImageBitmap(imageBitmap)
+
+
 
                 imageSet = true
                 if (titleText.text.toString() != ""){

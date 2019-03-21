@@ -30,19 +30,64 @@
     <ImageView
             android:src="@drawable/addpicture"
             android:id="@+id/hotspotDetailsImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:layout_below="@+id/toolbar"
             android:contentDescription="@string/hotspot_detail_image"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp" android:layout_marginTop="8dp"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="24dp"/>
+
+    <ImageView
+            android:id="@+id/hotspotDetailsImageViewSmallTL"
+            android:src="@drawable/addpicturesmall"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_toEndOf="@id/hotspotDetailsImageView"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+    />
+
+    <ImageView
+            android:id="@+id/hotspotDetailsImageViewSmallBL"
+            android:src="@drawable/addpicturesmall"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_below="@+id/hotspotDetailsImageViewSmallTL"
+            android:layout_toEndOf="@id/hotspotDetailsImageView"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+    />
+
+    <ImageView
+            android:id="@+id/hotspotDetailsImageViewSmallTR"
+            android:src="@drawable/addpicturesmall"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_toEndOf="@id/hotspotDetailsImageViewSmallTL"
+            android:layout_marginTop="24dp"
+    />
+
+    <ImageView
+            android:id="@+id/hotspotDetailsImageViewSmallBR"
+            android:src="@drawable/addpicturesmall"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_below="@+id/hotspotDetailsImageViewSmallTR"
+            android:layout_toEndOf="@id/hotspotDetailsImageViewSmallBL"
+            android:layout_marginTop="20dp"
+    />
+
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:id="@+id/titleText"
-            android:hint="Hotspot Location"
+            android:hint="@string/hotspot_location"
+            android:layout_marginTop="48dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:maxLength="256" android:inputType="textShortMessage"
@@ -57,9 +102,9 @@
             android:id="@+id/notesText"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/titleText"
-            android:hint="Steps to Reproduce"
+            android:hint="@string/steps_to_reproduce"
 
             android:gravity="start"
             android:textColorLink="@color/CBSA_Blue"

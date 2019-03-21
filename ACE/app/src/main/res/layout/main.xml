@@ -60,7 +60,7 @@
             <!--android:textSize="21sp"-->
             <!--/>-->
 
-    <ImageButton android:id="@+id/LoginBttnE"
+    <ImageButton android:id="@+id/EnglishBttnE"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_below="@+id/title"
@@ -75,7 +75,7 @@
     <ImageButton android:id="@+id/FrenchBttn"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_below="@id/LoginBttnE"
+                 android:layout_below="@id/EnglishBttnE"
                  android:layout_centerInParent="true"
                  android:layout_centerHorizontal="true"
                  android:width="350dp"

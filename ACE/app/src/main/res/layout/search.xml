@@ -15,15 +15,15 @@
             app:title="@string/Search"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@color/CBSA_Blue"
-            android:textColor="@android:color/white"
-            android:text="@string/AddVehicle"
-            android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
-    />
+    <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@color/CBSA_Blue"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:text="@string/AddVehicle"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_marginEnd="10dp"-->
+    <!--/>-->
     </android.support.v7.widget.Toolbar>
 
     <TextView
