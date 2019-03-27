@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
@@ -15,15 +15,15 @@
             app:title="@string/Search"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@color/CBSA_Blue"
-            android:textColor="@android:color/white"
-            android:text="@string/AddVehicle"
-            android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
-    />
+    <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@color/CBSA_Blue"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:text="@string/AddVehicle"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:layout_marginEnd="10dp"-->
+    <!--/>-->
     </android.support.v7.widget.Toolbar>
 
     <TextView
@@ -47,7 +47,9 @@
             android:layout_alignEnd="@id/makeText"
             android:layout_height="72dp"
             android:layout_marginTop="56dp"
-            android:layout_marginEnd="-309dp" android:layout_toEndOf="@+id/makeText" android:layout_marginStart="25dp"
+            android:layout_marginEnd="-309dp"
+            android:layout_toEndOf="@+id/makeText"
+            android:layout_marginStart="25dp"
     />
 
     <TextView
@@ -111,10 +113,21 @@
             android:background="@drawable/roundedbttn"
             android:textColor="#fff"
             android:enabled="false"
-            android:layout_centerInParent="true"
             android:layout_below="@id/yearText"
-            android:layout_marginTop="45dp"
-    />
+            android:layout_marginTop="86dp"
+            android:layout_centerVertical="true" android:layout_alignParentEnd="true" android:layout_marginEnd="55dp"
+            android:layout_alignParentStart="true" android:layout_marginStart="55dp"/>
+
+    <ProgressBar
+            android:id="@+id/progress_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible" android:foregroundTint="@color/CBSA_Blue"
+            android:backgroundTint="@color/CBSA_Blue"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:theme="@style/Base.Widget.AppCompat.ProgressBar" android:progressTint="@color/CBSA_Blue"
+            android:progressDrawable="@color/CBSA_Blue"/>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/voiceBttn"
@@ -128,7 +141,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:backgroundTint="@color/CBSA_Blue"
-
             android:src="@drawable/microphone"/>
 
 

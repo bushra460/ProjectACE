@@ -19,15 +19,19 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             tools:srcCompat="@tools:sample/avatars"
-            android:id="@+id/imageView"
-            android:layout_below="@id/toolbar" android:layout_marginTop="24dp"
-            android:layout_marginStart="24dp" android:layout_marginEnd="24dp" android:layout_marginBottom="24dp"
+            android:id="@+id/photo_view"
+            android:layout_below="@id/toolbar"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:contentDescription="Hotspot Detail Image"/>
+
     <TextView
             android:text="@string/Notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/notesLabel"
-            android:layout_below="@+id/imageView" android:layout_marginBottom="6dp"
+            android:layout_below="@+id/photo_view" android:layout_marginBottom="6dp"
             android:textColor="@color/disabledButton" android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"/>
     <TextView

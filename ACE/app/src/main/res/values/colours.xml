@@ -4,6 +4,12 @@
     <color name="segmentedButton">#072b63</color>
     <color name="colorPrimary">#022550</color>
     <color name="colorPrimaryDark">#022550</color>
-    <color name="colorAccent">#DECD01</color>
     <color name="disabledButton">#949494</color>
+    <color name="material">#081E41</color>
+
+    <color name="colorAccent1">#F9B52F</color>
+    <color name="colorOne">#80417AC6</color>
+    <color name="colorTwo">#DD2E62A8</color>
+    <color name="colorThree">#013884</color>
+    <color name="colorFour">#012B65</color>
 </resources>

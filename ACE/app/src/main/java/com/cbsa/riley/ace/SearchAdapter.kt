@@ -10,20 +10,30 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(val context: Context, val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(val context: Context, val make: String, val model: String, val carArray: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.txtTitle.text = hotspotList[position].hotspotDesc
-        holder.txtSubtitle.text = hotspotList[position].notes
-        Picasso.get().load(hotspotList[position].hotspotUri).into(holder.thumbnail)
-        holder.itemView.id = hotspotList[position].hotspotId!!
+            if (make == carArray[position].make && model == carArray[position].model){
+                val title = carArray[position].make + " " + carArray[position].model
+                holder.txtTitle.text = title
+                holder.txtSubtitle.text = carArray[position].year
+                holder.itemView.id = carArray[position].carId
+                carArray.forEach {
+                    if (it.carId == it.imageArrayList!![position].carId) {
+                        Picasso.get().load(it.imageArrayList[position].carImageURI).into(holder.thumbnail)
+                        //uncomment when you have more images
+                        //Picasso.get().load(it.imageArrayList[0].carImageURI).into(holder.thumbnail)
+                    }
+                }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.search_list_item, parent, false)
         v.setOnClickListener {
-            val intent = Intent(context, ViewHotspotDetails::class.java)
-            intent.putExtra("hotspotID", v.id)
+            println("clicked car Id:   ${v.id}")
+            val intent = Intent(context, ImageViewPage::class.java)
+            intent.putExtra("carId", v.id)
             context.startActivity(intent)
         }
         return ViewHolder(v)
@@ -31,12 +41,12 @@ class SearchAdapter(val context: Context, val hotspotList: ArrayList<NewDataClas
 
     override fun getItemCount(): Int {
         var index = 0
-        hotspotArrayList.forEach {
-            println(it.carId.toString() + "  vs  "+ selectedCar.carId.toString())
-            if (it.carId == selectedCar.carId){
-                index++
+        carArray.forEach {
+            if (make == it.make && model == it.model) {
+                index += 1
             }
         }
+
         return index
     }
 

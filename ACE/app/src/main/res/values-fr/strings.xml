@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ACE</string>
+    <string name="PrivacyBttn">Avis</string>
+    <string name="PrivacyPolicy">Avis</string>
+    <string name="Settings">Réglages</string>
+    <string name="HotspotDetails">Détails</string>
+    <string name="Accept">Acceptez</string>
+    <string name="Decline">Decline</string>
+    <string name="GetStarted">Commencer</string>
+    <string name="VoiceSearch">Recherche vocale</string>
+    <string name="Search">Chercher</string>
+    <string name="Make">Marque</string>
+    <string name="Year">Année</string>
+    <string name="Interior">Intérieur</string>
+    <string name="Exterior">Extérieur</string>
+    <string name="Finish">Terminer</string>
+    <string name="Notes">Remarques</string>
+    <string name="Login">S\'identifier</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="forgot_password">Mot de passe oublié?</string>
+    <string name="password">Mot de passe</string>
+    <string name="log_in">S\'identifier</string>
+    <string name="sign_up">Se connecter</string>
+</resources>

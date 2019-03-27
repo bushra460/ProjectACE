@@ -1,5 +1,6 @@
 package com.cbsa.riley.ace
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -31,10 +32,11 @@ class AddHotspotPage: AppCompatActivity(){
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus){
-            exterior = intent.getBooleanExtra("exterior",true)
+            val prefs = getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE)
+            exterior = prefs.getBoolean("exterior", true)
 
             setImage()
-
+            resizeForScreenSize()
             val carMake = selectedCar.make
             val carModel = selectedCar.model
             val carYear = selectedCar.year
@@ -62,18 +64,19 @@ class AddHotspotPage: AppCompatActivity(){
     fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
-                if (it.exteriorImage == exterior) {
+            val hotspot = it
+            if (hotspot.carId == selectedCar.carId) {
+                if (hotspot.exteriorImage == exterior) {
                     val canvas = Canvas(bitmap)
-                    val xLoc = it.xLoc
-                    val yLoc = it.yLoc
+                    val xLoc = hotspot.xLoc
+                    val yLoc = hotspot.yLoc
                     val left = xLoc - 30.0f
                     val top = yLoc + 30.0f
                     val right = xLoc + 30.0f
                     val bottom = yLoc - 30.0f
                     val paint = Paint()
                     val stroke = Paint()
-                    paint.color = Color.YELLOW
+                    paint.color = Color.MAGENTA
                     stroke.color = Color.RED
                     stroke.style = Paint.Style.STROKE
                     stroke.strokeWidth = 10.0f
@@ -124,20 +127,38 @@ class AddHotspotPage: AppCompatActivity(){
 
     fun setImage() {
         imageArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
+            val image = it
+            if (image.carId == selectedCar.carId) {
                 if (exterior) {
-                    if (it.exteriorImage) {
-                        carImageId = it.carImageId
-                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
+                    if (image.exteriorImage) {
+                        carImageId = image.carImageId
+                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
+                        addHotspotImageView.maxHeight = hotspotImage.measuredHeight
                     }
                 } else {
-                    if (!it.exteriorImage) {
-                        carImageId = it.carImageId
-                        Picasso.get().load(it.carImageURI).into(addHotspotImageView)
+                    if (!image.exteriorImage) {
+                        carImageId = image.carImageId
+                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
                     }
                 }
 
             }
         }
+    }
+    fun resizeForScreenSize(){
+        val heightDefault = 1794.0f
+        val widthdefault = 1080.0f
+        val display = windowManager.defaultDisplay
+        val width = display.width
+        val height = display.height
+        val heightDifference = height - heightDefault
+        val widthDifference = width - widthdefault
+        if (heightDifference > 0) {
+            previousHotspotImage.translationY = heightDifference/2.2f
+        }
+        if (widthDifference > 0) {
+            previousHotspotImage.translationX = widthDifference/2
+        }
+        println("resizeForScreenSize:   $width    $height")
     }
 }
