@@ -5,7 +5,9 @@ let defaultState={
     cars: [],
     carImages: [],
     hotspotLocations: [],
-    hotspotDetails: []
+    carsHotspotLocations: [],
+    hotspotDetails: [],
+    hotspotLocationsCarImages: []
 }
 
 const mainReducer=(state=defaultState,action)=>{
@@ -37,10 +39,20 @@ const mainReducer=(state=defaultState,action)=>{
             ...state,
             carImages:action.carImages
         }
+    } if(action.type==="GET_ALL_CARS_HOTSPOT_LOCATIONS"){
+        return{
+            ...state,
+            carsHotspotLocations:action.carsHotspotLocations
+        }
     } if(action.type==="GET_ALL_HOTSPOT_LOCATIONS"){
         return{
             ...state,
             hotspotLocations:action.hotspotLocations
+        }
+    } if(action.type==="GET_ALL_HOTSPOT_LOCATIONS_CAR_IMAGES"){
+        return{
+            ...state,
+            hotspotLocationsCarImages:action.hotspotLocationsCarImages
         }
     } if(action.type==="GET_ALL_HOTSPOT_DETAILS"){
         return{

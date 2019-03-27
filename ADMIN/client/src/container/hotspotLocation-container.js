@@ -6,7 +6,14 @@ import HotspotLocation from "../component/hotspotLocation";
 class HotspotLocationCon extends React.Component{
     render(){
         return(
-            <HotspotLocation handleClick={this.props.loadHotspotLocations} hotspotLocations={this.props.hotspotLocations}></HotspotLocation>
+            <HotspotLocation handleClick={this.props.loadCarsHotspotLocations} 
+                             handleRadioBtnCarId={(carId) => this.props.loadHotspotLocationsCarId(carId)}
+                             carsHotspotLocations={this.props.carsHotspotLocations} 
+                             hotspotLocations={this.props.hotspotLocations}
+                             handleRadioBtnCarImageId={(carImageId) => this.props.loadHotspotLocationsCarImageId(carImageId)}
+                             hotspotLocationsCarImages={this.props.hotspotLocationsCarImages}
+                             >
+            </HotspotLocation>
         )
     }
 }
