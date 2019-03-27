@@ -8,6 +8,9 @@ import ControlTabs from './component/controlTabs';
 
 import {Jumbotron, Container,Row,Col,Image} from 'react-bootstrap';
 
+import '../node_modules/react-table/react-table.css'
+import './index.css'
+
 let store = createStore(reducers, applyMiddleware(thunk))
 
 class App extends React.Component{

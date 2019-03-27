@@ -1,7 +1,6 @@
 import React from "react";
-import BootstrapTable from '../../node_modules/react-bootstrap-table-next';
-import filterFactory, { textFilter } from '../../node_modules/react-bootstrap-table2-filter';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import ReactTable from '../../node_modules/react-table';
+import matchSorter from '../../node_modules/match-sorter';
 
 
 class Manufacturer extends React.Component {
@@ -9,35 +8,52 @@ class Manufacturer extends React.Component {
         super(props);
         this.state = {
             manufacturers: [],
-            columns: [{
-              dataField: 'manufacturerId',
-              text: 'Manufacturer ID',
-              sort: true
-            },
-            {
-              dataField: 'name',
-              text: 'Manufacturer Name',
-              sort: true,
-              filter: textFilter()
-            }]
-          }
-    }
+            columns:[
+              {
+                Header: "Manufacturer",
+                columns: [
+                  {
+                    Header: 'Id',
+                    accessor: 'manufacturerId',
+                    maxWidth: 40
+                  },
+                  {
+                    Header: "Name",
+                    id: "name",
+                    accessor: d => d.name,
+                    filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["name"] }),
+                    filterAll: true
+                    // maxwidth: 100
+
+                    //accessor: d => d.models.map((val) => {return val.name})
+                    //accessor: d => d.models.map((val) => val.modelYears.map((val2) => {return val2.yearValue}))
+                  }
+                ]
+              }
+            ]
+        }
+      }      
       render() {
         console.log(this.props);
         // console.log(arr.length)
         console.log(this.props.manufacturers.length)
         return (
-            <div className="container" style={{ marginTop: 50 }}>
+            <div className="container" style={{ marginTop: 15 }}>
                 <button onClick={()=>{this.props.handleClick()}}>Load Data</button>
                 <p/>
-                {this.props.manufacturers.length > 0 ? <BootstrapTable 
-                    striped
-                    hover
-                    keyField='id' 
-                    data={ this.props.manufacturers } 
-                    columns={ this.state.columns } 
-                    filter={ filterFactory() }
-                    pagination={ paginationFactory() }/> : null}
+                {this.props.manufacturers.length > 0 ?
+                  <ReactTable
+                  data={this.props.manufacturers}
+                  filterable
+                  defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id]) === filter.value}
+                  columns={this.state.columns}
+                  defaultPageSize = {5}
+                  pageSizeOptions = {[5, 10, 15, 20]}
+                  className="-striped -highlight"
+                  /> : 
+                  null}
             </div>
         );
       }

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const url ="https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/";
-// const url = "http://localhost:8080/deltaace/v1/";
+// const url ="https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/";
+const url = "http://localhost:8080/deltaace/v1/";
 
 //***************
 // Manufacturer
@@ -116,22 +116,60 @@ export function loadAllCarImages(carImagesData){
 //***************
 // Hotspot Location
 //***************
-export function loadHotspotLocations(){
+export function loadCarsHotspotLocations(){
     return(dispatch)=>{
-        return axios.get(url+"hotspot-locations").then((response)=> {
+           return axios.get(url+"cars").then((response)=> {
             console.log(response.data);
-            dispatch(loadAllHotspotLocations(response.data))
+            dispatch(loadAllCarsHotspotLocations(response.data))
         })
        .catch(err => alert(err));
     }
 }
 
-export function loadAllHotspotLocations(hotspotLocationsData){
+export function loadAllCarsHotspotLocations(carsHotspotLocationsData){
+    console.log("loadAllCarsHotspotLocations");
+    console.log(carsHotspotLocationsData);
+    return{
+        type:"GET_ALL_CARS_HOTSPOT_LOCATIONS",
+        carsHotspotLocations:carsHotspotLocationsData
+    }
+}
+
+export function loadHotspotLocationsCarId(carId){
+    return(dispatch)=>{
+        // return axios.get(url+"hotspot-locations").then((response)=> {
+            //console.log(carId)
+           return axios.get(url+"cars/" + carId).then((response)=> {
+            dispatch(loadAllHotspotLocationsCarId(response.data))
+        })
+       .catch(err => alert(err));
+    }
+}
+
+export function loadAllHotspotLocationsCarId(hotspotLocationsData){
     console.log("loadAllHotspotLocations");
     console.log(hotspotLocationsData);
     return{
         type:"GET_ALL_HOTSPOT_LOCATIONS",
         hotspotLocations:hotspotLocationsData
+    }
+}
+
+export function loadHotspotLocationsCarImageId(carImageId){
+    return(dispatch)=>{
+           return axios.get(url+"car-images/" + carImageId).then((response)=> {
+            dispatch(loadAllHotspotLocationsCarImageId(response.data))
+        })
+       .catch(err => alert(err));
+    }
+}
+
+export function loadAllHotspotLocationsCarImageId(hotspotLocationsCarImageIdData){
+    console.log("loadAllHotspotLocationsCarImageId");
+    console.log(hotspotLocationsCarImageIdData);
+    return{
+        type:"GET_ALL_HOTSPOT_LOCATIONS_CAR_IMAGES",
+        hotspotLocationsCarImages:hotspotLocationsCarImageIdData
     }
 }
 
