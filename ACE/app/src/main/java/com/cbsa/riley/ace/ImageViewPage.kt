@@ -35,12 +35,18 @@ class ImageViewPage: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
+        rotateFAB.setOnClickListener {
+            if (exterior) {
+                setExteriorImage(selectedImage+1)
+            } else if (!exterior) {
+                setInteriorImage(selectedImage+1)
+            }
+        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            println("onwindowfocuschanged() arraylistsize:    ${newHotspotArray.size}")
             var numTab = 0
             var index = 0
             val carId = intent.getIntExtra("carId", 0)
@@ -59,9 +65,9 @@ class ImageViewPage: AppCompatActivity() {
 
             checkExterior()
             if (exterior) {
-                setExteriorImage()
+                setExteriorImage(selectedImage)
             } else {
-                setInteriorImage()
+                setInteriorImage(selectedImage)
                 val tab = tabLayout.getTabAt(1)
                 tab?.select()
             }
@@ -98,9 +104,9 @@ class ImageViewPage: AppCompatActivity() {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     numTab = tab.position
                     when (numTab) {
-                        0 -> setExteriorImage()
+                        0 -> setExteriorImage(selectedImage)
                         else -> {
-                            setInteriorImage()
+                            setInteriorImage(selectedImage)
                         }
                     }
                 }
@@ -110,41 +116,65 @@ class ImageViewPage: AppCompatActivity() {
         }
     }
 
-    fun setExteriorImage() {
+    fun setExteriorImage(imageIndex: Int) {
         //fab.isEnabled = true
         setExterior()
-        var index = 0
-        imageArrayList.forEach {
-            if (it.carId == selectedCar.carId) {
-                if (it.exteriorImage) {
+        var index = imageIndex
+        var imageSet = false
+        do {
+            if (index == imageArrayList.size){
+                index = 0
+            }
+            if (imageArrayList[index].carId == selectedCar.carId) {
+                if (imageArrayList[index].exteriorImage) {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
-                    Picasso.get().load(it.carImageURI).into(imageViewE)
+                    Picasso.get().load(imageArrayList[index].carImageURI).into(imageViewE)
                     selectedImage = index
+                    imageSet = true
                     setHotspots()
                 }
             }
             index += 1
-        }
+        } while (!imageSet)
     }
 
-    fun setInteriorImage() {
+    fun setInteriorImage(imageIndex: Int) {
         //fab.isEnabled = false
+
         setExterior()
-        var index = 0
-        imageArrayList.forEach {
-            //**************UNCOMMENT WHEN ALL CARS HAVE INTERIOR IMAGES*****************
-            //if (it.carId == selectedCar.carId) {
-                if (!it.exteriorImage) {
+        var index = imageIndex
+        var imageSet = false
+        do {
+            if (index == imageArrayList.size){
+                index = 0
+            }
+            //if (imageArrayList[index].carId == selectedCar.carId) {
+                if (!imageArrayList[index].exteriorImage) {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
-                    Picasso.get().load(it.carImageURI).into(imageViewE)
+                    Picasso.get().load(imageArrayList[index].carImageURI).into(imageViewE)
                     selectedImage = index
+                    imageSet = true
                     setHotspots()
                 }
             //}
             index += 1
-        }
+        } while (!imageSet)
+
+//        imageArrayList.forEach {
+//            //**************UNCOMMENT WHEN ALL CARS HAVE INTERIOR IMAGES*****************
+//            //if (it.carId == selectedCar.carId) {
+//                if (!it.exteriorImage) {
+//                    imageViewE.setImageResource(0)
+//                    hotspotImageViewE.setImageResource(0)
+//                    Picasso.get().load(it.carImageURI).into(imageViewE)
+//                    selectedImage = index
+//                    setHotspots()
+//                }
+//            //}
+//            index += 1
+//        }
     }
 
     fun setHotspots() {

@@ -89,6 +89,15 @@
 
     />
 
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/rotateFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rotateicon"
+            android:layout_alignParentBottom="true" android:layout_marginBottom="15dp"
+            android:layout_marginStart="16dp" android:layout_alignStart="@+id/frameLayout"
+            app:backgroundTint="@color/CBSA_Blue"/>
+
     <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
