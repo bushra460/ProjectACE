@@ -73,23 +73,22 @@ class HotspotDetails: AppCompatActivity(){
             imageClicked = "hotspotDetailsImageView"
             takePictureIntent()
         }
-        hotspotDetailsImageViewSmallTR.setOnClickListener{
-            imageClicked = "hotspotDetailsImageViewSmallTR"
-            takePictureIntent()
-        }
-        hotspotDetailsImageViewSmallTL.setOnClickListener{
-            imageClicked = "hotspotDetailsImageViewSmallTL"
-            takePictureIntent()
-        }
-        hotspotDetailsImageViewSmallBR.setOnClickListener{
-            imageClicked = "hotspotDetailsImageViewSmallBR"
-            takePictureIntent()
-        }
-        hotspotDetailsImageViewSmallBL.setOnClickListener{
-            imageClicked = "hotspotDetailsImageViewSmallBL"
-            takePictureIntent()
-        }
-
+//        hotspotDetailsImageViewSmallTR.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallTR"
+//            takePictureIntent()
+//        }
+//        hotspotDetailsImageViewSmallTL.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallTL"
+//            takePictureIntent()
+//        }
+//        hotspotDetailsImageViewSmallBR.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallBR"
+//            takePictureIntent()
+//        }
+//        hotspotDetailsImageViewSmallBL.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallBL"
+//            takePictureIntent()
+//        }
 
         finishBttnClick()
     }
