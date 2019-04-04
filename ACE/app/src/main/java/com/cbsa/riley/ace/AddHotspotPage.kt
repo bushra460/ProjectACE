@@ -65,7 +65,7 @@ class AddHotspotPage: AppCompatActivity(){
         val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
         hotspotArrayList.forEach {
             val hotspot = it
-            if (hotspot.carId == selectedCar.carId) {
+            if (hotspot.carImageId == imageArrayList[selectedImage].carImageId) {
                 if (hotspot.exteriorImage == exterior) {
                     val canvas = Canvas(bitmap)
                     val xLoc = hotspot.xLoc
@@ -85,7 +85,6 @@ class AddHotspotPage: AppCompatActivity(){
                     canvas.drawOval(left, top, right, bottom, stroke)
 
                     previousHotspotImage.setImageBitmap(bitmap)
-                    println("setHotspotExterior")
                 }
             }
         }
@@ -126,24 +125,29 @@ class AddHotspotPage: AppCompatActivity(){
     }
 
     fun setImage() {
-        imageArrayList.forEach {
-            val image = it
-            if (image.carId == selectedCar.carId) {
-                if (exterior) {
-                    if (image.exteriorImage) {
-                        carImageId = image.carImageId
-                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
-                        addHotspotImageView.maxHeight = hotspotImage.measuredHeight
-                    }
-                } else {
-                    if (!image.exteriorImage) {
-                        carImageId = image.carImageId
-                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
-                    }
-                }
 
-            }
-        }
+        carImageId = imageArrayList[selectedImage].carImageId
+        Picasso.get().load(imageArrayList[selectedImage].carImageURI).into(addHotspotImageView)
+
+
+//        imageArrayList.forEach {
+//            val image = it
+//            if (image.carId == selectedCar.carId) {
+//                if (exterior) {
+//                    if (image.exteriorImage) {
+//                        carImageId = image.carImageId
+//                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
+//                        addHotspotImageView.maxHeight = hotspotImage.measuredHeight
+//                    }
+//                } else {
+//                    if (!image.exteriorImage) {
+//                        carImageId = image.carImageId
+//                        Picasso.get().load(image.carImageURI).into(addHotspotImageView)
+//                    }
+//                }
+//
+//            }
+//        }
     }
     fun resizeForScreenSize(){
         val heightDefault = 1794.0f

@@ -49,9 +49,7 @@ data class NewDataClassHotspot(
     val active: Boolean,
 
     val carImageId: Int,
-    val hotspotUri: String,
-
-    val notes: String?,
+    val hotspotDetails: ArrayList<HotspotDeets>,
     val carId: Int?,
     val exteriorImage: Boolean
 )

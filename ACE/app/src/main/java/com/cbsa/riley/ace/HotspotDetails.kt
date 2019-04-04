@@ -17,6 +17,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
+import android.view.View.VISIBLE
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -29,6 +30,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.sql.Timestamp
 import java.util.*
+import kotlin.collections.ArrayList
 
 class HotspotDetails: AppCompatActivity(){
 
@@ -37,12 +39,14 @@ class HotspotDetails: AppCompatActivity(){
     var base64String3:String = ""
     var base64String4:String = ""
     var base64String5:String = ""
+    var base64StringsArray = ArrayList<String>()
     val imageURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/images/add"
     val postURL = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/hotspot-locations/add"
     val carImageIdIntent = imageArrayList[selectedImage].carImageId
     val REQ_CODE_SPEECH_INPUT = 100
     var imageSet = false
     var imageClicked = "hotspotDetailsImageView"
+    var imagesIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,22 +75,28 @@ class HotspotDetails: AppCompatActivity(){
 
         hotspotDetailsImageView.setOnClickListener{
             imageClicked = "hotspotDetailsImageView"
+            imagesIndex += 1
+            takePictureIntent()
+
+        }
+        hotspotDetailsImageViewSmallTL.setOnClickListener{
+            imageClicked = "hotspotDetailsImageViewSmallTL"
+            imagesIndex += 1
             takePictureIntent()
         }
 //        hotspotDetailsImageViewSmallTR.setOnClickListener{
 //            imageClicked = "hotspotDetailsImageViewSmallTR"
-//            takePictureIntent()
-//        }
-//        hotspotDetailsImageViewSmallTL.setOnClickListener{
-//            imageClicked = "hotspotDetailsImageViewSmallTL"
-//            takePictureIntent()
-//        }
-//        hotspotDetailsImageViewSmallBR.setOnClickListener{
-//            imageClicked = "hotspotDetailsImageViewSmallBR"
+//            imagesIndex += 1
 //            takePictureIntent()
 //        }
 //        hotspotDetailsImageViewSmallBL.setOnClickListener{
 //            imageClicked = "hotspotDetailsImageViewSmallBL"
+//            imagesIndex += 1
+//            takePictureIntent()
+//        }
+//        hotspotDetailsImageViewSmallBR.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallBR"
+//            imagesIndex += 1
 //            takePictureIntent()
 //        }
 
@@ -103,39 +113,69 @@ class HotspotDetails: AppCompatActivity(){
                 runOnUiThread { progress_loader.visibility = View.VISIBLE }
                 val date = Date()
                 val ts = Timestamp(date.time)
-                val imagePOST = ImagePOST(base64String1, "$ts-${selectedCar.carId}.jpg")
-                fun workload(data: String) {
-                    val gson = Gson()
-                    val parse = JsonParser().parse(data)
-                    println("URL returned by API $parse")
+                val dataRemovedArray = ArrayList<String>()
+                var index = 0
+                var detailImageId = 0
 
-                    val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
-                    val imageURL = returnedObject.get("imageUri").toString()
-                    val dataRemoved =  imageURL.replace("\"","")
-
-                    postData(dataRemoved)
+                if (imagesIndex >= 1) {
+                    base64StringsArray.add(base64String1)
+                }
+                if (imagesIndex >= 2) {
+                    base64StringsArray.add(base64String2)
+                }
+                if (imagesIndex >= 3) {
+                    base64StringsArray.add(base64String3)
+                }
+                if (imagesIndex >= 4) {
+                    base64StringsArray.add(base64String4)
+                }
+                if (imagesIndex == 5) {
+                    base64StringsArray.add(base64String5)
                 }
 
+                    fun workload(data: String) {
+                        val gson = Gson()
+                        val parse = JsonParser().parse(data)
+                        println("URL returned by API $parse")
 
-                GlobalScope.launch {
-                    URL(imageURL).run {
-                        openConnection().run {
-                            val httpURLConnection = this as HttpURLConnection
-                            httpURLConnection.requestMethod = "POST"
-                            httpURLConnection.setRequestProperty("charset", "utf-8")
-                            httpURLConnection.setRequestProperty("Content-Type", "application/json")
+                        val returnedObject = JsonParser().parse((gson.toJson(parse))).asJsonObject
+                        val imageURL = returnedObject.get("imageUri").toString()
+                        val dataRemoved = imageURL.replace("\"", "")
+                        dataRemovedArray.add(dataRemoved)
+                        index++
 
-                            val gson = Gson()
-                            val outputStream = DataOutputStream(httpURLConnection.outputStream)
-                            outputStream.writeBytes(gson.toJson(imagePOST))
-                            workload(inputStream.bufferedReader().readText())
+                        if (index == base64StringsArray.size) {
+                            postData(dataRemovedArray)
+                            base64StringsArray.clear()
+                        }
+                    }
+
+                base64StringsArray.forEach {
+                    detailImageId++
+                    val ts = Timestamp(date.time)
+                    val imagePOST = ImagePOST(it, "$ts-${selectedCar.carId}$detailImageId.jpg")
+
+                    GlobalScope.launch {
+                        URL(imageURL).run {
+                            openConnection().run {
+                                val httpURLConnection = this as HttpURLConnection
+                                httpURLConnection.requestMethod = "POST"
+                                httpURLConnection.setRequestProperty("charset", "utf-8")
+                                httpURLConnection.setRequestProperty("Content-Type", "application/json")
+
+                                val gson = Gson()
+                                val outputStream = DataOutputStream(httpURLConnection.outputStream)
+                                outputStream.writeBytes(gson.toJson(imagePOST))
+                                workload(inputStream.bufferedReader().readText())
+                            }
                         }
                     }
                 }
-            } else if (!isConnected){
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
-                progress_loader.visibility = View.INVISIBLE
-            }
+
+                } else if (!isConnected){
+                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show()
+                    progress_loader.visibility = View.INVISIBLE
+                }
         }
     }
 
@@ -154,22 +194,34 @@ class HotspotDetails: AppCompatActivity(){
                 val imageBitmap = extras?.get("data") as Bitmap
 
                 when (imageClicked) {
-                    "hotspotDetailsImageView" -> hotspotDetailsImageView.setImageBitmap(imageBitmap)
-                    "hotspotDetailsImageViewSmallBL" -> hotspotDetailsImageViewSmallBL.setImageBitmap(imageBitmap)
-                    "hotspotDetailsImageViewSmallBR" -> hotspotDetailsImageViewSmallBR.setImageBitmap(imageBitmap)
-                    "hotspotDetailsImageViewSmallTL" -> hotspotDetailsImageViewSmallTL.setImageBitmap(imageBitmap)
-                    "hotspotDetailsImageViewSmallTR" -> hotspotDetailsImageViewSmallTR.setImageBitmap(imageBitmap)
+                    "hotspotDetailsImageView" -> {
+                        hotspotDetailsImageView.setImageBitmap(imageBitmap)
+                        hotspotDetailsImageViewSmallTL.visibility = VISIBLE
+                    }
+                    "hotspotDetailsImageViewSmallTL" -> {
+                        hotspotDetailsImageViewSmallTL.setImageBitmap(imageBitmap)
+                        hotspotDetailsImageViewSmallTR.visibility = VISIBLE
+                    }
+
+                    "hotspotDetailsImageViewSmallTR" -> {
+                        hotspotDetailsImageViewSmallTR.setImageBitmap(imageBitmap)
+                        hotspotDetailsImageViewSmallBL.visibility = VISIBLE
+                    }
+                    "hotspotDetailsImageViewSmallBL" -> {
+                        hotspotDetailsImageViewSmallBL.setImageBitmap(imageBitmap)
+                        hotspotDetailsImageViewSmallBR.visibility = VISIBLE
+                    }
+                    "hotspotDetailsImageViewSmallBR" -> {
+                        hotspotDetailsImageViewSmallBR.setImageBitmap(imageBitmap)
+                    }
                 }
                 when (imageClicked) {
                     "hotspotDetailsImageView" -> this.base64String1 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallBL" -> this.base64String2 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallBR" -> this.base64String3 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallTL" -> this.base64String4 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallTR" -> this.base64String5 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallTL" -> this.base64String2 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallTR" -> this.base64String3 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallBL" -> this.base64String4 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageViewSmallBR" -> this.base64String5 = getBase64String(imageBitmap)
                 }
-
-
-
 
                 imageSet = true
                 if (titleText.text.toString() != ""){
@@ -207,18 +259,21 @@ class HotspotDetails: AppCompatActivity(){
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
     }
 
-     fun postData(uri: String) {
+     fun postData(uri: ArrayList<String>) {
          val notes = notesText.text.toString()
          val carImageId = CarImage(carImageIdIntent)
 
          val xLoc = intent.getIntExtra("xLoc", 0)
          val yLoc = intent.getIntExtra("yLoc", 0)
          val title = titleText.text.toString()
-
-
          val hotspotDetails = ArrayList<HotspotDeets>()
-         val hotspotDeets = HotspotDeets(uri, notes, true)
-         hotspotDetails.add(hotspotDeets)
+
+//         println(uri)
+
+         uri.forEach{
+             val hotspotDeets = HotspotDeets(it, notes, true)
+             hotspotDetails.add(hotspotDeets)
+         }
 
          val hotspotPost = HotspotPost(carImageId, xLoc, yLoc, title, true, hotspotDetails)
 
@@ -233,7 +288,7 @@ class HotspotDetails: AppCompatActivity(){
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
              val title = titleText.text.toString()
-             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, uri, notes, selectedCar.carId, exterior)
+             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")

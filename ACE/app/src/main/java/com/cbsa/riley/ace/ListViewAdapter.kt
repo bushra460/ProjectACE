@@ -14,8 +14,8 @@ class ListViewAdapter(val context: Context, val hotspotList: ArrayList<NewDataCl
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.txtTitle.text = hotspotList[position].hotspotDesc
-        holder.txtSubtitle.text = hotspotList[position].notes
-        Picasso.get().load(hotspotList[position].hotspotUri).into(holder.thumbnail)
+        holder.txtSubtitle.text = hotspotList[position].hotspotDetails[0].notes
+        Picasso.get().load(hotspotList[position].hotspotDetails[0].uri).into(holder.thumbnail)
         holder.itemView.id = hotspotList[position].hotspotId!!
     }
 

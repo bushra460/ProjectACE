@@ -12,15 +12,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
-import com.google.gson.Gson
-import com.google.gson.JsonParser
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.net.URL
-
-
 
 var exterior = true
 val SHAREDPREFS = "com.cbsa.riley.ace"
@@ -30,11 +23,11 @@ var imageArrayList = ArrayList<NewDataClassCarImage>()
 var selectedImage = 0
 var carValue = ""
 
-
 class ImageViewPage: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
+        calibratePicture()
         rotateFAB.setOnClickListener {
             if (exterior) {
                 setExteriorImage(selectedImage+1)
@@ -71,7 +64,7 @@ class ImageViewPage: AppCompatActivity() {
                 val tab = tabLayout.getTabAt(1)
                 tab?.select()
             }
-            refreshHotspotList()
+            //refreshHotspotList()
 
             val carMake = selectedCar.make
             val carModel = selectedCar.model
@@ -117,7 +110,6 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setExteriorImage(imageIndex: Int) {
-        //fab.isEnabled = true
         setExterior()
         var index = imageIndex
         var imageSet = false
@@ -132,7 +124,7 @@ class ImageViewPage: AppCompatActivity() {
                     Picasso.get().load(imageArrayList[index].carImageURI).into(imageViewE)
                     selectedImage = index
                     imageSet = true
-                    setHotspots()
+                    this.setHotspots()
                 }
             }
             index += 1
@@ -140,8 +132,6 @@ class ImageViewPage: AppCompatActivity() {
     }
 
     fun setInteriorImage(imageIndex: Int) {
-        //fab.isEnabled = false
-
         setExterior()
         var index = imageIndex
         var imageSet = false
@@ -149,32 +139,26 @@ class ImageViewPage: AppCompatActivity() {
             if (index == imageArrayList.size){
                 index = 0
             }
-            //if (imageArrayList[index].carId == selectedCar.carId) {
+            if (imageArrayList[index].carId == selectedCar.carId) {
                 if (!imageArrayList[index].exteriorImage) {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
                     Picasso.get().load(imageArrayList[index].carImageURI).into(imageViewE)
                     selectedImage = index
                     imageSet = true
-                    setHotspots()
+                    this.setHotspots()
                 }
-            //}
-            index += 1
-        } while (!imageSet)
+            }
 
-//        imageArrayList.forEach {
-//            //**************UNCOMMENT WHEN ALL CARS HAVE INTERIOR IMAGES*****************
-//            //if (it.carId == selectedCar.carId) {
-//                if (!it.exteriorImage) {
-//                    imageViewE.setImageResource(0)
-//                    hotspotImageViewE.setImageResource(0)
-//                    Picasso.get().load(it.carImageURI).into(imageViewE)
-//                    selectedImage = index
-//                    setHotspots()
-//                }
-//            //}
-//            index += 1
-//        }
+            if (index != imageIndex && !imageSet){
+                imageViewE.setImageResource(0)
+                hotspotImageViewE.setImageResource(0)
+                Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/No_image_available_600_x_450.svg/600px-No_image_available_600_x_450.svg.png").into(imageViewE)
+            }
+
+            index += 1
+
+        } while (index != imageIndex && !imageSet)
     }
 
     fun setHotspots() {
@@ -287,67 +271,71 @@ class ImageViewPage: AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun refreshHotspotList() {
-        fun workload(data: String) {
-            val gson = Gson()
-            val parse = JsonParser().parse(data)
-            println("raw parsed data: $parse")
-            hotspotArrayList.clear()
-            val modelsArrayValue = JsonParser().parse((gson.toJson(parse))).asJsonObject
-            val carImageArray = modelsArrayValue.get("carImage").asJsonArray
-            carImageArray.forEach {
-                val carImageObj = it.asJsonObject
-                val carImageId = carImageObj.get("carImageId").asInt
-                val exteriorImage = carImageObj.get("exteriorImage").asBoolean
-
-                val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
-                hotspotArrayValue.forEach {
-                    val hotspotObj = it.asJsonObject
-                    val xLoc = hotspotObj.get("xLoc").asInt
-                    val yLoc = hotspotObj.get("yLoc").asInt
-                    val hotspotId = hotspotObj.get("hotspotId").asInt
-                    val hotspotDesc = hotspotObj.get("hotspotDesc").asString
-                    val hotspotDetailsArray = hotspotObj.get("hotspotDetails").asJsonArray
-
-                    hotspotDetailsArray.forEach {
-                        val hotspotDetailsObj = it.asJsonObject
-                        val hotspotUri = hotspotDetailsObj.get("uri").asString
-                        val hotspotNotes = hotspotDetailsObj.get("notes").asString
-
-                        hotspotArrayList.add(
-                            NewDataClassHotspot(
-                                hotspotId,
-                                xLoc,
-                                yLoc,
-                                hotspotDesc,
-                                true,
-                                carImageId,
-                                hotspotUri,
-                                hotspotNotes,
-                                selectedCar.carId,
-                                exteriorImage
-                            )
-                        )
-                    }
-                }
-            }
-            val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
-            hotspotArrayList.forEach {
-                if (it.carId == selectedCar.carId) {
-                    selectedCarHotspots.add(it)
-                }
-            }
-            runOnUiThread { setHotspots() }
-
-        }
-
-        GlobalScope.launch {
-            println("Car Image Id ${imageArrayList[selectedImage].carImageId}")
-            val json =
-                URL("https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/cars/${selectedCar.carId}").readText()
-            workload(json)
-        }
-    }
+//    fun refreshHotspotList() {
+//        fun workload(data: String) {
+//            val gson = Gson()
+//            val parse = JsonParser().parse(data)
+//            println("raw parsed data: $parse")
+//            hotspotArrayList.clear()
+//            val modelsArrayValue = JsonParser().parse((gson.toJson(parse))).asJsonObject
+//            val carImageArray = modelsArrayValue.get("carImage").asJsonArray
+//            carImageArray.forEach {
+//                val carImageObj = it.asJsonObject
+//                val carImageId = carImageObj.get("carImageId").asInt
+//                val exteriorImage = carImageObj.get("exteriorImage").asBoolean
+//
+//                val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
+//                hotspotArrayValue.forEach {
+//                    val hotspotObj = it.asJsonObject
+//                    val xLoc = hotspotObj.get("xLoc").asInt
+//                    val yLoc = hotspotObj.get("yLoc").asInt
+//                    val hotspotId = hotspotObj.get("hotspotId").asInt
+//                    val hotspotDesc = hotspotObj.get("hotspotDesc").asString
+//                    val hotspotDetailsArray = hotspotObj.get("hotspotDetails").asJsonArray
+//
+//                    hotspotDetailsArray.forEach {
+//                        val hotspotDetailsObj = it.asJsonObject
+//                        val hotspotUri = hotspotDetailsObj.get("uri").asString
+//                        val hotspotNotes = hotspotDetailsObj.get("notes").asString
+//                        val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
+//
+//                        val hotspotDetailsArray = ArrayList<HotspotDeets>()
+//                        val details = HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
+//                        hotspotDetailsArray.add(details)
+//
+//                        hotspotArrayList.add(
+//                            NewDataClassHotspot(
+//                                hotspotId,
+//                                xLoc,
+//                                yLoc,
+//                                hotspotDesc,
+//                                true,
+//                                carImageId,
+//                                hotspotDetailsArray,
+//                                selectedCar.carId,
+//                                exteriorImage
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//            val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
+//            hotspotArrayList.forEach {
+//                if (it.carId == selectedCar.carId) {
+//                    selectedCarHotspots.add(it)
+//                }
+//            }
+//            runOnUiThread { this.setHotspots() }
+//
+//        }
+//
+//        GlobalScope.launch {
+//            println("Car Image Id ${imageArrayList[selectedImage].carImageId}")
+//            val json =
+//                URL("https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/cars/${selectedCar.carId}").readText()
+//            workload(json)
+//        }
+//    }
 
     fun resizeForScreenSize(){
         val heightDefault = 1794.0f
@@ -363,5 +351,9 @@ class ImageViewPage: AppCompatActivity() {
         if (widthDifference > 0) {
             hotspotImageViewE.translationX = widthDifference/2
         }
+    }
+
+    fun calibratePicture(){
+        println("THIS IS A TEST PLEASE DELETE: ${hotspotImageViewE.x}")
     }
 }
