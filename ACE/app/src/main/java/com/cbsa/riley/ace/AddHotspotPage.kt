@@ -150,8 +150,8 @@ class AddHotspotPage: AppCompatActivity(){
 //        }
     }
     fun resizeForScreenSize(){
-        val heightDefault = 1794.0f
-        val widthdefault = 1080.0f
+        val heightDefault = 2960.0f
+        val widthdefault = 1440.0f
         val display = windowManager.defaultDisplay
         val width = display.width
         val height = display.height

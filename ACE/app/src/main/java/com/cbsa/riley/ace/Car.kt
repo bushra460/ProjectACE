@@ -58,7 +58,8 @@ data class NewDataClassCarImage(
     val carImageId: Int,
     val carImageURI: String,
     val exteriorImage: Boolean,
-    val carId: Int?
+    val carId: Int?,
+    val displayPic: Boolean
 )
 
 

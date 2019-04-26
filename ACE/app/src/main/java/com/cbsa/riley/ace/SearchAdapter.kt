@@ -13,19 +13,30 @@ import com.squareup.picasso.Picasso
 class SearchAdapter(val context: Context, val make: String, val model: String, val carArray: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            if (make == carArray[position].make && model == carArray[position].model){
-                val title = carArray[position].make + " " + carArray[position].model
-                holder.txtTitle.text = title
-                holder.txtSubtitle.text = carArray[position].year
-                holder.itemView.id = carArray[position].carId
-                carArray.forEach {
-                    if (it.carId == it.imageArrayList!![position].carId) {
-                        Picasso.get().load(it.imageArrayList[position].carImageURI).into(holder.thumbnail)
-                        //uncomment when you have more images
-                        //Picasso.get().load(it.imageArrayList[0].carImageURI).into(holder.thumbnail)
-                    }
+        val resultCar =  ArrayList<NewDataClassCar>()
+        carArray.forEach {
+            if (make == it.make && model == it.model) {
+                resultCar.add(it)
+            }
+        }
+        val title = resultCar[position].make + " " + resultCar[position].model
+        holder.txtTitle.text = title
+        holder.txtSubtitle.text = resultCar[position].year
+        holder.itemView.id = resultCar[position].carId
+
+        val selectedCarImages = ArrayList<NewDataClassCarImage>()
+        resultCar[position].imageArrayList?.forEach { image ->
+            if (image.carId == resultCar[position].carId && image.exteriorImage) {
+                selectedCarImages.add(image)
+            }
+            selectedCarImages.forEach {
+                //Picasso.get().load(it.imageArrayList[position].carImageURI).into(holder.thumbnail)
+                //uncomment when you have more images
+                if (it.displayPic){
+                    Picasso.get().load(it.carImageURI).into(holder.thumbnail)
                 }
             }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
@@ -46,7 +57,6 @@ class SearchAdapter(val context: Context, val make: String, val model: String, v
                 index += 1
             }
         }
-
         return index
     }
 

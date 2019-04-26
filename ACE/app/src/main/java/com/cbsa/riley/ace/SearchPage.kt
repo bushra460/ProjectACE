@@ -241,7 +241,8 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                             val carImageId = carImageObj.get("carImageId").asInt
                             val carImageURI = carImageObj.get("uri").asString
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
-                            newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId))
+                            val displayPic = carImageObj.get("active").asBoolean
+                            newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId, displayPic))
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
 
@@ -294,6 +295,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                             newHotspotArray
                         )
                         carArray.add(newCar)
+                        carArray
                     }
                 }
             }

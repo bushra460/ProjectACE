@@ -5,30 +5,33 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.speech.RecognizerIntent
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
-import android.view.View.VISIBLE
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.hotspotdetails.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -47,6 +50,9 @@ class HotspotDetails: AppCompatActivity(){
     var imageSet = false
     var imageClicked = "hotspotDetailsImageView"
     var imagesIndex = 0
+    lateinit var currentPhotoPath: String
+    lateinit var photoURI: Uri
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,18 +78,17 @@ class HotspotDetails: AppCompatActivity(){
             override fun afterTextChanged(s: Editable) {}
         })
 
-
         hotspotDetailsImageView.setOnClickListener{
             imageClicked = "hotspotDetailsImageView"
             imagesIndex += 1
-            takePictureIntent()
+            dispatchTakePictureIntent()
 
         }
-        hotspotDetailsImageViewSmallTL.setOnClickListener{
-            imageClicked = "hotspotDetailsImageViewSmallTL"
-            imagesIndex += 1
-            takePictureIntent()
-        }
+//        hotspotDetailsImageViewSmallTL.setOnClickListener{
+//            imageClicked = "hotspotDetailsImageViewSmallTL"
+//            imagesIndex += 1
+//            takePictureIntent()
+//        }
 //        hotspotDetailsImageViewSmallTR.setOnClickListener{
 //            imageClicked = "hotspotDetailsImageViewSmallTR"
 //            imagesIndex += 1
@@ -101,6 +106,21 @@ class HotspotDetails: AppCompatActivity(){
 //        }
 
         finishBttnClick()
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
     }
 
     fun finishBttnClick() {
@@ -153,7 +173,7 @@ class HotspotDetails: AppCompatActivity(){
                 base64StringsArray.forEach {
                     detailImageId++
                     val ts = Timestamp(date.time)
-                    val imagePOST = ImagePOST(it, "$ts-${selectedCar.carId}$detailImageId.jpg")
+                    val imagePOST = ImagePOST(it, "$ts-${selectedCar.carId}$detailImageId-TESTIMAGE.jpg")
 
                     GlobalScope.launch {
                         URL(imageURL).run {
@@ -179,48 +199,70 @@ class HotspotDetails: AppCompatActivity(){
         }
     }
 
-    fun takePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, 1)
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    println(ex)
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    photoURI = FileProvider.getUriForFile(
+                        this,
+                        "com.cbsa.riley.ace.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, 1)
+                }
+            }
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) when (requestCode) {
             1 -> {
-                val extras = data?.extras
-                val imageBitmap = extras?.get("data") as Bitmap
+
+                val imageStream: InputStream = contentResolver.openInputStream(photoURI)
+                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                hotspotDetailsImageView.setImageURI(photoURI)
 
                 when (imageClicked) {
                     "hotspotDetailsImageView" -> {
-                        hotspotDetailsImageView.setImageBitmap(imageBitmap)
-                        hotspotDetailsImageViewSmallTL.visibility = VISIBLE
+                        hotspotDetailsImageView.setImageBitmap(selectedImage)
+                        //hotspotDetailsImageViewSmallTL.visibility = VISIBLE
                     }
-                    "hotspotDetailsImageViewSmallTL" -> {
-                        hotspotDetailsImageViewSmallTL.setImageBitmap(imageBitmap)
-                        hotspotDetailsImageViewSmallTR.visibility = VISIBLE
-                    }
-
-                    "hotspotDetailsImageViewSmallTR" -> {
-                        hotspotDetailsImageViewSmallTR.setImageBitmap(imageBitmap)
-                        hotspotDetailsImageViewSmallBL.visibility = VISIBLE
-                    }
-                    "hotspotDetailsImageViewSmallBL" -> {
-                        hotspotDetailsImageViewSmallBL.setImageBitmap(imageBitmap)
-                        hotspotDetailsImageViewSmallBR.visibility = VISIBLE
-                    }
-                    "hotspotDetailsImageViewSmallBR" -> {
-                        hotspotDetailsImageViewSmallBR.setImageBitmap(imageBitmap)
-                    }
+//                    "hotspotDetailsImageViewSmallTL" -> {
+//                        hotspotDetailsImageViewSmallTL.setImageBitmap(imageBitmap)
+//                        hotspotDetailsImageViewSmallTR.visibility = VISIBLE
+//                    }
+//
+//                    "hotspotDetailsImageViewSmallTR" -> {
+//                        hotspotDetailsImageViewSmallTR.setImageBitmap(imageBitmap)
+//                        hotspotDetailsImageViewSmallBL.visibility = VISIBLE
+//                    }
+//                    "hotspotDetailsImageViewSmallBL" -> {
+//                        hotspotDetailsImageViewSmallBL.setImageBitmap(imageBitmap)
+//                        hotspotDetailsImageViewSmallBR.visibility = VISIBLE
+//                    }
+//                    "hotspotDetailsImageViewSmallBR" -> {
+//                        hotspotDetailsImageViewSmallBR.setImageBitmap(imageBitmap)
+//                    }
                 }
                 when (imageClicked) {
-                    "hotspotDetailsImageView" -> this.base64String1 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallTL" -> this.base64String2 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallTR" -> this.base64String3 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallBL" -> this.base64String4 = getBase64String(imageBitmap)
-                    "hotspotDetailsImageViewSmallBR" -> this.base64String5 = getBase64String(imageBitmap)
+                    "hotspotDetailsImageView" -> this.base64String1 = getBase64String(selectedImage)
+                    "hotspotDetailsImageViewSmallTL" -> this.base64String2 = getBase64String(selectedImage)
+                    "hotspotDetailsImageViewSmallTR" -> this.base64String3 = getBase64String(selectedImage)
+                    "hotspotDetailsImageViewSmallBL" -> this.base64String4 = getBase64String(selectedImage)
+                    "hotspotDetailsImageViewSmallBR" -> this.base64String5 = getBase64String(selectedImage)
                 }
 
                 imageSet = true
@@ -321,7 +363,6 @@ class HotspotDetails: AppCompatActivity(){
         val intent = Intent(this, ImageViewPage::class.java)
         startActivity(intent)
     }
-
 
     fun startVoiceInput() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
