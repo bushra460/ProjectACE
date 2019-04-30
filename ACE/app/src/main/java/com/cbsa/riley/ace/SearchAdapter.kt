@@ -10,15 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(val context: Context, val make: String, val model: String, val carArray: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(val context: Context, val resultCar: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val resultCar =  ArrayList<NewDataClassCar>()
-        carArray.forEach {
-            if (make == it.make && model == it.model) {
-                resultCar.add(it)
-            }
-        }
+
         val title = resultCar[position].make + " " + resultCar[position].model
         holder.txtTitle.text = title
         holder.txtSubtitle.text = resultCar[position].year
@@ -51,13 +46,7 @@ class SearchAdapter(val context: Context, val make: String, val model: String, v
     }
 
     override fun getItemCount(): Int {
-        var index = 0
-        carArray.forEach {
-            if (make == it.make && model == it.model) {
-                index += 1
-            }
-        }
-        return index
+        return resultCar.size
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

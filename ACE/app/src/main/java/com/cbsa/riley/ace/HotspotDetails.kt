@@ -329,8 +329,8 @@ class HotspotDetails: AppCompatActivity(){
              val hotspotId = returnedObject.get("hotspotId").asInt
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
-             val title = titleText.text.toString()
-             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
+             val arrayListTitle = titleText.text.toString()
+             val newHotspot = NewDataClassHotspot(hotspotId, newXloc, newYloc, arrayListTitle, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
@@ -339,6 +339,7 @@ class HotspotDetails: AppCompatActivity(){
          }
 
          GlobalScope.launch {
+             try {
                  URL(postURL).run {
                      openConnection().run {
                          val httpURLConnection = this as HttpURLConnection
@@ -351,11 +352,22 @@ class HotspotDetails: AppCompatActivity(){
                          val data = gson.toJson(hotspotPost)
                          val outputStream = DataOutputStream(httpURLConnection.outputStream)
 
+                         if (httpURLConnection.responseCode != 200) {
+                             Toast.makeText(
+                                 this@HotspotDetails,
+                                 "Server Error, Please restart application",
+                                 Toast.LENGTH_SHORT
+                             ).show()
+                         }
+
                          outputStream.writeBytes(data)
                          println("server response code " + httpURLConnection.responseCode)
                          workload(inputStream.bufferedReader().readText())
                      }
                  }
+             } catch (e: Error){
+                 Toast.makeText(this@HotspotDetails, e.toString(), Toast.LENGTH_SHORT).show()
+             }
          }
      }
 
