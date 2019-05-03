@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
@@ -269,108 +270,7 @@ class ImageViewPage: AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun resizeForScreenSize(){
-        val heightDefault = 2960.0f
-        val widthdefault = 1440.0f
-        val display = windowManager.defaultDisplay
-        val width = display.width
-        val height = display.height
-        val heightDifference = height - heightDefault
-        val widthDifference = width - widthdefault
-        if (heightDifference > 0) {
-            hotspotImageViewE.translationY = heightDifference/2.2f
-        }
-        if (widthDifference > 0) {
-            hotspotImageViewE.translationX = widthDifference/2
-        }
-    }
-
-    fun calibratePicture(){
-        println("THIS IS A TEST PLEASE DELETE: ${hotspotImageViewE.x}")
-    }
-
-    fun addSwipe(){
-        val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
-        hotspotArrayList.forEach {
-            if (it.carId == selectedCar.carId){
-                selectedCarHotspots.add(it)
-            }
-        }
-
-//        try {
-//            hotspotImageViewE.setOnTouchListener(object : OnSwipeTouchListener() {
-//
-//                override fun onSwipeLeft() {
-//                    Log.e("ViewSwipe", "Left")
-//                    if (exterior) {
-//                        tabLayout.getTabAt(1)?.select()
-//                    }
-//                }
-//
-//                override fun onSwipeRight() {
-//                    Log.e("ViewSwipe", "Right")
-//                    if (!exterior) {
-//                        tabLayout.getTabAt(0)?.select()
-//                    }
-//                }
-
-//                 fun onTap(motionEvent: MotionEvent) {
-//
-//                    val x: Int = motionEvent.x.toInt()
-//                    val y: Int = motionEvent.y.toInt()
-//                    val bitmapWidth = 40
-//                    val bitmapHeight = 40
-//                    var i = 0
-//
-//                    println("X location Tapped: " + motionEvent.x.toInt())
-//                    println("Y location Tapped: " + motionEvent.y.toInt())
-//
-//                    while (i < selectedCarHotspots.size) {
-//                        if (selectedCarHotspots[i].carImageId == imageArrayList[selectedImage].carImageId) {
-//                            val xLocCheck = selectedCarHotspots[i].xLoc
-//                            val yLocCheck = selectedCarHotspots[i].yLoc
-//
-//                            if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
-//                                val xdistance = Math.abs(selectedCarHotspots[0].xLoc - x)
-//                                val ydistance = Math.abs(selectedCarHotspots[0].yLoc - y)
-//                                var distance = xdistance + ydistance
-//                                var idx = 0
-//                                for (c in 1 until selectedCarHotspots.size) {
-//                                    val cxdistance = Math.abs(selectedCarHotspots[c].xLoc - x)
-//                                    val cydistance = Math.abs(selectedCarHotspots[c].yLoc - y)
-//                                    val cdistance = cxdistance + cydistance
-//                                    if (cdistance < distance) {
-//                                        idx = c
-//                                        distance = cdistance
-//                                    }
-//                                }
-//                                val theNumber = selectedCarHotspots[idx].hotspotId!!
-//                                //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
-//                                //println("exteriorHotspotID array: $exteriorHotspotID")
-//                                toHotspotDetails(theNumber)
-//                                println("the number is: $theNumber")
-//                            }
-//                        }
-//                        i++
-//                    }
-//                }
-//            })
-//        } catch (e: Error) {
-//            println(e)
-//        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-    //    fun refreshHotspotList() {
+//    fun refreshHotspotList() {
 //        fun workload(data: String) {
 //            val gson = Gson()
 //            val parse = JsonParser().parse(data)

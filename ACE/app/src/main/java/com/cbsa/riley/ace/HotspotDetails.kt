@@ -338,6 +338,7 @@ class HotspotDetails: AppCompatActivity(){
          }
 
          GlobalScope.launch {
+             try {
                  URL(postURL).run {
                      openConnection().run {
                          val httpURLConnection = this as HttpURLConnection
@@ -361,6 +362,9 @@ class HotspotDetails: AppCompatActivity(){
                          workload(inputStream.bufferedReader().readText())
                      }
                  }
+             } catch (e: Error){
+                 Toast.makeText(this@HotspotDetails, e.toString(), Toast.LENGTH_SHORT).show()
+             }
          }
      }
 
