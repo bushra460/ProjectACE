@@ -20,6 +20,7 @@ import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
@@ -135,6 +136,8 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     yearArray.add(it.year)
                 }
             }
+            yearArray.sortByDescending { it.toString() }
+
             yearSpinner.visibility = View.VISIBLE
 
             if (!yearArray.contains(selectedItem)) {
@@ -295,7 +298,6 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                             newHotspotArray
                         )
                         carArray.add(newCar)
-                        carArray
                     }
                 }
             }
@@ -312,8 +314,28 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
         GlobalScope.launch {
-            val json = URL(makeurl).readText()
-            workload(json)
+            try {
+
+                URL(makeurl).run {
+                    openConnection().run {
+                        val httpURLConnection = this as HttpURLConnection
+
+                        httpURLConnection.requestMethod = "GET"
+                        httpURLConnection.setRequestProperty("charset", "utf-8")
+                        httpURLConnection.setRequestProperty("Content-Type", "application/json")
+
+                        if (httpURLConnection.responseCode != 200) {
+                            Toast.makeText(this@SearchPage, "Server Error, Please restart application", Toast.LENGTH_SHORT).show()
+                        }
+
+                        println("server response code " + httpURLConnection.responseCode)
+                        workload(inputStream.bufferedReader().readText())
+                    }
+                }
+
+            } catch (e: Error){
+                Toast.makeText(this@SearchPage, e.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

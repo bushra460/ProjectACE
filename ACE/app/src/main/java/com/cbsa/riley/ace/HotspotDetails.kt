@@ -230,7 +230,6 @@ class HotspotDetails: AppCompatActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) when (requestCode) {
             1 -> {
-
                 val imageStream: InputStream = contentResolver.openInputStream(photoURI)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                 hotspotDetailsImageView.setImageURI(photoURI)
@@ -329,8 +328,8 @@ class HotspotDetails: AppCompatActivity(){
              val hotspotId = returnedObject.get("hotspotId").asInt
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
-             val title = titleText.text.toString()
-             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
+             val arrayListTitle = titleText.text.toString()
+             val newHotspot = NewDataClassHotspot(hotspotId, newXloc, newYloc, arrayListTitle, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
@@ -350,6 +349,12 @@ class HotspotDetails: AppCompatActivity(){
                          val gson = Gson()
                          val data = gson.toJson(hotspotPost)
                          val outputStream = DataOutputStream(httpURLConnection.outputStream)
+
+                         if (httpURLConnection.responseCode != 200) {
+                             println(httpURLConnection.responseCode)
+                             println(hotspotPost)
+                             println("Server Error, Please restart app")
+                         }
 
                          outputStream.writeBytes(data)
                          println("server response code " + httpURLConnection.responseCode)

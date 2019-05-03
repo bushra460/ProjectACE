@@ -15,6 +15,16 @@ class SearchResultsPage: AppCompatActivity(){
         val searchResultsMake: String = intent.getStringExtra("searchResultsMake")
         val searchResultsModel: String = intent.getStringExtra("searchResultsModel")
 
-        recyclerView1.adapter = SearchAdapter(this, searchResultsMake, searchResultsModel, carArray)
+        val resultCar =  ArrayList<NewDataClassCar>()
+        carArray.forEach {
+            if (searchResultsMake == it.make && searchResultsModel == it.model) {
+                resultCar.add(it)
+            }
+        }
+
+        resultCar.sortByDescending { it.year }
+
+        recyclerView1.adapter = SearchAdapter(this, resultCar)
     }
+
 }
