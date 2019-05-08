@@ -44,63 +44,63 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
 
-    <ImageView
-            android:id="@+id/hotspotDetailsImageViewSmallTL"
-            android:src="@drawable/addpicture"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_below="@+id/toolbar"
-            android:layout_toEndOf="@id/hotspotDetailsImageView"
-            app:layout_constraintStart_toEndOf="@+id/hotspotDetailsImageView"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.629"/>
+    <!--<ImageView-->
+            <!--android:id="@+id/hotspotDetailsImageViewSmallTL"-->
+            <!--android:src="@drawable/addpicture"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="150dp"-->
+            <!--android:layout_below="@+id/toolbar"-->
+            <!--android:layout_toEndOf="@id/hotspotDetailsImageView"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/hotspotDetailsImageView"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginTop="36dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:visibility="invisible"-->
+            <!--app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.629"/>-->
 
-    <ImageView
-            android:id="@+id/hotspotDetailsImageViewSmallBL"
-            android:src="@drawable/addpicturesmall"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
-            android:layout_below="@+id/hotspotDetailsImageViewSmallTL"
-            android:layout_toEndOf="@id/hotspotDetailsImageView"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/hotspotDetailsImageViewSmallBR"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/hotspotDetailsImageViewSmallTL"
-            app:layout_constraintStart_toEndOf="@+id/hotspotDetailsImageView"
-            android:layout_marginStart="8dp"
-            android:visibility="invisible"
-    />
+    <!--<ImageView-->
+            <!--android:id="@+id/hotspotDetailsImageViewSmallBL"-->
+            <!--android:src="@drawable/addpicturesmall"-->
+            <!--android:layout_width="76dp"-->
+            <!--android:layout_height="76dp"-->
+            <!--android:layout_below="@+id/hotspotDetailsImageViewSmallTL"-->
+            <!--android:layout_toEndOf="@id/hotspotDetailsImageView"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/hotspotDetailsImageViewSmallBR"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/hotspotDetailsImageViewSmallTL"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/hotspotDetailsImageView"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:visibility="invisible"-->
+    <!--/>-->
 
-    <ImageView
-            android:id="@+id/hotspotDetailsImageViewSmallTR"
-            android:src="@drawable/addpicturesmall"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
-            android:layout_below="@+id/toolbar"
-            android:layout_toEndOf="@id/hotspotDetailsImageViewSmallTL"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="invisible"
-    />
+    <!--<ImageView-->
+            <!--android:id="@+id/hotspotDetailsImageViewSmallTR"-->
+            <!--android:src="@drawable/addpicturesmall"-->
+            <!--android:layout_width="76dp"-->
+            <!--android:layout_height="76dp"-->
+            <!--android:layout_below="@+id/toolbar"-->
+            <!--android:layout_toEndOf="@id/hotspotDetailsImageViewSmallTL"-->
+            <!--android:layout_marginTop="24dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--android:visibility="invisible"-->
+    <!--/>-->
 
-    <ImageView
-            android:id="@+id/hotspotDetailsImageViewSmallBR"
-            android:src="@drawable/addpicturesmall"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
-            android:layout_below="@+id/hotspotDetailsImageViewSmallTR"
-            android:layout_toEndOf="@id/hotspotDetailsImageViewSmallBL"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/hotspotDetailsImageViewSmallTR"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="invisible"/>
+    <!--<ImageView-->
+            <!--android:id="@+id/hotspotDetailsImageViewSmallBR"-->
+            <!--android:src="@drawable/addpicturesmall"-->
+            <!--android:layout_width="76dp"-->
+            <!--android:layout_height="76dp"-->
+            <!--android:layout_below="@+id/hotspotDetailsImageViewSmallTR"-->
+            <!--android:layout_toEndOf="@id/hotspotDetailsImageViewSmallBL"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/hotspotDetailsImageViewSmallTR"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--android:visibility="invisible"/>-->
 
     <EditText
             android:layout_width="match_parent"

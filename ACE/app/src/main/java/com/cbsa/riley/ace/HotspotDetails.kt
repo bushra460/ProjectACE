@@ -234,7 +234,6 @@ class HotspotDetails: AppCompatActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) when (requestCode) {
             1 -> {
-
                 val imageStream: InputStream = contentResolver.openInputStream(photoURI)
                 val selectedImage = BitmapFactory.decodeStream(imageStream)
                 hotspotDetailsImageView.setImageURI(photoURI)
@@ -354,6 +353,7 @@ class HotspotDetails: AppCompatActivity(){
          }
 
          GlobalScope.launch {
+             try {
                  URL(postURL).run {
                      openConnection().run {
                          val httpURLConnection = this as HttpURLConnection
@@ -366,11 +366,20 @@ class HotspotDetails: AppCompatActivity(){
                          val data = gson.toJson(hotspotPost)
                          val outputStream = DataOutputStream(httpURLConnection.outputStream)
 
+                         if (httpURLConnection.responseCode != 200) {
+                             println(httpURLConnection.responseCode)
+                             println(hotspotPost)
+                             println("Server Error, Please restart app")
+                         }
+
                          outputStream.writeBytes(data)
                          println("server response code " + httpURLConnection.responseCode)
                          workload(inputStream.bufferedReader().readText())
                      }
                  }
+             } catch (e: Error){
+                 Toast.makeText(this@HotspotDetails, e.toString(), Toast.LENGTH_SHORT).show()
+             }
          }
      }
 

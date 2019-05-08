@@ -1,5 +1,6 @@
 package com.cbsa.riley.ace
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -9,8 +10,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
-import android.view.View
+import android.util.Log
 import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
@@ -18,6 +18,8 @@ import android.support.v4.view.GestureDetectorCompat
 import com.cbsa.riley.ace.data_classes.NewDataClassCarImage
 import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
 import com.cbsa.riley.ace.library_resources.OnSwipeListener
+
+
 
 var exterior = true
 val SHAREDPREFS = "com.cbsa.riley.ace"
@@ -34,10 +36,6 @@ abstract class ImageViewPage: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
         calibratePicture()
-
-
-        // In OnCreate or custom view constructor (which extends one of Android views)
-        detector = GestureDetectorCompat(this, OnSwipeListener())
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -58,6 +56,51 @@ abstract class ImageViewPage: AppCompatActivity() {
             imageArrayList = selectedCar.imageArrayList!!
 
             //resizeForScreenSize()
+
+            val picsArrayX = ArrayList<Int>()
+            imageArrayList.forEach {
+                if (it.carId == selectedCar.carId){
+                    if (it.exteriorImage)
+                    picsArrayX.add(it.carId)
+                }
+            }
+
+            val picsArray = ArrayList<Int>()
+            imageArrayList.forEach {
+                if (it.carId == selectedCar.carId){
+                    if (!it.exteriorImage)
+                        picsArray.add(it.carId)
+                }
+            }
+
+
+            var imageNumberX = 2
+            var imageNumber = 2
+            pictureCount.text = "1 of " + picsArrayX.size
+            rotateFAB.setOnClickListener {
+                if (exterior) {
+                    setExteriorImage(selectedImage+1)
+                    if (imageNumberX == picsArrayX.size+1){
+                        imageNumberX = 1
+                    }
+                    val arraySize = picsArrayX.size
+                    val count = "$imageNumberX of $arraySize"
+                    pictureCount.text = count
+                    imageNumberX++
+                } else if (!exterior) {
+
+
+
+                    setInteriorImage(selectedImage+1)
+                    if (imageNumber == picsArray.size+1){
+                        imageNumber = 1
+                    }
+                    val arraySize = picsArray.size
+                    val count = "$imageNumber of $arraySize"
+                    pictureCount.text = count
+                    imageNumber++
+                }
+            }
 
             checkExterior()
             if (exterior) {
@@ -138,11 +181,12 @@ abstract class ImageViewPage: AppCompatActivity() {
 
             val tabLayout = tabLayout
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                @SuppressLint("SetTextI18n")
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     numTab = tab.position
                     when (numTab) {
                         0 -> {setExteriorImage(selectedImage)
-                            pictureCount.text = "1 of ${picsArrayX.size}"
+                        pictureCount.text = "1 of ${picsArrayX.size}"
                         }
                         else -> {
                             setInteriorImage(selectedImage)
@@ -236,55 +280,10 @@ abstract class ImageViewPage: AppCompatActivity() {
 
                 canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
                 canvas.drawOval(left, top, right, bottom, stroke)
-
-                hotspotImageViewE.setOnTouchListener(View.OnTouchListener { _, motionEvent ->
-                    when (motionEvent.action) {
-                        MotionEvent.ACTION_DOWN -> {
-
-                            val x: Int = motionEvent.x.toInt()
-                            val y: Int = motionEvent.y.toInt()
-                            val bitmapWidth = 40
-                            val bitmapHeight = 40
-                            var i = 0
-
-                            println("X location Tapped: " + motionEvent.x.toInt())
-                            println("Y location Tapped: " + motionEvent.y.toInt())
-
-                            while (i < selectedCarHotspots.size) {
-                                if (selectedCarHotspots[i].carImageId == imageArrayList[selectedImage].carImageId) {
-                                    val xLocCheck = selectedCarHotspots[i].xLoc
-                                    val yLocCheck = selectedCarHotspots[i].yLoc
-
-                                    if (x > xLocCheck - bitmapWidth && x < xLocCheck + bitmapWidth && y > yLocCheck - bitmapHeight && y < yLocCheck + bitmapHeight) {
-                                        val xdistance = Math.abs(selectedCarHotspots[0].xLoc - x)
-                                        val ydistance = Math.abs(selectedCarHotspots[0].yLoc - y)
-                                        var distance = xdistance + ydistance
-                                        var idx = 0
-                                        for (c in 1 until selectedCarHotspots.size) {
-                                            val cxdistance = Math.abs(selectedCarHotspots[c].xLoc - x)
-                                            val cydistance = Math.abs(selectedCarHotspots[c].yLoc - y)
-                                            val cdistance = cxdistance + cydistance
-                                            if (cdistance < distance) {
-                                                idx = c
-                                                distance = cdistance
-                                            }
-                                        }
-                                        val theNumber = selectedCarHotspots[idx].hotspotId!!
-                                        //println("hotspot ID of chosen Hotspot: " + exteriorHotspotID[idx])
-                                        //println("exteriorHotspotID array: $exteriorHotspotID")
-                                        toHotspotDetails(theNumber)
-                                        println("the number is: $theNumber")
-                                    }
-                                }
-                                i++
-                            }
-                        }
-                    }
-                    return@OnTouchListener true
-                })
             }
         }
         hotspotImageViewE.setImageBitmap(bitmap)
+        addSwipe()
     }
 
     private fun checkExterior() {
@@ -384,48 +383,4 @@ abstract class ImageViewPage: AppCompatActivity() {
 //            workload(json)
 //        }
 //    }
-
-//    fun resizeForScreenSize(){
-//        val heightDefault = 2960.0f
-//        val widthdefault = 1440.0f
-//        val display = windowManager.defaultDisplay
-//        val width = display.width
-//        val height = display.height
-//        val heightDifference = height - heightDefault
-//        val widthDifference = width - widthdefault
-//        if (heightDifference > 0) {
-//            hotspotImageViewE.translationY = heightDifference/2.2f
-//        }
-//        if (widthDifference > 0) {
-//            hotspotImageViewE.translationX = widthDifference/2
-//        }
-//    }
-
-    fun calibratePicture(){
-        println("THIS IS A TEST PLEASE DELETE: ${hotspotImageViewE.x}")
-    }
-
-
-
-
-    override abstract fun onSwipe(direction: OnSwipeListener.Direction):Boolean {
-
-        // Possible implementation
-        if (direction == OnSwipeListener.Direction.left || direction == OnSwipeListener.Direction.right) {
-            // Do something COOL like animation or whatever you want
-            // Refer to your view if needed using a global reference
-            return true
-        } else if (direction == OnSwipeListener.Direction.up || direction == OnSwipeListener.Direction.down) {
-            // Do something COOL like animation or whatever you want
-            // Refer to your view if needed using a global reference
-            return true
-        }
-        return super.onSwipe(direction)
-    }
-
-
-    fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-        return detector.onTouchEvent(motionEvent)
-    }
-
 }
