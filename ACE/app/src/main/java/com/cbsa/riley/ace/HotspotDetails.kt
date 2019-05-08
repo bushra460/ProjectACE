@@ -22,6 +22,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
 import android.widget.Toast
+import com.cbsa.riley.ace.data_classes.*
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.hotspotdetails.*
@@ -173,7 +174,10 @@ class HotspotDetails: AppCompatActivity(){
                 base64StringsArray.forEach {
                     detailImageId++
                     val ts = Timestamp(date.time)
-                    val imagePOST = ImagePOST(it, "$ts-${selectedCar.carId}$detailImageId-TESTIMAGE.jpg")
+                    val imagePOST = ImagePOST(
+                        it,
+                        "$ts-${selectedCar.carId}$detailImageId-TESTIMAGE.jpg"
+                    )
 
                     GlobalScope.launch {
                         URL(imageURL).run {
@@ -317,7 +321,8 @@ class HotspotDetails: AppCompatActivity(){
              hotspotDetails.add(hotspotDeets)
          }
 
-         val hotspotPost = HotspotPost(carImageId, xLoc, yLoc, title, true, hotspotDetails)
+         val hotspotPost =
+             HotspotPost(carImageId, xLoc, yLoc, title, true, hotspotDetails)
 
          fun workload(data: String) {
              val gson = Gson()
@@ -330,7 +335,17 @@ class HotspotDetails: AppCompatActivity(){
              val newXloc = returnedObject.get("xLoc").asInt
              val newYloc = returnedObject.get("yLoc").asInt
              val title = titleText.text.toString()
-             val newHotspot = NewDataClassHotspot(hotspotId,newXloc,newYloc,title, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
+             val newHotspot = NewDataClassHotspot(
+                 hotspotId,
+                 newXloc,
+                 newYloc,
+                 title,
+                 true,
+                 carImageIdIntent,
+                 hotspotDetails,
+                 selectedCar.carId,
+                 exterior
+             )
              hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")

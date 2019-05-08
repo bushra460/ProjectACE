@@ -3,6 +3,8 @@ package com.cbsa.riley.ace
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.cbsa.riley.ace.data_classes.HotspotDeets
+import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.listview.*
@@ -68,7 +70,8 @@ class ListViewPage: AppCompatActivity() {
                         val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
 
                         val hotspotDetailsArray = ArrayList<HotspotDeets>()
-                        val details = HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
+                        val details =
+                            HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
                         hotspotDetailsArray.add(details)
 
                         hotspotArrayList.add(

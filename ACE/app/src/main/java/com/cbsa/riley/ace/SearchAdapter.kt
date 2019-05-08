@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.cbsa.riley.ace.data_classes.NewDataClassCar
+import com.cbsa.riley.ace.data_classes.NewDataClassCarImage
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(val context: Context, val make: String, val model: String, val carArray: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {

@@ -15,6 +15,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import com.cbsa.riley.ace.data_classes.HotspotDeets
+import com.cbsa.riley.ace.data_classes.NewDataClassCar
+import com.cbsa.riley.ace.data_classes.NewDataClassCarImage
+import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
@@ -242,7 +246,15 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                             val carImageURI = carImageObj.get("uri").asString
                             val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                             val displayPic = carImageObj.get("active").asBoolean
-                            newImageArray.add(NewDataClassCarImage(carImageId, carImageURI, exteriorImage, carDataId, displayPic))
+                            newImageArray.add(
+                                NewDataClassCarImage(
+                                    carImageId,
+                                    carImageURI,
+                                    exteriorImage,
+                                    carDataId,
+                                    displayPic
+                                )
+                            )
 
                             val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
 
@@ -262,7 +274,11 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                                     val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
 
                                     var hotspotDetailsArray = ArrayList<HotspotDeets>()
-                                    val details = HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
+                                    val details = HotspotDeets(
+                                        hotspotUri,
+                                        hotspotNotes,
+                                        hotspotDetailsActive
+                                    )
                                     hotspotDetailsArray.add(details)
 
                                     newHotspotArray.add(

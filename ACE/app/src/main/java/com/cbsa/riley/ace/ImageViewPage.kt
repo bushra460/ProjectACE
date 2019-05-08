@@ -14,6 +14,10 @@ import android.view.View
 import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
+import android.support.v4.view.GestureDetectorCompat
+import com.cbsa.riley.ace.data_classes.NewDataClassCarImage
+import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
+import com.cbsa.riley.ace.library_resources.OnSwipeListener
 
 var exterior = true
 val SHAREDPREFS = "com.cbsa.riley.ace"
@@ -23,18 +27,17 @@ var imageArrayList = ArrayList<NewDataClassCarImage>()
 var selectedImage = 0
 var carValue = ""
 
-class ImageViewPage: AppCompatActivity() {
+lateinit var detector: GestureDetectorCompat
+
+abstract class ImageViewPage: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
         calibratePicture()
-        rotateFAB.setOnClickListener {
-            if (exterior) {
-                setExteriorImage(selectedImage+1)
-            } else if (!exterior) {
-                setInteriorImage(selectedImage+1)
-            }
-        }
+
+
+        // In OnCreate or custom view constructor (which extends one of Android views)
+        detector = GestureDetectorCompat(this, OnSwipeListener())
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -54,7 +57,7 @@ class ImageViewPage: AppCompatActivity() {
             hotspotArrayList = selectedCar.hotspotArrayList!!
             imageArrayList = selectedCar.imageArrayList!!
 
-            resizeForScreenSize()
+            //resizeForScreenSize()
 
             checkExterior()
             if (exterior) {
@@ -65,6 +68,47 @@ class ImageViewPage: AppCompatActivity() {
                 tab?.select()
             }
             //refreshHotspotList()
+
+            val picsArrayX = ArrayList<Int>()
+            imageArrayList.forEach {
+                if (it.carId == selectedCar.carId){
+                    if (it.exteriorImage)
+                        picsArrayX.add(it.carId)
+                }
+            }
+
+            val picsArray = ArrayList<Int>()
+            imageArrayList.forEach {
+                if (it.carId == selectedCar.carId){
+                    if (!it.exteriorImage)
+                        picsArray.add(it.carId)
+                }
+            }
+
+            var imageNumberX = 2
+            var imageNumber = 2
+            pictureCount.text = "1 of " + picsArrayX.size
+            rotateFAB.setOnClickListener {
+                if (exterior) {
+                    setExteriorImage(selectedImage+1)
+                    if (imageNumberX == picsArrayX.size+1){
+                        imageNumberX = 1
+                    }
+                    val arraySize = picsArrayX.size
+                    val count = "$imageNumberX of $arraySize"
+                    pictureCount.text = count
+                    imageNumberX++
+                } else if (!exterior) {
+                    setInteriorImage(selectedImage+1)
+                    if (imageNumber == picsArray.size+1){
+                        imageNumber = 1
+                    }
+                    val arraySize = picsArray.size
+                    val count = "$imageNumber of $arraySize"
+                    pictureCount.text = count
+                    imageNumber++
+                }
+            }
 
             val carMake = selectedCar.make
             val carModel = selectedCar.model
@@ -97,9 +141,12 @@ class ImageViewPage: AppCompatActivity() {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     numTab = tab.position
                     when (numTab) {
-                        0 -> setExteriorImage(selectedImage)
+                        0 -> {setExteriorImage(selectedImage)
+                            pictureCount.text = "1 of ${picsArrayX.size}"
+                        }
                         else -> {
                             setInteriorImage(selectedImage)
+                            pictureCount.text = "1 of ${picsArray.size}"
                         }
                     }
                 }
@@ -161,7 +208,7 @@ class ImageViewPage: AppCompatActivity() {
         } while (index != imageIndex && !imageSet)
     }
 
-    fun setHotspots() {
+    private fun setHotspots() {
         val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
         hotspotArrayList.forEach {
             if (it.carId == selectedCar.carId){
@@ -240,7 +287,7 @@ class ImageViewPage: AppCompatActivity() {
         hotspotImageViewE.setImageBitmap(bitmap)
     }
 
-    fun checkExterior() {
+    private fun checkExterior() {
         val prefs = getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE)
         exterior = prefs.getBoolean("exterior", true)
     }
@@ -270,6 +317,7 @@ class ImageViewPage: AppCompatActivity() {
         setExterior()
         startActivity(intent)
     }
+
 
 //    fun refreshHotspotList() {
 //        fun workload(data: String) {
@@ -337,23 +385,47 @@ class ImageViewPage: AppCompatActivity() {
 //        }
 //    }
 
-    fun resizeForScreenSize(){
-        val heightDefault = 2960.0f
-        val widthdefault = 1440.0f
-        val display = windowManager.defaultDisplay
-        val width = display.width
-        val height = display.height
-        val heightDifference = height - heightDefault
-        val widthDifference = width - widthdefault
-        if (heightDifference > 0) {
-            hotspotImageViewE.translationY = heightDifference/2.2f
-        }
-        if (widthDifference > 0) {
-            hotspotImageViewE.translationX = widthDifference/2
-        }
-    }
+//    fun resizeForScreenSize(){
+//        val heightDefault = 2960.0f
+//        val widthdefault = 1440.0f
+//        val display = windowManager.defaultDisplay
+//        val width = display.width
+//        val height = display.height
+//        val heightDifference = height - heightDefault
+//        val widthDifference = width - widthdefault
+//        if (heightDifference > 0) {
+//            hotspotImageViewE.translationY = heightDifference/2.2f
+//        }
+//        if (widthDifference > 0) {
+//            hotspotImageViewE.translationX = widthDifference/2
+//        }
+//    }
 
     fun calibratePicture(){
         println("THIS IS A TEST PLEASE DELETE: ${hotspotImageViewE.x}")
     }
+
+
+
+
+    override abstract fun onSwipe(direction: OnSwipeListener.Direction):Boolean {
+
+        // Possible implementation
+        if (direction == OnSwipeListener.Direction.left || direction == OnSwipeListener.Direction.right) {
+            // Do something COOL like animation or whatever you want
+            // Refer to your view if needed using a global reference
+            return true
+        } else if (direction == OnSwipeListener.Direction.up || direction == OnSwipeListener.Direction.down) {
+            // Do something COOL like animation or whatever you want
+            // Refer to your view if needed using a global reference
+            return true
+        }
+        return super.onSwipe(direction)
+    }
+
+
+    fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
+        return detector.onTouchEvent(motionEvent)
+    }
+
 }

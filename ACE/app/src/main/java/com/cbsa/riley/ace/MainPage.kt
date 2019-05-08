@@ -24,7 +24,7 @@ class MainActivity : Activity() {
         englishBttn.setOnClickListener {
             setLanguage("english")
             Locale.ENGLISH
-            val intent = Intent(this, LoginPage::class.java)
+            val intent = Intent(this, SearchPage::class.java)
             startActivity(intent)
         }
         //********************************
@@ -34,7 +34,7 @@ class MainActivity : Activity() {
         frenchBttn.setOnClickListener {
             setLanguage("french")
 
-            val intent = Intent(this, LoginPage::class.java)
+            val intent = Intent(this, SearchPage::class.java)
             startActivity(intent)
         }
         //********************************
