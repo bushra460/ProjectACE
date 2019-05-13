@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

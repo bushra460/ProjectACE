@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace.data_classes
+package com.cbsa.mcoe.ace.data_classes
 
 data class ImagePOST(
     val encodedImage: String,

@@ -1,10 +1,10 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import com.cbsa.riley.ace.data_classes.HotspotDeets
-import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
+import com.cbsa.mcoe.ace.data_classes.HotspotDeets
+import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.listview.*

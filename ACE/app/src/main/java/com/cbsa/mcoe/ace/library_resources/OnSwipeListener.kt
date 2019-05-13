@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace.library_resources
+package com.cbsa.mcoe.ace.library_resources
 
 import android.view.GestureDetector
 import android.view.MotionEvent

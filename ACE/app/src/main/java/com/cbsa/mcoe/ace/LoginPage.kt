@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.content.Intent
 import android.os.Bundle

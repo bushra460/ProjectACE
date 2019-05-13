@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -22,7 +22,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
 import android.widget.Toast
-import com.cbsa.riley.ace.data_classes.*
+import com.cbsa.mcoe.ace.data_classes.*
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.hotspotdetails.*

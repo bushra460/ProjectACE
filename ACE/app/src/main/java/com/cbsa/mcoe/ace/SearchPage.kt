@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -15,10 +15,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import com.cbsa.riley.ace.data_classes.HotspotDeets
-import com.cbsa.riley.ace.data_classes.NewDataClassCar
-import com.cbsa.riley.ace.data_classes.NewDataClassCarImage
-import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
+import com.cbsa.mcoe.ace.data_classes.HotspotDeets
+import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
+import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
+import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.search.*
@@ -276,7 +276,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                                     val hotspotNotes = hotspotDetailsObj.get("notes").asString
                                     val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
 
-                                    var hotspotDetailsArray = ArrayList<HotspotDeets>()
+                                    val hotspotDetailsArray = ArrayList<HotspotDeets>()
                                     val details = HotspotDeets(
                                         hotspotUri,
                                         hotspotNotes,

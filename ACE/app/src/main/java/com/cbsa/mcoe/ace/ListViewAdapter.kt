@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.cbsa.riley.ace.data_classes.NewDataClassHotspot
+import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.squareup.picasso.Picasso
 
 class ListViewAdapter(val context: Context, val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<ListViewAdapter.ViewHolder>() {

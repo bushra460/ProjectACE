@@ -1,4 +1,4 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

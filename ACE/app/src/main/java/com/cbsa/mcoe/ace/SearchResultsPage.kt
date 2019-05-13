@@ -1,8 +1,9 @@
-package com.cbsa.riley.ace
+package com.cbsa.mcoe.ace
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
 import kotlinx.android.synthetic.main.searchresults.*
 
 class SearchResultsPage: AppCompatActivity(){
