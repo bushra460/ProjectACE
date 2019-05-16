@@ -47,7 +47,8 @@
     <string name="steps_to_reproduce">Steps to Reproduce</string>
     <string name="hotspot_location">Hotspot Location</string>
     <string name="_1_of_1">1 of 1</string>
-    <string name="One_of">1 of</string>
+    <string name="One_of">1 of </string>
+    <string name="One_of_Blank">1 of </string>
 
 
 </resources>
