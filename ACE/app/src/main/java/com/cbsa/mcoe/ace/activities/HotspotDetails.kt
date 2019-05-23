@@ -215,7 +215,7 @@ class HotspotDetails: AppCompatActivity(){
              val newYloc = returnedObject.get("yLoc").asInt
 
              val newHotspot = NewDataClassHotspot(hotspotId, newXloc, newYloc, title, true, carImageIdIntent, hotspotDetails, selectedCar.carId, exterior)
-             hotspotArrayList.add(newHotspot)
+             //hotspotArrayList.add(newHotspot)
 
              println("returned hotspot POST data $returnedObject")
              runOnUiThread { progress_loader.visibility = View.INVISIBLE }

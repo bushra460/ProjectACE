@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Toast
 import com.cbsa.mcoe.ace.R
 import com.cbsa.mcoe.ace.data_classes.HotspotDeets
+import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
 import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.google.gson.Gson
@@ -28,8 +29,9 @@ import java.net.URL
 
 var exterior = true
 const val SHAREDPREFS = "com.cbsa.riley.ace"
-const val url = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/cars/1"
-var selectedCar = carArray[0]
+const val url = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/cars/"
+var testCar = carArray[0]
+lateinit var selectedCar: NewDataClassCar
 var hotspotArrayList = ArrayList<NewDataClassHotspot>()
 var imageArrayList = ArrayList<NewDataClassCarImage>()
 var selectedImage = 0
@@ -46,20 +48,28 @@ class ImageViewPage: AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
+            clearArrays()
             checkCar()
             checkExterior()
             setTitle()
         }
     }
 
+    //Clears imageArraylist and Hotspotarraylist
+    private fun clearArrays() {
+        hotspotArrayList.clear()
+        imageArrayList.clear()
+    }
+
     //Sets car to selectedCar Variable
     private fun checkCar() {
          var index = 0
          val carId = intent.getIntExtra("carId", 0)
+        println("RILEY___----" + carId)
          carArray.forEach {
              val car = it
              if (carId == car.carId) {
-                 selectedCar = carArray[index]
+                 testCar = carArray[index]
              }
              index += 1
          }
@@ -75,62 +85,46 @@ class ImageViewPage: AppCompatActivity() {
              val carData = JsonParser().parse((gson.toJson(parse))).asJsonObject
 
              val carImageArray = carData.get("carImage").asJsonArray
-                        carImageArray.forEach { CarImageObjJson ->
-                            val carImageObj = CarImageObjJson.asJsonObject
-                            val carImageId = carImageObj.get("carImageId").asInt
-                            val carImageURI = carImageObj.get("uri").asString
-                            val exteriorImage = carImageObj.get("exteriorImage").asBoolean
-                            val displayPic = carImageObj.get("active").asBoolean
+                carImageArray.forEach { CarImageObjJson ->
+                    val carImageObj = CarImageObjJson.asJsonObject
+                    val carImageId = carImageObj.get("carImageId").asInt
+                    val carImageURI = carImageObj.get("uri").asString
+                    val exteriorImage = carImageObj.get("exteriorImage").asBoolean
+                    val displayPic = carImageObj.get("active").asBoolean
 
-                            imageArrayList.add(NewDataClassCarImage(
-                                    carImageId,
-                                    carImageURI,
-                                    exteriorImage,
-                                    selectedCar.carId,
-                                    displayPic)
+                    val image = NewDataClassCarImage(carImageId, carImageURI, exteriorImage, testCar.carId, displayPic)
+                    imageArrayList.add(image)
+
+                    val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
+                    hotspotArrayValue.forEach { hotspotObjJson ->
+                        val hotspotObj = hotspotObjJson.asJsonObject
+                        val xLoc = hotspotObj.get("xLoc").asInt
+                        val yLoc = hotspotObj.get("yLoc").asInt
+                        val hotspotId = hotspotObj.get("hotspotId").asInt
+                        val hotspotDesc = hotspotObj.get("hotspotDesc").asString
+
+                        val hotspotDetailsArrayObj = hotspotObj.get("hotspotDetails").asJsonArray
+
+                        hotspotDetailsArrayObj.forEach {
+                            val hotspotDetailsObj = it.asJsonObject
+                            val hotspotUri = hotspotDetailsObj.get("uri").asString
+                            val hotspotNotes = hotspotDetailsObj.get("notes").asString
+                            val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
+
+                            val hotspotDetailsArray = ArrayList<HotspotDeets>()
+                            val details = HotspotDeets(
+                                hotspotUri,
+                                hotspotNotes,
+                                hotspotDetailsActive
                             )
-
-                            val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
-                            hotspotArrayValue.forEach { hotspotObjJson ->
-                                val hotspotObj = hotspotObjJson.asJsonObject
-                                val xLoc = hotspotObj.get("xLoc").asInt
-                                val yLoc = hotspotObj.get("yLoc").asInt
-                                val hotspotId = hotspotObj.get("hotspotId").asInt
-                                val hotspotDesc = hotspotObj.get("hotspotDesc").asString
-
-                                val hotspotDetailsArrayObj = hotspotObj.get("hotspotDetails").asJsonArray
-
-                                hotspotDetailsArrayObj.forEach {
-                                    val hotspotDetailsObj = it.asJsonObject
-                                    val hotspotUri = hotspotDetailsObj.get("uri").asString
-                                    val hotspotNotes = hotspotDetailsObj.get("notes").asString
-                                    val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
-
-                                    val hotspotDetailsArray = ArrayList<HotspotDeets>()
-                                    val details = HotspotDeets(
-                                        hotspotUri,
-                                        hotspotNotes,
-                                        hotspotDetailsActive
-                                    )
-                                    hotspotDetailsArray.add(details)
-
-                                    hotspotArrayList.add(
-                                        NewDataClassHotspot(
-                                            hotspotId,
-                                            xLoc,
-                                            yLoc,
-                                            hotspotDesc,
-                                            true,
-                                            carImageId,
-                                            hotspotDetailsArray,
-                                            selectedCar.carId,
-                                            exteriorImage
-                                        )
-                                    )
-
-                                }
-                            }
+                            hotspotDetailsArray.add(details)
+                            val hotspot = NewDataClassHotspot(hotspotId, xLoc, yLoc, hotspotDesc, true, carImageId, hotspotDetailsArray, testCar.carId, exteriorImage)
+                            hotspotArrayList.add(hotspot)
+                            selectedCar = NewDataClassCar(testCar.carId, testCar.active, testCar.makeId, testCar.make, testCar.modelId, testCar.model, testCar.yearId, testCar.year, imageArrayList, hotspotArrayList)
+                            println(selectedCar.hotspotArrayList.toString())
                         }
+                    }
+                }
              runOnUiThread{
                  progress_loader.visibility = View.INVISIBLE
                  setTab()
@@ -141,7 +135,8 @@ class ImageViewPage: AppCompatActivity() {
 
          GlobalScope.launch {
              try {
-                 URL(url).run {
+                 val urlCarId = "$url${testCar.carId}"
+                 URL(urlCarId).run {
                      openConnection().run {
                          val httpURLConnection = this as HttpURLConnection
 
@@ -166,9 +161,9 @@ class ImageViewPage: AppCompatActivity() {
 
     //Sets the toolbar title on load
     private fun setTitle() {
-         val carMake = selectedCar.make
-         val carModel = selectedCar.model
-         val carYear = selectedCar.year
+         val carMake = testCar.make
+         val carModel = testCar.model
+         val carYear = testCar.year
          carValue = "$carMake $carModel $carYear"
          imageViewToolbar.title = carValue
      }
@@ -177,7 +172,7 @@ class ImageViewPage: AppCompatActivity() {
          var numTab = 0
          val picsArray = ArrayList<Int>()
          imageArrayList.forEach {
-             if (it.carId == selectedCar.carId){
+             if (it.carId == testCar.carId){
                  if (!it.exteriorImage){
                      picsArray.add(it.carId)
                  }
@@ -185,7 +180,7 @@ class ImageViewPage: AppCompatActivity() {
          }
          val picsArrayX = ArrayList<Int>()
          imageArrayList.forEach {
-             if (it.carId == selectedCar.carId){
+             if (it.carId == testCar.carId){
                  if (it.exteriorImage) {
                      picsArrayX.add(it.carId)
                  }
@@ -282,7 +277,7 @@ class ImageViewPage: AppCompatActivity() {
             if (index == imageArrayList.size){
                 index = 0
             }
-            if (imageArrayList[index].carId == selectedCar.carId) {
+            if (imageArrayList[index].carId == testCar.carId) {
                 if (imageArrayList[index].exteriorImage) {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)
@@ -309,7 +304,7 @@ class ImageViewPage: AppCompatActivity() {
             if (index == imageArrayList.size){
                 index = 0
             }
-            if (imageArrayList[index].carId == selectedCar.carId) {
+            if (imageArrayList[index].carId == testCar.carId) {
                 if (!imageArrayList[index].exteriorImage) {
                     imageViewE.setImageResource(0)
                     hotspotImageViewE.setImageResource(0)

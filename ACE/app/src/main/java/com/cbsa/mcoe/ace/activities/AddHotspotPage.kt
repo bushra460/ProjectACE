@@ -20,8 +20,8 @@ class AddHotspotPage: AppCompatActivity(){
 
     private var exterior = true
     private var carImageId = 0
-    private var hotspotArrayList = selectedCar.hotspotArrayList!!
-    private var imageArrayList = selectedCar.imageArrayList!!
+    private val hotspotArrayList = selectedCar.hotspotArrayList
+    private val imageArrayList = selectedCar.imageArrayList
     private var xLoc = 0
     private var yLoc = 0
 
@@ -68,28 +68,32 @@ class AddHotspotPage: AppCompatActivity(){
     //Creates a bitmap, iterates through hotspotArrayList, draws circles on a new Canvas and sets it to the bitmap, sets the bitmap to the imageview
     private fun setHotspots() {
         val bitmap: Bitmap = Bitmap.createBitmap(previousHotspotImage.width, previousHotspotImage.height, Bitmap.Config.ARGB_8888)
-        hotspotArrayList.forEach {
-            val hotspot = it
-            if (hotspot.carImageId == imageArrayList[selectedImage].carImageId) {
-                if (hotspot.exteriorImage == exterior) {
-                    val canvas = Canvas(bitmap)
-                    val xLoc = hotspot.xLoc
-                    val yLoc = hotspot.yLoc
-                    val left = xLoc - 30.0f
-                    val top = yLoc + 30.0f
-                    val right = xLoc + 30.0f
-                    val bottom = yLoc - 30.0f
-                    val paint = Paint()
-                    val stroke = Paint()
-                    paint.color = Color.MAGENTA
-                    stroke.color = Color.RED
-                    stroke.style = Paint.Style.STROKE
-                    stroke.strokeWidth = 10.0f
+        if (hotspotArrayList != null) {
+            hotspotArrayList.forEach {
+                val hotspot = it
+                if (imageArrayList != null) {
+                    if (hotspot.carImageId == imageArrayList[selectedImage].carImageId) {
+                        if (hotspot.exteriorImage == exterior) {
+                            val canvas = Canvas(bitmap)
+                            val xLoc = hotspot.xLoc
+                            val yLoc = hotspot.yLoc
+                            val left = xLoc - 30.0f
+                            val top = yLoc + 30.0f
+                            val right = xLoc + 30.0f
+                            val bottom = yLoc - 30.0f
+                            val paint = Paint()
+                            val stroke = Paint()
+                            paint.color = Color.MAGENTA
+                            stroke.color = Color.RED
+                            stroke.style = Paint.Style.STROKE
+                            stroke.strokeWidth = 10.0f
 
-                    canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
-                    canvas.drawOval(left, top, right, bottom, stroke)
+                            canvas.drawOval(left + 15, top - 15, right - 15, bottom + 15, paint)
+                            canvas.drawOval(left, top, right, bottom, stroke)
 
-                    previousHotspotImage.setImageBitmap(bitmap)
+                            previousHotspotImage.setImageBitmap(bitmap)
+                        }
+                    }
                 }
             }
         }
@@ -131,8 +135,10 @@ class AddHotspotPage: AppCompatActivity(){
 
     //Loads image into addHotspotImageView
     private fun setImage() {
-        carImageId = imageArrayList[selectedImage].carImageId
-        Picasso.get().load(imageArrayList[selectedImage].carImageURI).into(addHotspotImageView)
+        if (imageArrayList != null) {
+            carImageId = imageArrayList[selectedImage].carImageId
+            Picasso.get().load(imageArrayList[selectedImage].carImageURI).into(addHotspotImageView)
+        }
     }
 
     //enables button

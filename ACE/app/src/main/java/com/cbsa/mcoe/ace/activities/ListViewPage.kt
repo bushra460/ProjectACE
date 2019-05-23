@@ -62,22 +62,10 @@ class ListViewPage: AppCompatActivity() {
                         val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
 
                         val hotspotDetailsArray = ArrayList<HotspotDeets>()
-                        val details =
-                            HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
+                        val details = HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
                         hotspotDetailsArray.add(details)
 
-                        hotspotArrayList.add(
-                            NewDataClassHotspot(
-                                hotspotId,
-                                xLoc,
-                                yLoc,
-                                hotspotDesc,
-                                true,
-                                carImageId,
-                                hotspotDetailsArray,
-                                selectedCar.carId,
-                                exteriorImage
-                            )
+                        hotspotArrayList.add(NewDataClassHotspot(hotspotId, xLoc, yLoc, hotspotDesc, true, carImageId, hotspotDetailsArray, selectedCar.carId, exteriorImage)
                         )
                     }
                 }

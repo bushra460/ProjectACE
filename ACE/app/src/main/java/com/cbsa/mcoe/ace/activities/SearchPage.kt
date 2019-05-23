@@ -40,9 +40,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search)
-        voiceBttn.setOnClickListener {
-            startVoiceInput()
-        }
+        voiceBttn.setOnClickListener { startVoiceInput() }
         checkConnection()
         disableButtonsOnLoad()
         addListenerToSpinners()
@@ -161,7 +159,6 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         if (makeSpinner.selectedItem != "Select One" && modelSpinner.selectedItem != "Select One") { enableButton(searchBttnE) } else if (spinOption == "Select One") { disableButton(searchBttnE) }
 
         searchBttnE.setOnClickListener { searchButtonClicked() }
-
     }
 
     //enables button
