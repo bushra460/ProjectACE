@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.cbsa.mcoe.ace.R
 import com.cbsa.mcoe.ace.activities.ViewHotspotDetails
-import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.cbsa.mcoe.ace.activities.hotspotArrayList
 import com.cbsa.mcoe.ace.activities.selectedCar
+import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
 import com.squareup.picasso.Picasso
 
 class ListViewAdapter(val context: Context, val hotspotList: ArrayList<NewDataClassHotspot>): RecyclerView.Adapter<ListViewAdapter.ViewHolder>() {
@@ -49,5 +49,4 @@ class ListViewAdapter(val context: Context, val hotspotList: ArrayList<NewDataCl
         val txtSubtitle: TextView = itemView.findViewById(R.id.txtSubtitle)
         val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
     }
-
 }

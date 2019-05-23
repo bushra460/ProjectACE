@@ -19,6 +19,7 @@
             app:title="@string/CarDetail"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
         <Button
                 android:id="@+id/listViewBttn"
                 android:layout_width="wrap_content"
@@ -63,6 +64,18 @@
             android:layout_below="@id/tabLayout"
     />
 
+    <ProgressBar
+            android:id="@+id/progress_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:foregroundTint="@color/CBSA_Blue"
+            android:backgroundTint="@color/CBSA_Blue"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:theme="@style/Base.Widget.AppCompat.ProgressBar"
+            android:progressTint="@color/CBSA_Blue"
+            android:progressDrawable="@color/CBSA_Blue"/>
     <ImageView
             android:id="@+id/imageViewE"
             android:layout_width="match_parent"

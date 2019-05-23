@@ -12,15 +12,23 @@ import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
+import android.widget.Toast
 import com.cbsa.mcoe.ace.R
+import com.cbsa.mcoe.ace.data_classes.HotspotDeets
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
 import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.imageview.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
 
 var exterior = true
 const val SHAREDPREFS = "com.cbsa.riley.ace"
+const val url = "https://mcoe-webapp-projectdeltaace.azurewebsites.net/deltaace/v1/cars/1"
 var selectedCar = carArray[0]
 var hotspotArrayList = ArrayList<NewDataClassHotspot>()
 var imageArrayList = ArrayList<NewDataClassCarImage>()
@@ -29,7 +37,7 @@ var carValue = ""
 var imageNumberX = 2
 var imageNumber = 2
 
- class ImageViewPage: AppCompatActivity() {
+class ImageViewPage: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.imageview)
@@ -38,110 +46,210 @@ var imageNumber = 2
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            var numTab = 0
-            var index = 0
-            val carId = intent.getIntExtra("carId", 0)
-            carArray.forEach {
-                val car = it
-                if (carId == car.carId) {
-                    selectedCar = carArray[index]
-                }
-                index += 1
-            }
-
-            hotspotArrayList = selectedCar.hotspotArrayList!!
-            imageArrayList = selectedCar.imageArrayList!!
-
-            val picsArrayX = ArrayList<Int>()
-            imageArrayList.forEach {
-                if (it.carId == selectedCar.carId){
-                    if (it.exteriorImage) {
-                        picsArrayX.add(it.carId)
-                    }
-                }
-            }
-
-            val picsArray = ArrayList<Int>()
-            imageArrayList.forEach {
-                if (it.carId == selectedCar.carId){
-                    if (!it.exteriorImage){
-                        picsArray.add(it.carId)
-                    }
-                }
-            }
-
-
-            if (exterior) pictureCount.text = "1 of " + picsArrayX.size else if (!exterior) pictureCount.text = "1 of " + picsArray.size
-
-            rotateFAB.setOnClickListener {
-                if (exterior) {
-                    setExteriorImage(selectedImage + 1)
-                    changeExteriorPictureCounter(picsArrayX)
-                } else if (!exterior) {
-                    setInteriorImage(selectedImage + 1)
-                    changeInteriorPictureCounter(picsArray)
-                }
-            }
-
+            checkCar()
             checkExterior()
-            if (exterior) {
-                setExteriorImage(selectedImage)
-            } else {
-                setInteriorImage(selectedImage)
-                val tab = tabLayout.getTabAt(1)
-                tab?.select()
-            }
-
-            val carMake = selectedCar.make
-            val carModel = selectedCar.model
-            val carYear = selectedCar.year
-            carValue = "$carMake $carModel $carYear"
-            imageViewToolbar.title = carValue
-            println(carValue)
-
-            fab.setOnClickListener {
-                setExterior()
-                val intent = Intent(this, AddHotspotPage::class.java)
-                if (numTab == 0) {
-                    intent.putExtra("exterior", true)
-                    startActivity(intent)
-                } else {
-                    intent.putExtra("exterior", false)
-                    startActivity(intent)
-                }
-            }
-
-            //HANDLE LISTVIEW BUTTON CLICKS
-            val listViewBttn: Button = listViewBttn
-            listViewBttn.setOnClickListener {
-                val intent = Intent(this, ListViewPage::class.java)
-                startActivity(intent)
-            }
-
-            val tabLayout = tabLayout
-            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                @SuppressLint("SetTextI18n")
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    numTab = tab.position
-                    when (numTab) {
-                        0 -> {setExteriorImage(selectedImage)
-                        imageNumberX = 2
-                        pictureCount.text = "1 of ${picsArrayX.size}"
-                        }
-                        else -> {
-                            setInteriorImage(selectedImage)
-                            imageNumber = 2
-                            pictureCount.text = "1 of ${picsArray.size}"
-                        }
-                    }
-                }
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-                override fun onTabReselected(tab: TabLayout.Tab) {}
-            })
+            setTitle()
         }
     }
 
-     private fun changeExteriorPictureCounter(picsArray: ArrayList<Int>){
+    //Sets car to selectedCar Variable
+    private fun checkCar() {
+         var index = 0
+         val carId = intent.getIntExtra("carId", 0)
+         carArray.forEach {
+             val car = it
+             if (carId == car.carId) {
+                 selectedCar = carArray[index]
+             }
+             index += 1
+         }
+         getDetails()
+     }
+
+    //grabs car specific images and hotspots from the web and calls setTab(), setOnClickListeners()
+    private fun getDetails() {
+         fun workload(data: String) {
+             val gson = Gson()
+             val parse = JsonParser().parse(data)
+
+             val carData = JsonParser().parse((gson.toJson(parse))).asJsonObject
+
+             val carImageArray = carData.get("carImage").asJsonArray
+                        carImageArray.forEach { CarImageObjJson ->
+                            val carImageObj = CarImageObjJson.asJsonObject
+                            val carImageId = carImageObj.get("carImageId").asInt
+                            val carImageURI = carImageObj.get("uri").asString
+                            val exteriorImage = carImageObj.get("exteriorImage").asBoolean
+                            val displayPic = carImageObj.get("active").asBoolean
+
+                            imageArrayList.add(NewDataClassCarImage(
+                                    carImageId,
+                                    carImageURI,
+                                    exteriorImage,
+                                    selectedCar.carId,
+                                    displayPic)
+                            )
+
+                            val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
+                            hotspotArrayValue.forEach { hotspotObjJson ->
+                                val hotspotObj = hotspotObjJson.asJsonObject
+                                val xLoc = hotspotObj.get("xLoc").asInt
+                                val yLoc = hotspotObj.get("yLoc").asInt
+                                val hotspotId = hotspotObj.get("hotspotId").asInt
+                                val hotspotDesc = hotspotObj.get("hotspotDesc").asString
+
+                                val hotspotDetailsArrayObj = hotspotObj.get("hotspotDetails").asJsonArray
+
+                                hotspotDetailsArrayObj.forEach {
+                                    val hotspotDetailsObj = it.asJsonObject
+                                    val hotspotUri = hotspotDetailsObj.get("uri").asString
+                                    val hotspotNotes = hotspotDetailsObj.get("notes").asString
+                                    val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
+
+                                    val hotspotDetailsArray = ArrayList<HotspotDeets>()
+                                    val details = HotspotDeets(
+                                        hotspotUri,
+                                        hotspotNotes,
+                                        hotspotDetailsActive
+                                    )
+                                    hotspotDetailsArray.add(details)
+
+                                    hotspotArrayList.add(
+                                        NewDataClassHotspot(
+                                            hotspotId,
+                                            xLoc,
+                                            yLoc,
+                                            hotspotDesc,
+                                            true,
+                                            carImageId,
+                                            hotspotDetailsArray,
+                                            selectedCar.carId,
+                                            exteriorImage
+                                        )
+                                    )
+
+                                }
+                            }
+                        }
+             runOnUiThread{
+                 progress_loader.visibility = View.INVISIBLE
+                 setTab()
+                 setClickListeners()
+             }
+             println("raw parsed data: $parse")
+         }
+
+         GlobalScope.launch {
+             try {
+                 URL(url).run {
+                     openConnection().run {
+                         val httpURLConnection = this as HttpURLConnection
+
+                         httpURLConnection.requestMethod = "GET"
+                         httpURLConnection.setRequestProperty("charset", "utf-8")
+                         httpURLConnection.setRequestProperty("Content-Type", "application/json")
+
+                         if (httpURLConnection.responseCode != 200) {
+                             Toast.makeText(this@ImageViewPage, "Server Error, Please restart application", Toast.LENGTH_SHORT).show()
+                         }
+
+                         println("server response code " + httpURLConnection.responseCode)
+                         workload(inputStream.bufferedReader().readText())
+                     }
+                 }
+
+             } catch (e: Error){
+                 Toast.makeText(this@ImageViewPage, e.toString(), Toast.LENGTH_SHORT).show()
+             }
+         }
+    }
+
+    //Sets the toolbar title on load
+    private fun setTitle() {
+         val carMake = selectedCar.make
+         val carModel = selectedCar.model
+         val carYear = selectedCar.year
+         carValue = "$carMake $carModel $carYear"
+         imageViewToolbar.title = carValue
+     }
+
+    private fun setClickListeners() {
+         var numTab = 0
+         val picsArray = ArrayList<Int>()
+         imageArrayList.forEach {
+             if (it.carId == selectedCar.carId){
+                 if (!it.exteriorImage){
+                     picsArray.add(it.carId)
+                 }
+             }
+         }
+         val picsArrayX = ArrayList<Int>()
+         imageArrayList.forEach {
+             if (it.carId == selectedCar.carId){
+                 if (it.exteriorImage) {
+                     picsArrayX.add(it.carId)
+                 }
+             }
+         }
+
+         if (exterior) pictureCount.text = "1 of " + picsArrayX.size else if (!exterior) pictureCount.text = "1 of " + picsArray.size
+
+         rotateFAB.setOnClickListener {
+             if (exterior) {
+                 setExteriorImage(selectedImage + 1)
+                 changeExteriorPictureCounter(picsArrayX)
+             } else if (!exterior) {
+                 setInteriorImage(selectedImage + 1)
+                 changeInteriorPictureCounter(picsArray)
+             }
+         }
+         fab.setOnClickListener {
+             setExterior()
+             val intent = Intent(this, AddHotspotPage::class.java)
+             if (numTab == 0) {
+                 intent.putExtra("exterior", true)
+                 startActivity(intent)
+             } else {
+                 intent.putExtra("exterior", false)
+                 startActivity(intent)
+             }
+         }
+         listViewBttn.setOnClickListener {
+             val intent = Intent(this, ListViewPage::class.java)
+             startActivity(intent)
+         }
+         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+             @SuppressLint("SetTextI18n")
+             override fun onTabSelected(tab: TabLayout.Tab) {
+                 numTab = tab.position
+                 when (numTab) {
+                     0 -> {setExteriorImage(selectedImage)
+                         imageNumberX = 2
+                         pictureCount.text = "1 of ${picsArrayX.size}"
+                     }
+                     else -> {
+                         setInteriorImage(selectedImage)
+                         imageNumber = 2
+                         pictureCount.text = "1 of ${picsArray.size}"
+                     }
+                 }
+             }
+             override fun onTabUnselected(tab: TabLayout.Tab) {}
+             override fun onTabReselected(tab: TabLayout.Tab) {}
+         })
+     }
+
+    private fun setTab() {
+         if (exterior) {
+             setExteriorImage(selectedImage)
+         } else {
+             setInteriorImage(selectedImage)
+             val tab = tabLayout.getTabAt(1)
+             tab?.select()
+         }
+     }
+
+    private fun changeExteriorPictureCounter(picsArray: ArrayList<Int>){
          if (imageNumberX == picsArray.size+1) {
              imageNumberX = 1
          }
@@ -151,7 +259,7 @@ var imageNumber = 2
          imageNumberX++
      }
 
-     private fun changeInteriorPictureCounter(picsArray: ArrayList<Int>){
+    private fun changeInteriorPictureCounter(picsArray: ArrayList<Int>){
          if (imageNumber == picsArray.size+1) {
              imageNumber = 1
          }
@@ -161,7 +269,7 @@ var imageNumber = 2
          imageNumber++
      }
 
-     /*
+    /*
      Takes current imageIndex and checks if it's at the end of the array of images
      if the imageIndex is at the end then it resets the index
      Sets the next image to the imageViewE
@@ -188,7 +296,7 @@ var imageNumber = 2
         } while (!imageSet)
     }
 
-     /*
+    /*
      Takes current imageIndex and checks if it's at the end of the array of images
      if the imageIndex is at the end then it resets the index
      Sets the next image to the imageViewE
@@ -312,8 +420,8 @@ var imageNumber = 2
         getSharedPreferences(SHAREDPREFS, Context.MODE_PRIVATE).edit().putBoolean("exterior", exterior).apply()
     }
 
-     //overrides normal back pressed function and takes you back to the searchScreen instead of through the navigation stack
-     //TODO: fix animation, or just fix navigation stack
+    //overrides normal back pressed function and takes you back to the searchScreen instead of through the navigation stack
+    //TODO: fix animation, or just fix navigation stack
     override fun onBackPressed() {
         super.onBackPressed()
         val detailsIntent = Intent(this, SearchPage::class.java)
@@ -327,7 +435,7 @@ var imageNumber = 2
         carArray.clear()
     }
 
-     //calls setExterior() and starts hotspotDetails activity and passes the hotspot id
+    //calls setExterior() and starts hotspotDetails activity and passes the hotspot id
     private fun toHotspotDetails(hotspotID: Int) {
         setExterior()
         val intent = Intent(this, ViewHotspotDetails::class.java)

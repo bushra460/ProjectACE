@@ -8,16 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.cbsa.mcoe.ace.activities.ImageViewPage
 import com.cbsa.mcoe.ace.R
+import com.cbsa.mcoe.ace.activities.ImageViewPage
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
 import com.squareup.picasso.Picasso
 
 class SearchAdapter(val context: Context, val resultCar: ArrayList<NewDataClassCar>): RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+    override fun onBindViewHolder(holder: ViewHolder, position: Int)    {
         val title = resultCar[position].make + " " + resultCar[position].model
         holder.txtTitle.text = title
         holder.txtSubtitle.text = resultCar[position].year
@@ -29,8 +28,6 @@ class SearchAdapter(val context: Context, val resultCar: ArrayList<NewDataClassC
                 selectedCarImages.add(image)
             }
             selectedCarImages.forEach {
-                //Picasso.get().load(it.imageArrayList[position].carImageURI).into(holder.thumbnail)
-                //uncomment when you have more images
                 if (it.displayPic){
                     Picasso.get().load(it.carImageURI).into(holder.thumbnail)
                 }
@@ -58,5 +55,4 @@ class SearchAdapter(val context: Context, val resultCar: ArrayList<NewDataClassC
         val txtSubtitle: TextView = itemView.findViewById(R.id.txtSubtitle)
         val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
     }
-
 }

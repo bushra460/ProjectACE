@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
 import com.cbsa.mcoe.ace.R
-import com.cbsa.mcoe.ace.data_classes.HotspotDeets
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
 import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
@@ -264,75 +263,7 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         val yearName = year.get("yearValue").asString
                         val carData = year.get("car").asJsonObject
                         val carDataId = carData.get("carId").asInt
-                        val carImageArray = carData.get("carImage").asJsonArray
-                        carImageArray.forEach { CarImageObjJson ->
-                            val carImageObj = CarImageObjJson.asJsonObject
-                            val carImageId = carImageObj.get("carImageId").asInt
-                            val carImageURI = carImageObj.get("uri").asString
-                            val exteriorImage = carImageObj.get("exteriorImage").asBoolean
-                            val displayPic = carImageObj.get("active").asBoolean
-
-                            newImageArray.add(NewDataClassCarImage(
-                                    carImageId,
-                                    carImageURI,
-                                    exteriorImage,
-                                    carDataId,
-                                    displayPic)
-                            )
-
-                            val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
-                            hotspotArrayValue.forEach { hotspotObjJson ->
-                                val hotspotObj = hotspotObjJson.asJsonObject
-                                val xLoc = hotspotObj.get("xLoc").asInt
-                                val yLoc = hotspotObj.get("yLoc").asInt
-                                val hotspotId = hotspotObj.get("hotspotId").asInt
-                                val hotspotDesc = hotspotObj.get("hotspotDesc").asString
-
-                                val hotspotDetailsArrayObj = hotspotObj.get("hotspotDetails").asJsonArray
-
-                                hotspotDetailsArrayObj.forEach {
-                                    val hotspotDetailsObj = it.asJsonObject
-                                    val hotspotUri = hotspotDetailsObj.get("uri").asString
-                                    val hotspotNotes = hotspotDetailsObj.get("notes").asString
-                                    val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
-
-                                    val hotspotDetailsArray = ArrayList<HotspotDeets>()
-                                    val details = HotspotDeets(
-                                        hotspotUri,
-                                        hotspotNotes,
-                                        hotspotDetailsActive
-                                    )
-                                    hotspotDetailsArray.add(details)
-
-                                    newHotspotArray.add(
-                                        NewDataClassHotspot(
-                                            hotspotId,
-                                            xLoc,
-                                            yLoc,
-                                            hotspotDesc,
-                                            true,
-                                            carImageId,
-                                            hotspotDetailsArray,
-                                            carDataId,
-                                            exteriorImage
-                                        )
-                                    )
-
-                                }
-                            }
-                        }
-                        val newCar = NewDataClassCar(
-                            carDataId,
-                            true,
-                            manufacturerId,
-                            name,
-                            modelId,
-                            modelName,
-                            yearId,
-                            yearName,
-                            newImageArray,
-                            newHotspotArray
-                        )
+                        val newCar = NewDataClassCar(carDataId, true, manufacturerId, name, modelId, modelName, yearId, yearName, null, null)
                         carArray.add(newCar)
                     }
                 }
@@ -340,7 +271,6 @@ class SearchPage : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             println("carArray data: $carArray")
             runOnUiThread { enableButtonsAfterLoad() }
         }
-
 
         //MAKE GET CALL AND PASS TO WORKLOAD FUNCTION
         GlobalScope.launch {
