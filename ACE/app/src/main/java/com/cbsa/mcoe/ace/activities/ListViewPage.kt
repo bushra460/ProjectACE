@@ -1,8 +1,8 @@
 package com.cbsa.mcoe.ace.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cbsa.mcoe.ace.R
 import com.cbsa.mcoe.ace.adapters.ListViewAdapter
 import com.cbsa.mcoe.ace.data_classes.HotspotDeets
@@ -92,7 +92,7 @@ class ListViewPage: AppCompatActivity() {
 
     private fun setLayout(){
         // Creates a vertical Layout Manager
-        recyclerView2.layoutManager = LinearLayoutManager(this)
+        recyclerView2.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
 
         val selectedCarHotspots = ArrayList<NewDataClassHotspot>()
         hotspotArrayList.forEach {

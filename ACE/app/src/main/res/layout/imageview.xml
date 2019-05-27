@@ -10,7 +10,7 @@
         android:id="@+id/layout"
 >
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/imageViewToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -28,9 +28,9 @@
                 android:text="@string/ListView"
                 android:layout_gravity="end"
                 android:elevation="0dp" android:background="@null"/>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,20 +41,20 @@
             app:tabTextColor="@android:color/white"
             android:elevation="4dp" app:tabIndicatorColor="@android:color/white">
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
                 android:id="@+id/exteriorBttn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Exterior"
         />
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
                 android:id="@+id/interiorBttn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Interior"/>
 
-    </android.support.design.widget.TabLayout>
+    </com.google.android.material.tabs.TabLayout>
 
     <TextView
             android:id="@+id/pictureCount"
@@ -110,7 +110,7 @@
 
     />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/rotateFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

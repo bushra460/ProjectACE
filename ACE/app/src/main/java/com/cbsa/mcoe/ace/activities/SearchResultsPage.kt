@@ -1,8 +1,8 @@
 package com.cbsa.mcoe.ace.activities
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cbsa.mcoe.ace.R
 import com.cbsa.mcoe.ace.adapters.SearchAdapter
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
@@ -31,7 +31,7 @@ class SearchResultsPage: AppCompatActivity(){
     }
 
     private fun sendDataToRecyclerView(resultCar: ArrayList<NewDataClassCar>){
-        recyclerView1.layoutManager = LinearLayoutManager(this)
+        recyclerView1.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView1.adapter = SearchAdapter(this, resultCar)
     }
 

@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
 >
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -24,7 +24,7 @@
             <!--android:layout_gravity="end"-->
             <!--android:layout_marginEnd="10dp"-->
     <!--/>-->
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
             android:id="@+id/makeText"
@@ -129,7 +129,7 @@
             android:theme="@style/Base.Widget.AppCompat.ProgressBar" android:progressTint="@color/CBSA_Blue"
             android:progressDrawable="@color/CBSA_Blue"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/voiceBttn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

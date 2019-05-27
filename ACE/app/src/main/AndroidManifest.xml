@@ -17,7 +17,7 @@
             android:theme="@style/Theme.AppCompat.Light.ActionBar">
 
         <provider
-                android:name="android.support.v4.content.FileProvider"
+                android:name="androidx.core.content.FileProvider"
                 android:authorities="com.cbsa.mcoe.ace.fileprovider"
                 android:exported="false"
                 android:grantUriPermissions="true">

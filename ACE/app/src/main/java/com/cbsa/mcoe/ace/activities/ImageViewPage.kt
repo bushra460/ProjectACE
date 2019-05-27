@@ -8,16 +8,16 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.cbsa.mcoe.ace.R
 import com.cbsa.mcoe.ace.data_classes.HotspotDeets
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCar
 import com.cbsa.mcoe.ace.data_classes.NewDataClassCarImage
 import com.cbsa.mcoe.ace.data_classes.NewDataClassHotspot
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.squareup.picasso.Picasso
@@ -65,7 +65,6 @@ class ImageViewPage: AppCompatActivity() {
     private fun checkCar() {
          var index = 0
          val carId = intent.getIntExtra("carId", 0)
-        println("RILEY___----" + carId)
          carArray.forEach {
              val car = it
              if (carId == car.carId) {
@@ -81,9 +80,7 @@ class ImageViewPage: AppCompatActivity() {
          fun workload(data: String) {
              val gson = Gson()
              val parse = JsonParser().parse(data)
-
              val carData = JsonParser().parse((gson.toJson(parse))).asJsonObject
-
              val carImageArray = carData.get("carImage").asJsonArray
                 carImageArray.forEach { CarImageObjJson ->
                     val carImageObj = CarImageObjJson.asJsonObject
@@ -91,18 +88,16 @@ class ImageViewPage: AppCompatActivity() {
                     val carImageURI = carImageObj.get("uri").asString
                     val exteriorImage = carImageObj.get("exteriorImage").asBoolean
                     val displayPic = carImageObj.get("active").asBoolean
-
                     val image = NewDataClassCarImage(carImageId, carImageURI, exteriorImage, testCar.carId, displayPic)
                     imageArrayList.add(image)
-
                     val hotspotArrayValue = carImageObj.get("hotspotLocations").asJsonArray
+
                     hotspotArrayValue.forEach { hotspotObjJson ->
                         val hotspotObj = hotspotObjJson.asJsonObject
                         val xLoc = hotspotObj.get("xLoc").asInt
                         val yLoc = hotspotObj.get("yLoc").asInt
                         val hotspotId = hotspotObj.get("hotspotId").asInt
                         val hotspotDesc = hotspotObj.get("hotspotDesc").asString
-
                         val hotspotDetailsArrayObj = hotspotObj.get("hotspotDetails").asJsonArray
 
                         hotspotDetailsArrayObj.forEach {
@@ -110,13 +105,8 @@ class ImageViewPage: AppCompatActivity() {
                             val hotspotUri = hotspotDetailsObj.get("uri").asString
                             val hotspotNotes = hotspotDetailsObj.get("notes").asString
                             val hotspotDetailsActive = hotspotDetailsObj.get("active").asBoolean
-
                             val hotspotDetailsArray = ArrayList<HotspotDeets>()
-                            val details = HotspotDeets(
-                                hotspotUri,
-                                hotspotNotes,
-                                hotspotDetailsActive
-                            )
+                            val details = HotspotDeets(hotspotUri, hotspotNotes, hotspotDetailsActive)
                             hotspotDetailsArray.add(details)
                             val hotspot = NewDataClassHotspot(hotspotId, xLoc, yLoc, hotspotDesc, true, carImageId, hotspotDetailsArray, testCar.carId, exteriorImage)
                             hotspotArrayList.add(hotspot)
@@ -139,7 +129,6 @@ class ImageViewPage: AppCompatActivity() {
                  URL(urlCarId).run {
                      openConnection().run {
                          val httpURLConnection = this as HttpURLConnection
-
                          httpURLConnection.requestMethod = "GET"
                          httpURLConnection.setRequestProperty("charset", "utf-8")
                          httpURLConnection.setRequestProperty("Content-Type", "application/json")
