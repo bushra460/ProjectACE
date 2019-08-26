@@ -9,11 +9,11 @@
 
 ---
 #### Description:
-##### [ACE](https://cbsawikiasfc.omega.dce-eir.net/pages/viewpage.action?pageId=192906476) project in detail
+##### ACE: The idea behind the project is to provide that the BSO (Border Service Officers) the ability to search for concealment locations in any given vehicle just by entering the make, model and year of any vehicle into an app which will make their search fast and accurate.
 ---
 #### Introduction:
 
-The script automates the process of downloading images from EVOX ftp site, then upload them on AWS S3 bucket after renaming them according to the naming convention.
+The script automates the process of downloading images from EVOX ftp site, then upload them on AWS S3 bucket after renaming them according to the naming convention for BSOs to access the images from cloud.
 
 ##### The script is written in python.
 ---
