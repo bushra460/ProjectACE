@@ -31,4 +31,4 @@ The script is written in python.
 - Program will ask the user to enter the VIF #
 - When the user enters the VIF # the code will download the images of the vehical locally on your machine after renaming them, and refining the directory structure by deleting the empty files then uploading the images to AWS S3 bucket.
 ---
--Then run [uploadToAWS](https://github.com/bushra460/ProjectACE/blob/Dev/uploadingToAWS.py) for uploading the images to AWS s3 bucket
+
